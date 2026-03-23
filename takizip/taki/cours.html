@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Cours - Learning Online</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">Smart Learning</div>
+ <nav>
+    <ul>
+        <li class="active"><a href="cours.html">Mes Cours</a></li>
+        
+        <li><a href="tache_a_fair.html">Mes Tâches</a></li>
+        
+        <li><a href="offres.html">Choisir une offre</a></li>
+        
+        <li><a href="calendrier.html">Calendrier</a></li>
+        
+        <li><a href="certificats.html">Certificats</a></li>
+        
+        <li><a href="reclamation.html">Réclamation</a></li>
+    </ul>
+</nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="header-flex">
+                    <div>
+                        <h1>Catalogue des Cours</h1>
+                        <p>Continuez votre progression là où vous vous êtes arrêté.</p>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Rechercher un cours...">
+                    </div>
+                </div>
+            </header>
+
+            <div class="filters">
+                <span class="filter-tag active">Tous</span>
+                <span class="filter-tag">Développement</span>
+                <span class="filter-tag">Design</span>
+                <span class="filter-tag">Business</span>
+            </div>
+
+            <section class="courses-grid">
+                <div class="course-card">
+                    <div class="course-image dev-bg">
+                        <span class="badge">Programmation</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>Développement Java Avancé</h3>
+                        <p>Maîtrisez les collections, les flux et la POO complexe.</p>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 75%;"></div>
+                        </div>
+                        <div class="course-footer">
+                            <span>75% Complété</span>
+                            <button class="btn-primary">Continuer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-image design-bg">
+                        <span class="badge">Design</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>UI/UX Design avec Tailwind</h3>
+                        <p>Apprenez à créer des interfaces modernes et responsives.</p>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 30%;"></div>
+                        </div>
+                        <div class="course-footer">
+                            <span>30% Complété</span>
+                            <button class="btn-primary">Continuer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-image agile-bg">
+                        <span class="badge">Gestion</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>Méthodologies Agile & Scrum</h3>
+                        <p>Optimisez la gestion de vos projets en équipe.</p>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 10%;"></div>
+                        </div>
+                        <div class="course-footer">
+                            <span>10% Complété</span>
+                            <button class="btn-primary">Continuer</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
