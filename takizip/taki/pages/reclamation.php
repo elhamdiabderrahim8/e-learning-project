@@ -26,11 +26,11 @@ $success = get_flash('success');
             <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
             <nav>
                 <ul>
-                    <li><a href="cours.php">Mes Cours</a></li>
-                    <li><a href="tache_a_fair.php">Mes Taches</a></li>
-                    <li><a href="offres.php">Choisir une offre</a></li>
-                    <li class="active"><a href="reclamation.php">Reclamation</a></li>
-                    <li><a href="profil.php">Mon Profil</a></li>
+                    <li><a href="cours.php"><span class="nav-icon">&#8962;</span><span>Mes Cours</span></a></li>
+                    <li><a href="tache_a_fair.php"><span class="nav-icon">&#128221;</span><span>Mes Taches</span></a></li>
+                    <li><a href="offres.php"><span class="nav-icon">&#9671;</span><span>Choisir une offre</span></a></li>
+                    <li class="active"><a href="reclamation.php"><span class="nav-icon">&#128172;</span><span>Reclamation</span></a></li>
+                    <li><a href="profil.php"><span class="nav-icon">&#128100;</span><span>Mon Profil</span></a></li>
                 </ul>
             </nav>
         </aside>
