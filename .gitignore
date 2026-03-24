@@ -1,8 +1,27 @@
+# Environment
 .env
 .env.local
 .env.*.local
+takizip/taki/supabase/.env
+
+# Editors / IDE
 .vscode/
+.idea/
+*.code-workspace
+
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
 node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local uploads (keep folder with .gitkeep)
 takizip/taki/backend/uploads/reclamations/*
 !takizip/taki/backend/uploads/reclamations/.gitkeep

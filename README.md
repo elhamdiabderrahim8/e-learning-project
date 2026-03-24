@@ -1,65 +1,51 @@
 # e-learning-project
 
-Backend PHP + SQL connected to Supabase Postgres for the Smart Learning site.
+Native PHP learning platform connected to Supabase PostgreSQL.
 
 ## Stack
 
-- PHP (native, no framework)
+- PHP (no framework)
 - Supabase PostgreSQL
-- HTML + CSS existing frontend
+- HTML/CSS/JS templates
 
-## What was added
+## Project Structure
 
-- Authentication: register, login, logout
-- Protected pages with session check
-- Reclamation form storage (with optional file upload)
-- Tasks management (create + mark complete/incomplete)
-- SQL schema and seed files
+- `takizip/taki` : application root
+- `takizip/taki/pages` : route entry pages (`*.php`)
+- `takizip/taki/backend/actions` : form and feature actions
+- `takizip/taki/backend/includes` : auth/session/helpers bootstrap
+- `takizip/taki/supabase/schema.sql` : database schema
+- `takizip/taki/supabase/seed.sql` : optional demo data
+- `takizip/taki/supabase/database.php` : PDO connection
 
-## Project paths
+## Main Features
 
-- App root: takizip/taki
-- Backend code: takizip/taki/backend
-- SQL schema: takizip/taki/backend/sql/schema.sql
-- SQL seed: takizip/taki/backend/sql/seed.sql
+- Authentication (register/login/logout)
+- Protected pages via session checks
+- Tasks board with statuses (`a_faire`, `en_cours`, `terminee`)
+- Reclamation form with multiple file uploads
+- Profile settings (name, language, delete account)
+- Language preference persistence (`en` default, `fr` optional)
 
-## Database setup (Supabase)
+## Current Main Pages
 
-### Quick Setup
+- `pages/login.php`
+- `pages/registre.php`
+- `pages/cours.php`
+- `pages/tache_a_fair.php`
+- `pages/reclamation.php`
+- `pages/offres.php`
+- `pages/profil.php`
+- `pages/content.php`
+- `pages/health.php`
 
-1. **Environment variables are already configured** in `.env` file (takizip/taki/.env).
+## Setup (Supabase)
 
-2. **Load SQL schema.** In Supabase SQL Editor:
-   - Click "New Query"
-   - Copy-paste entire content from: `takizip/taki/backend/sql/schema.sql`
-   - Click "Run"
+1. Configure credentials in `takizip/taki/supabase/.env`.
+2. Run `takizip/taki/supabase/schema.sql` in Supabase SQL Editor.
+3. Optionally run `takizip/taki/supabase/seed.sql`.
 
-3. **Load demo data (optional).** In Supabase SQL Editor:
-   - Click "New Query"
-   - Copy-paste entire content from: `takizip/taki/backend/sql/seed.sql`
-   - Click "Run"
-
-4. **Verify connection.** Start the app and check health:
-   ```
-   cd takizip/taki
-   php -S localhost:8000
-   # Open: http://localhost:8000/health.php
-   ```
-   You should see: `{"status": "success", ...}`
-
-### Current Configuration
-
-The `.env` file contains your Supabase credentials:
-- SUPABASE_DB_HOST
-- SUPABASE_DB_PORT
-- SUPABASE_DB_NAME
-- SUPABASE_DB_USER
-- SUPABASE_DB_PASS
-- SUPABASE_DB_SSLMODE
-
-Fallback variables DB_HOST, DB_PORT, etc. are also supported for local MySQL testing.
-
-## Run locally
+## Run Locally
 
 From repository root:
 
@@ -68,49 +54,14 @@ cd takizip/taki
 php -S localhost:8000
 ```
 
-Open in browser:
+Open:
 
-http://localhost:8000
+- App: `http://localhost:8000`
+- Health check: `http://localhost:8000/pages/health.php`
 
-### Health Check
+Expected health response includes `"status": "success"`.
 
-To verify Supabase connection is working:
+## Notes
 
-http://localhost:8000/health.php
-
-Should return JSON with `"status": "success"`
-
-## Main PHP pages
-
-- login.php
-- registre.php
-- cours.php
-- tache_a_fair.php
-- reclamation.php
-- offres.php
-- calendrier.php
-- certificats.php
-
-## Backend actions
-
-- backend/actions/register.php
-- backend/actions/login.php
-- backend/actions/logout.php
-- backend/actions/create_reclamation.php
-- backend/actions/create_task.php
-- backend/actions/toggle_task.php
-
-## Setup Files
-
-- `.env` - Database credentials (DO NOT commit to git)
-- `health.php` - Connection verification endpoint
-- `SETUP_SUPABASE.sh` - Setup guide (Linux/Mac)
-- `SETUP_SUPABASE.ps1` - Setup guide (Windows PowerShell)
-- `backend/config/database.php` - PDO Postgres connection
-- `backend/sql/schema.sql` - PostgreSQL schema (run in Supabase SQL Editor)
-- `backend/sql/seed.sql` - Demo data (run in Supabase SQL Editor)
-
-## Important note
-
-This backend now targets Supabase PostgreSQL using only PHP + SQL.
-Database credentials are stored in `.env` and loaded automatically by the app.
+- Uploaded files are stored under `takizip/taki/backend/uploads/reclamations/`.
+- Keep `.env` files out of git.
