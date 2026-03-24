@@ -2,7 +2,7 @@
 .env
 .env.local
 .env.*.local
-takizip/taki/supabase/.env
+takizip/taki/database/.env
 
 # Editors / IDE
 .vscode/

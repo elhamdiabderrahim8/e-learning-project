@@ -51,14 +51,14 @@ function db(): PDO
         return $pdo;
     }
 
-    $host = getenv('SUPABASE_DB_HOST') ?: (getenv('DB_HOST') ?: '127.0.0.1');
-    $port = getenv('SUPABASE_DB_PORT') ?: (getenv('DB_PORT') ?: '5432');
-    $name = getenv('SUPABASE_DB_NAME') ?: (getenv('DB_NAME') ?: 'postgres');
-    $user = getenv('SUPABASE_DB_USER') ?: (getenv('DB_USER') ?: 'postgres');
-    $pass = getenv('SUPABASE_DB_PASS') ?: (getenv('DB_PASS') ?: '');
-    $sslMode = getenv('SUPABASE_DB_SSLMODE') ?: 'require';
+    $host = getenv('DB_HOST') ?: '127.0.0.1';
+    $port = getenv('DB_PORT') ?: '3306';
+    $name = getenv('DB_NAME') ?: 'elearning';
+    $user = getenv('DB_USER') ?: 'root';
+    $pass = getenv('DB_PASS') ?: '';
+    $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
 
-    $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s;sslmode=%s', $host, $port, $name, $sslMode);
+    $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=%s', $host, $port, $name, $charset);
 
     $pdo = new PDO($dsn, $user, $pass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

@@ -32,10 +32,14 @@ if (!$task) {
 }
 
 $nextState = ((int) $task['is_completed']) === 1 ? 0 : 1;
-$update = $pdo->prepare('UPDATE tasks SET is_completed = :is_completed WHERE id = :id');
+$nextStatus = $nextState === 1 ? 'terminee' : 'en_cours';
+
+$update = $pdo->prepare('UPDATE tasks SET is_completed = :is_completed, status = :status WHERE id = :id AND user_id = :user_id');
 $update->execute([
     'is_completed' => $nextState,
+    'status' => $nextStatus,
     'id' => $taskId,
+    'user_id' => user_id(),
 ]);
 
 set_flash('success', $nextState === 1 ? 'Tache marquee comme terminee.' : 'Tache remise en cours.');

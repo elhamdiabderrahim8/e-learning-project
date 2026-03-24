@@ -22,12 +22,6 @@ $allowedStatuses = ['a_faire', 'en_cours', 'terminee'];
 
 $pdo = db();
 
-try {
-    $pdo->exec("ALTER TABLE tasks ADD COLUMN IF NOT EXISTS status VARCHAR(20) NOT NULL DEFAULT 'a_faire'");
-} catch (Throwable $e) {
-    // Ignore if DB permissions restrict alter operations.
-}
-
 $check = $pdo->prepare('SELECT id, status, is_completed FROM tasks WHERE id = :id AND user_id = :user_id LIMIT 1');
 $check->execute([
     'id' => $taskId,
@@ -63,11 +57,11 @@ if ($currentStatus === 'terminee') {
 $nextStatus = $currentStatus === 'a_faire' ? 'en_cours' : 'terminee';
 $isCompletedFlag = $nextStatus === 'terminee' ? 1 : 0;
 
-$update = $pdo->prepare('UPDATE tasks SET status = :status, is_completed = CASE WHEN :is_completed_flag = 1 THEN TRUE ELSE FALSE END WHERE id = :id');
-$update->execute([
-    'status' => $nextStatus,
-    'is_completed_flag' => $isCompletedFlag,
-    'id' => $taskId,
-]);
+$update = $pdo->prepare('UPDATE tasks SET status = :status, is_completed = :is_completed WHERE id = :id AND user_id = :user_id');
+$update->bindValue(':status', $nextStatus, PDO::PARAM_STR);
+$update->bindValue(':is_completed', $isCompletedFlag, PDO::PARAM_INT);
+$update->bindValue(':id', $taskId, PDO::PARAM_INT);
+$update->bindValue(':user_id', user_id(), PDO::PARAM_INT);
+$update->execute();
 
 redirect('../../pages/tache_a_fair.php');

@@ -45,21 +45,14 @@ if ($dueDateInput !== '') {
 
 $pdo = db();
 
-try {
-    $pdo->exec("ALTER TABLE tasks ADD COLUMN IF NOT EXISTS status VARCHAR(20) NOT NULL DEFAULT 'a_faire'");
-} catch (Throwable $e) {
-    // Ignore if the column already exists or if DB permissions restrict alter operations.
-}
-
-$stmt = $pdo->prepare('INSERT INTO tasks (user_id, title, due_date, priority, status, is_completed) VALUES (:user_id, :title, :due_date, :priority, :status, CASE WHEN :is_completed_flag = 1 THEN TRUE ELSE FALSE END)');
-$stmt->execute([
-    'user_id' => user_id(),
-    'title' => $title,
-    'due_date' => $dueDate,
-    'priority' => $priority,
-    'status' => $status,
-    'is_completed_flag' => $isCompletedFlag,
-]);
+$stmt = $pdo->prepare('INSERT INTO tasks (user_id, title, due_date, priority, status, is_completed) VALUES (:user_id, :title, :due_date, :priority, :status, :is_completed)');
+$stmt->bindValue(':user_id', user_id(), PDO::PARAM_INT);
+$stmt->bindValue(':title', $title, PDO::PARAM_STR);
+$stmt->bindValue(':due_date', $dueDate, $dueDate === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+$stmt->bindValue(':priority', $priority, PDO::PARAM_STR);
+$stmt->bindValue(':status', $status, PDO::PARAM_STR);
+$stmt->bindValue(':is_completed', $isCompletedFlag, PDO::PARAM_INT);
+$stmt->execute();
 
 set_flash('success', 'Nouvelle tache ajoutee.');
 redirect('../../pages/tache_a_fair.php');

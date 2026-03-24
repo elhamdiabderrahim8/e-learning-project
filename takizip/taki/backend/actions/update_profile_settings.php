@@ -26,12 +26,6 @@ if (!in_array($language, $allowedLanguages, true)) {
 
 $pdo = db();
 
-try {
-    $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10) NOT NULL DEFAULT 'en'");
-} catch (Throwable $e) {
-    // Ignore if DB permissions restrict alter operations.
-}
-
 $update = $pdo->prepare('UPDATE users SET first_name = :first_name, last_name = :last_name, preferred_language = :preferred_language WHERE id = :id');
 $update->execute([
     'first_name' => $firstName,
@@ -42,6 +36,7 @@ $update->execute([
 
 $_SESSION['full_name'] = trim($firstName . ' ' . $lastName);
 $_SESSION['preferred_language'] = $language;
+$_SESSION['preferred_language_synced'] = true;
 
 set_flash('success', 'Profil mis a jour avec succes.');
 redirect('../../pages/profil.php');

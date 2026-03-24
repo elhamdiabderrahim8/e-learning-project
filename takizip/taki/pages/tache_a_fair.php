@@ -16,12 +16,9 @@ try {
 $pdo->prepare("UPDATE tasks SET status = CASE WHEN is_completed = TRUE THEN 'terminee' ELSE 'a_faire' END WHERE status IS NULL OR status NOT IN ('a_faire', 'en_cours', 'terminee')")
     ->execute();
 
-$stmt = $pdo->prepare('SELECT id, title, due_date, priority, status, is_completed FROM tasks WHERE user_id = :user_id ORDER BY CASE status WHEN :status_a_faire THEN 1 WHEN :status_en_cours THEN 2 WHEN :status_terminee THEN 3 ELSE 4 END, due_date ASC NULLS LAST, created_at DESC');
+$stmt = $pdo->prepare("SELECT id, title, due_date, priority, status, is_completed FROM tasks WHERE user_id = :user_id ORDER BY CASE status WHEN 'a_faire' THEN 1 WHEN 'en_cours' THEN 2 WHEN 'terminee' THEN 3 ELSE 4 END, due_date IS NULL, due_date ASC, created_at DESC");
 $stmt->execute([
     'user_id' => user_id(),
-    'status_a_faire' => 'a_faire',
-    'status_en_cours' => 'en_cours',
-    'status_terminee' => 'terminee',
 ]);
 $tasks = $stmt->fetchAll();
 

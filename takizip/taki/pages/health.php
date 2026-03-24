@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../supabase/database.php';
+require_once __DIR__ . '/../database/database.php';
 
 $result = [
     'status' => 'error',
@@ -12,13 +12,14 @@ $result = [
 
 try {
     $pdo = db();
-    $stmt = $pdo->query('SELECT NOW() as current_time, version() as db_version');
+    $stmt = $pdo->query('SELECT NOW() AS db_now, VERSION() AS db_version');
     $data = $stmt->fetch();
     
     $result['status'] = 'success';
-    $result['message'] = 'Connected to Supabase PostgreSQL successfully!';
+    $result['message'] = 'Database connection successful.';
     $result['details'] = [
-        'current_time' => $data['current_time'],
+        'driver' => $pdo->getAttribute(PDO::ATTR_DRIVER_NAME),
+        'current_time' => $data['db_now'],
         'db_version' => substr($data['db_version'], 0, 50),
     ];
 } catch (Exception $e) {

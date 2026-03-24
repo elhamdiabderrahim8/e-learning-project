@@ -65,11 +65,6 @@ $attachmentPath = $uploadedPaths[0] ?? null;
 $attachmentPaths = $uploadedPaths ? json_encode($uploadedPaths, JSON_UNESCAPED_SLASHES) : null;
 
 $pdo = db();
-try {
-    $pdo->exec('ALTER TABLE reclamations ADD COLUMN IF NOT EXISTS attachment_paths TEXT');
-} catch (Throwable $e) {
-    // Ignore if DB permissions restrict alter operations.
-}
 
 $stmt = $pdo->prepare('INSERT INTO reclamations (user_id, subject, message, attachment_path, attachment_paths) VALUES (:user_id, :subject, :message, :attachment_path, :attachment_paths)');
 $stmt->execute([

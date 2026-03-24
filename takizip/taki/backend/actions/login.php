@@ -17,12 +17,6 @@ if ($email === '' || $password === '') {
 }
 
 $pdo = db();
-try {
-    $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10) NOT NULL DEFAULT 'en'");
-} catch (Throwable $e) {
-    // Ignore if DB permissions restrict alter operations.
-}
-
 $stmt = $pdo->prepare('SELECT id, first_name, last_name, password_hash, preferred_language FROM users WHERE email = :email LIMIT 1');
 $stmt->execute(['email' => $email]);
 $user = $stmt->fetch();
@@ -37,6 +31,7 @@ login_user((int) $user['id'], $fullName);
 $_SESSION['preferred_language'] = in_array((string) ($user['preferred_language'] ?? 'en'), ['en', 'fr'], true)
     ? (string) $user['preferred_language']
     : 'en';
+$_SESSION['preferred_language_synced'] = true;
 set_flash('success', 'Connexion reussie.');
 
 redirect('../../pages/cours.php');
