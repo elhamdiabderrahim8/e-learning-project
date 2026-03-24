@@ -1,2 +1,102 @@
-<!DOCTYPE html> <html lang="fr"> <head>     <meta charset="UTF-8">     <meta name="viewport" content="width=device-width, initial-scale=1.0">     <title>Calendrier - Enjah</title>     <link rel="stylesheet" href="style.css"> </head> <body>      <div class="dashboard-container">         <aside class="sidebar">             <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div> <nav>     <ul>         <li><a href="cours.php">Mes Cours</a></li>                  <li><a href="tache_a_fair.php">Mes T├óches</a></li>                  <li><a href="offres.php">Choisir une offre</a></li>                  <li class="active"><a href="calendrier.php">Calendrier</a></li>                  <li><a href="certificats.php">Certificats</a></li>                  <li><a href="reclamation.php">R├®clamation</a></li>                  <li><a href="profil.php">Mon Profil</a></li>     </ul> </nav>         </aside>          <main class="main-content">             <header class="header">                 <div class="calendar-nav">                     <a href="fevrier.html" class="btn-nav">&lt; Pr├®c├®dent</a>                     <h1>Mars 2026</h1>                     <a href="avril.html" class="btn-nav">Suivant &gt;</a>                 </div>             </header>              <div class="calendar-grid">                 <div class="calendar-header">Lun</div>                 <div class="calendar-header">Mar</div>                 <div class="calendar-header">Mer</div>                 <div class="calendar-header">Jeu</div>                 <div class="calendar-header">Ven</div>                 <div class="calendar-header">Sam</div>                 <div class="calendar-header">Dim</div>                  <div class="day empty"></div><div class="day empty"></div><div class="day empty"></div>                 <div class="day empty"></div><div class="day empty"></div><div class="day empty"></div>                 <a href="#courseModal" class="day">1</a>                  <a href="#courseModal" class="day">2</a>                 <a href="#courseModal" class="day">                     3                      <div class="event bg-turquoise">Cours Java</div>                 </a>                 <a href="#courseModal" class="day">4</a>                 <a href="#courseModal" class="day">5</a>                 <a href="#courseModal" class="day">6</a>                 <a href="#courseModal" class="day">7</a>                 <a href="#courseModal" class="day">8</a>                  <a href="#courseModal" class="day">9</a>                 <a href="#courseModal" class="day">10</a>                 <a href="#courseModal" class="day">11</a>                 <a href="#courseModal" class="day">12</a>                 <a href="#courseModal" class="day">13</a>                 <a href="#courseModal" class="day">14</a>                 <a href="#courseModal" class="day">15</a>                  <a href="#courseModal" class="day">16</a>                 <a href="#courseModal" class="day">17</a>                 <a href="#courseModal" class="day">18</a>                 <a href="#courseModal" class="day">19</a>                 <a href="#courseModal" class="day">20</a>                 <a href="#courseModal" class="day">21</a>                 <a href="#courseModal" class="day">22</a>                  <a href="#courseModal" class="day">23</a>                 <a href="#courseModal" class="day">24</a>                 <a href="#courseModal" class="day">25</a>                 <a href="#courseModal" class="day">26</a>                 <a href="#courseModal" class="day">27</a>                 <a href="#courseModal" class="day">28</a>                 <a href="#courseModal" class="day">29</a>                  <a href="#courseModal" class="day">30</a>                 <a href="#courseModal" class="day">31</a>                 <div class="day empty"></div><div class="day empty"></div>                 <div class="day empty"></div><div class="day empty"></div><div class="day empty"></div>             </div>         </main>     </div>      <div id="courseModal" class="modal-overlay">         <div class="modal-content">             <div class="modal-header">                 <h2>Ajouter un cours</h2>                 <a href="#" class="close-modal">&times;</a>             </div>             <form class="modal-form">                 <label>Nom du cours</label>                 <input type="text" placeholder="Ex: D├®veloppement Web">                 <label>Heure</label>                 <input type="time">                 <button type="submit" class="btn-add-modal">Enregistrer</button>             </form>         </div>     </div>      </body> </html>
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier - Enjah</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
+            <nav>
+                <ul>
+                    <li><a href="cours.php">Mes Cours</a></li>
+                    <li><a href="tache_a_fair.php">Mes T&acirc;ches</a></li>
+                    <li><a href="offres.php">Choisir une offre</a></li>
+                    <li class="active"><a href="calendrier.php">Calendrier</a></li>
+                    <li><a href="certificats.php">Certificats</a></li>
+                    <li><a href="reclamation.php">R&eacute;clamation</a></li>
+                    <li><a href="profil.php">Mon Profil</a></li>
+                </ul>
+            </nav>
+        </aside>
 
+        <main class="main-content">
+            <header class="header">
+                <div class="calendar-nav">
+                    <a href="fevrier.html" class="btn-nav">&lt; Pr&eacute;c&eacute;dent</a>
+                    <h1>Mars 2026</h1>
+                    <a href="avril.html" class="btn-nav">Suivant &gt;</a>
+                </div>
+            </header>
+
+            <div class="calendar-grid">
+                <div class="calendar-header">Lun</div>
+                <div class="calendar-header">Mar</div>
+                <div class="calendar-header">Mer</div>
+                <div class="calendar-header">Jeu</div>
+                <div class="calendar-header">Ven</div>
+                <div class="calendar-header">Sam</div>
+                <div class="calendar-header">Dim</div>
+
+                <div class="day empty"></div>
+                <div class="day empty"></div>
+                <div class="day">1</div>
+                <div class="day">2</div>
+                <div class="day">3</div>
+                <div class="day">4</div>
+                <div class="day">5</div>
+                <div class="day">6</div>
+                <div class="day has-event">7<span class="event-dot"></span></div>
+                <div class="day">8</div>
+                <div class="day">9</div>
+                <div class="day">10</div>
+                <div class="day has-event">11<span class="event-dot"></span></div>
+                <div class="day">12</div>
+                <div class="day">13</div>
+                <div class="day">14</div>
+                <div class="day">15</div>
+                <div class="day">16</div>
+                <div class="day">17</div>
+                <div class="day">18</div>
+                <div class="day">19</div>
+                <div class="day">20</div>
+                <div class="day">21</div>
+                <div class="day">22</div>
+                <div class="day">23</div>
+                <div class="day">24</div>
+                <div class="day">25</div>
+                <div class="day">26</div>
+                <div class="day">27</div>
+                <div class="day">28</div>
+                <div class="day">29</div>
+                <div class="day">30</div>
+                <div class="day">31</div>
+                <div class="day empty"></div>
+                <div class="day empty"></div>
+                <div class="day empty"></div>
+                <div class="day empty"></div>
+                <div class="day empty"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="courseModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajouter un cours</h2>
+                <a href="#" class="close-modal">&times;</a>
+            </div>
+            <form class="modal-form">
+                <label>Nom du cours</label>
+                <input type="text" placeholder="Ex : D&eacute;veloppement Web">
+                <label>Heure</label>
+                <input type="time">
+                <button type="submit" class="btn-add-modal">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,2 +1,69 @@
-<!DOCTYPE html> <html lang="fr"> <head>     <meta charset="UTF-8">     <meta name="viewport" content="width=device-width, initial-scale=1.0">     <title>Réclamation - Enjah</title>     <link rel="stylesheet" href="style.css"> </head> <body>     <div class="dashboard-container">         <aside class="sidebar">             <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div> <nav>     <ul>         <li><a href="cours.php">Mes Cours</a></li>                  <li><a href="tache_a_fair.php">Mes T├óches</a></li>                  <li><a href="offres.php">Choisir une offre</a></li>                  <li><a href="calendrier.php">Calendrier</a></li>                  <li><a href="certificats.php">Certificats</a></li>                  <li class="active"><a href="reclamation.php">R├®clamation</a></li>                  <li><a href="profil.php">Mon Profil</a></li>     </ul> </nav>         </aside>          <main class="main-content">             <header class="header">                 <h1>Envoyer une r├®clamation</h1>                 <p>Un probl├¿me ? Notre ├®quipe vous r├®pondra sous 24h.</p>             </header>              <div class="login-box" style="max-width: 600px; margin: 0 auto;">                 <form class="modal-form">                     <div class="input-group">                         <label for="sujet">Sujet de la r├®clamation</label>                         <select id="sujet" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid var(--grey-border);">                             <option>Probl├¿me d'acc├¿s au cours</option>                             <option>Erreur de paiement / Facturation</option>                             <option>Bug technique sur la plateforme</option>                             <option>Autre</option>                         </select>                     </div>                      <div class="input-group">                         <label for="message">Description d├®taill├®e</label>                         <textarea id="message" rows="6" placeholder="Expliquez votre probl├¿me ici..."                              style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid var(--grey-border); outline: none; font-family: inherit; resize: vertical;"></textarea>                     </div>                      <div class="input-group">                         <label for="file">Pi├¿ce jointe (facultatif)</label>                         <input type="file" id="file" style="border: none; padding: 0;">                     </div>                      <a href="#success-msg" class="btn-primary" style="width: 100%; text-align: center;">Envoyer la r├®clamation</a>                 </form>             </div>         </main>     </div>      <div id="success-msg" class="modal-overlay">         <div class="modal-content" style="text-align: center;">             <div style="font-size: 3rem; color: var(--green); margin-bottom: 1rem;">Ô£ë´©Å</div>             <h2>Message envoy├® !</h2>             <p style="margin: 1rem 0; color: var(--text-muted);">Merci, nous avons bien re├ºu votre demande. Un ticket a ├®t├® ouvert.</p>             <a href="cours.php" class="btn-primary">Retour ├á l'accueil</a>         </div>     </div>     </body> </html>
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclamation - Enjah</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
+            <nav>
+                <ul>
+                    <li><a href="cours.php">Mes Cours</a></li>
+                    <li><a href="tache_a_fair.php">Mes T&acirc;ches</a></li>
+                    <li><a href="offres.php">Choisir une offre</a></li>
+                    <li><a href="calendrier.php">Calendrier</a></li>
+                    <li><a href="certificats.php">Certificats</a></li>
+                    <li class="active"><a href="reclamation.php">R&eacute;clamation</a></li>
+                    <li><a href="profil.php">Mon Profil</a></li>
+                </ul>
+            </nav>
+        </aside>
 
+        <main class="main-content">
+            <header class="header">
+                <h1>Envoyer une r&eacute;clamation</h1>
+                <p>Un probl&egrave;me ? Notre &eacute;quipe vous r&eacute;pondra sous 24h.</p>
+            </header>
+
+            <div class="login-box" style="max-width: 600px; margin: 0 auto;">
+                <form class="modal-form">
+                    <div class="input-group">
+                        <label for="sujet">Sujet de la r&eacute;clamation</label>
+                        <select id="sujet" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid var(--grey-border);">
+                            <option>Probl&egrave;me d'acc&egrave;s au cours</option>
+                            <option>Erreur de paiement / Facturation</option>
+                            <option>Bug technique sur la plateforme</option>
+                            <option>Autre</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="message">Description d&eacute;taill&eacute;e</label>
+                        <textarea id="message" rows="6" placeholder="Expliquez votre probl&egrave;me ici..." style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid var(--grey-border); outline: none; font-family: inherit; resize: vertical;"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="file">Pi&egrave;ce jointe (facultatif)</label>
+                        <input type="file" id="file" style="border: none; padding: 0;">
+                    </div>
+
+                    <a href="#success-msg" class="btn-primary" style="width: 100%; text-align: center;">Envoyer la r&eacute;clamation</a>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div id="success-msg" class="modal-overlay">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 3rem; color: var(--green); margin-bottom: 1rem;">&#10003;</div>
+            <h2>Message envoy&eacute; !</h2>
+            <p style="margin: 1rem 0; color: var(--text-muted);">Merci, nous avons bien re&ccedil;u votre demande. Un ticket a &eacute;t&eacute; ouvert.</p>
+            <a href="cours.php" class="btn-primary">Retour &agrave; l'accueil</a>
+        </div>
+    </div>
+</body>
+</html>
