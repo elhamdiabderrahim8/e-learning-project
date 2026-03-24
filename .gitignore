@@ -1,0 +1,8 @@
+.env
+.env.local
+.env.*.local
+.vscode/
+*.log
+node_modules/
+takizip/taki/backend/uploads/reclamations/*
+!takizip/taki/backend/uploads/reclamations/.gitkeep

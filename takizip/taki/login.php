@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/backend/includes/bootstrap.php';
+
+if (is_authenticated()) {
+    redirect('cours.php');
+}
+
+$error = get_flash('error');
+$success = get_flash('success');
+?><!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -13,22 +25,25 @@
             <div class="login-header">
                 <div class="logo">Smart Learning</div>
                 <h1>Bon retour !</h1>
-                <p>Veuillez vous connecter pour accéder à vos cours.</p>
+                <p>Veuillez vous connecter pour acceder a vos cours.</p>
             </div>
 
-            <form class="login-form" action="cours.php">
+            <?php if ($error): ?>
+                <p style="color: #b42318; margin-bottom: 10px;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php endif; ?>
+            <?php if ($success): ?>
+                <p style="color: #027a48; margin-bottom: 10px;"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php endif; ?>
+
+            <form class="login-form" action="backend/actions/login.php" method="post">
                 <div class="input-group">
                     <label for="email">Adresse Email</label>
-                    <input type="email" id="email" placeholder="nom@exemple.com" required>
+                    <input type="email" id="email" name="email" placeholder="nom@exemple.com" required>
                 </div>
 
                 <div class="input-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                </div>
-
-                <div class="login-options">
-                    <label><input type="checkbox"> Se souvenir de moi</label>
+                    <input type="password" id="password" name="password" placeholder="********" required>
                 </div>
 
                 <button type="submit" class="btn-login">Se connecter</button>
