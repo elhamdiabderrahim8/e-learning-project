@@ -5,7 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../includes/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirect('../../registre.php');
+    redirect('../../pages/registre.php');
 }
 
 $firstName = trim((string) ($_POST['firstname'] ?? ''));
@@ -16,22 +16,22 @@ $confirmPassword = (string) ($_POST['confirm_password'] ?? '');
 
 if ($firstName === '' || $lastName === '' || $email === '' || $password === '' || $confirmPassword === '') {
     set_flash('error', 'Tous les champs sont obligatoires.');
-    redirect('../../registre.php');
+    redirect('../../pages/registre.php');
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     set_flash('error', 'Adresse email invalide.');
-    redirect('../../registre.php');
+    redirect('../../pages/registre.php');
 }
 
 if (strlen($password) < 8) {
     set_flash('error', 'Le mot de passe doit contenir au moins 8 caracteres.');
-    redirect('../../registre.php');
+    redirect('../../pages/registre.php');
 }
 
 if ($password !== $confirmPassword) {
     set_flash('error', 'Les mots de passe ne correspondent pas.');
-    redirect('../../registre.php');
+    redirect('../../pages/registre.php');
 }
 
 $pdo = db();
@@ -40,7 +40,7 @@ $existing = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
 $existing->execute(['email' => $email]);
 if ($existing->fetch()) {
     set_flash('error', 'Cet email est deja utilise.');
-    redirect('../../registre.php');
+    redirect('../../pages/registre.php');
 }
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -58,4 +58,4 @@ $fullName = $firstName . ' ' . $lastName;
 login_user($userId, $fullName);
 
 set_flash('success', 'Compte cree avec succes.');
-redirect('../../offres.php');
+redirect('../../pages/offres.php');

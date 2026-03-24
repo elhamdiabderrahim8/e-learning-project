@@ -18,7 +18,7 @@ function require_auth(): void
 {
     if (!is_authenticated()) {
         set_flash('error', 'Veuillez vous connecter pour continuer.');
-        redirect('/login.php');
+        redirect('/pages/login.php');
     }
 }
 

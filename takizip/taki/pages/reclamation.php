@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/backend/includes/bootstrap.php';
+require_once __DIR__ . '/../backend/includes/bootstrap.php';
 require_auth();
 
 $error = get_flash('error');
@@ -13,7 +13,7 @@ $success = get_flash('success');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reclamation - Smart Learning</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -35,7 +35,7 @@ $success = get_flash('success');
             <header class="header">
                 <h1>Envoyer une reclamation</h1>
                 <p>Un probleme ? Notre equipe vous repondra sous 24h.</p>
-                <p><a href="backend/actions/logout.php">Se deconnecter</a></p>
+                <p><a href="../backend/actions/logout.php">Se deconnecter</a></p>
             </header>
 
             <?php if ($error): ?>
@@ -46,7 +46,7 @@ $success = get_flash('success');
             <?php endif; ?>
 
             <div class="login-box" style="max-width: 600px; margin: 0 auto;">
-                <form class="modal-form" action="backend/actions/create_reclamation.php" method="post" enctype="multipart/form-data">
+                <form class="modal-form" action="../backend/actions/create_reclamation.php" method="post" enctype="multipart/form-data">
                     <div class="input-group">
                         <label for="subject">Sujet de la reclamation</label>
                         <select id="subject" name="subject" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid var(--grey-border);" required>

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/backend/includes/bootstrap.php';
+require_once __DIR__ . '/../backend/includes/bootstrap.php';
 require_auth();
 
 $pdo = db();
@@ -18,7 +18,7 @@ $success = get_flash('success');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taches</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
@@ -41,7 +41,7 @@ $success = get_flash('success');
             <header class="header">
                 <h1>Mes Taches a faire</h1>
                 <p>Suivez vos devoirs et projets en cours.</p>
-                <p><a href="backend/actions/logout.php">Se deconnecter</a></p>
+                <p><a href="../backend/actions/logout.php">Se deconnecter</a></p>
             </header>
 
             <?php if ($error): ?>
@@ -70,7 +70,7 @@ $success = get_flash('success');
                                 <?php echo $task['due_date'] ? 'Echeance : ' . htmlspecialchars((string) $task['due_date'], ENT_QUOTES, 'UTF-8') : 'Sans date limite'; ?>
                             </span>
                         </div>
-                        <form action="backend/actions/toggle_task.php" method="post">
+                        <form action="../backend/actions/toggle_task.php" method="post">
                             <input type="hidden" name="task_id" value="<?php echo (int) $task['id']; ?>">
                             <button type="submit" class="btn-complete">
                                 <?php echo ((int) $task['is_completed']) === 1 ? 'Reouvrir' : 'Terminer'; ?>
@@ -85,7 +85,7 @@ $success = get_flash('success');
             </section>
 
             <footer class="add-task">
-                <form action="backend/actions/create_task.php" method="post" style="display: flex; width: 100%; gap: 10px;">
+                <form action="../backend/actions/create_task.php" method="post" style="display: flex; width: 100%; gap: 10px;">
                     <input type="text" name="title" placeholder="Ajouter une nouvelle tache..." required style="flex:1;">
                     <button type="submit" class="btn-add">Ajouter</button>
                 </form>

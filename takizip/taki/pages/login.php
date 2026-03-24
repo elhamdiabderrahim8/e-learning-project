@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/backend/includes/bootstrap.php';
+require_once __DIR__ . '/../backend/includes/bootstrap.php';
 
 if (is_authenticated()) {
     redirect('cours.php');
@@ -16,7 +16,7 @@ $success = get_flash('success');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Smart Learning</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body class="login-page">
 
@@ -35,7 +35,7 @@ $success = get_flash('success');
                 <p style="color: #027a48; margin-bottom: 10px;"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
             <?php endif; ?>
 
-            <form class="login-form" action="backend/actions/login.php" method="post">
+            <form class="login-form" action="../backend/actions/login.php" method="post">
                 <div class="input-group">
                     <label for="email">Adresse Email</label>
                     <input type="email" id="email" name="email" placeholder="nom@exemple.com" required>
