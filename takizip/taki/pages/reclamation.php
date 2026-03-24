@@ -29,8 +29,6 @@ $success = get_flash('success');
                     <li><a href="cours.php">Mes Cours</a></li>
                     <li><a href="tache_a_fair.php">Mes Taches</a></li>
                     <li><a href="offres.php">Choisir une offre</a></li>
-                    <li><a href="calendrier.php">Calendrier</a></li>
-                    <li><a href="certificats.php">Certificats</a></li>
                     <li class="active"><a href="reclamation.php">Reclamation</a></li>
                     <li><a href="profil.php">Mon Profil</a></li>
                 </ul>
@@ -44,37 +42,51 @@ $success = get_flash('success');
             </header>
 
             <?php if ($error): ?>
-                <p style="color: #b42318;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                <div class="reclamation-alert reclamation-alert-error" role="alert"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
             <?php if ($success): ?>
-                <p style="color: #027a48;"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
+                <div class="reclamation-alert reclamation-alert-success" role="status"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
 
-            <div class="login-box" style="max-width: 600px; margin: 0 auto;">
-                <form class="modal-form" action="../backend/actions/create_reclamation.php" method="post" enctype="multipart/form-data">
-                    <div class="input-group">
-                        <label for="subject">Sujet de la reclamation</label>
-                        <select id="subject" name="subject" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid var(--grey-border);" required>
-                            <option value="Probleme d acces au cours">Probleme d acces au cours</option>
-                            <option value="Erreur de paiement / Facturation">Erreur de paiement / Facturation</option>
-                            <option value="Bug technique sur la plateforme">Bug technique sur la plateforme</option>
-                            <option value="Autre">Autre</option>
-                        </select>
-                    </div>
+            <section class="reclamation-shell">
+                <div class="reclamation-intro card">
+                    <h2>Support Etudiant</h2>
+                    <p>Remplissez ce formulaire et joignez un fichier si necessaire. Notre equipe analysera votre demande rapidement.</p>
+                    <ul class="reclamation-points">
+                        <li>Reponse sous 24h ouvrables</li>
+                        <li>Suivi personnalise de votre demande</li>
+                        <li>Confidentialite de vos informations</li>
+                    </ul>
+                </div>
 
-                    <div class="input-group">
-                        <label for="message">Description detaillee</label>
-                        <textarea id="message" name="message" rows="6" placeholder="Expliquez votre probleme ici..." style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid var(--grey-border); outline: none; font-family: inherit; resize: vertical;" required></textarea>
-                    </div>
+                <div class="reclamation-form-card card">
+                    <form class="reclamation-form" action="../backend/actions/create_reclamation.php" method="post" enctype="multipart/form-data">
+                        <div class="input-group">
+                            <label for="subject">Sujet de la reclamation</label>
+                            <select id="subject" name="subject" required>
+                                <option value="Probleme d acces au cours">Probleme d acces au cours</option>
+                                <option value="Erreur de paiement / Facturation">Erreur de paiement / Facturation</option>
+                                <option value="Bug technique sur la plateforme">Bug technique sur la plateforme</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
 
-                    <div class="input-group">
-                        <label for="attachment">Piece jointe (facultatif)</label>
-                        <input type="file" id="attachment" name="attachment" style="border: none; padding: 0;">
-                    </div>
+                        <div class="input-group">
+                            <label for="message">Description detaillee</label>
+                            <textarea id="message" name="message" rows="7" placeholder="Expliquez votre probleme de maniere claire..." required></textarea>
+                            <p class="input-help">Ajoutez les etapes qui ont provoque le probleme pour accelerer la resolution.</p>
+                        </div>
 
-                    <button type="submit" class="btn-primary" style="width: 100%; text-align: center;">Envoyer la reclamation</button>
-                </form>
-            </div>
+                        <div class="input-group">
+                            <label for="attachments">Pieces jointes (facultatif)</label>
+                            <input type="file" id="attachments" name="attachments[]" multiple>
+                            <p class="input-help">Formats recommandes: PDF, PNG, JPG. Taille maximale: 5 Mo par fichier.</p>
+                        </div>
+
+                        <button type="submit" class="btn-primary reclamation-submit">Envoyer la reclamation</button>
+                    </form>
+                </div>
+            </section>
         </main>
     </div>
     </body>

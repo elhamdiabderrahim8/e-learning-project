@@ -17,7 +17,13 @@ if ($email === '' || $password === '') {
 }
 
 $pdo = db();
-$stmt = $pdo->prepare('SELECT id, first_name, last_name, password_hash FROM users WHERE email = :email LIMIT 1');
+try {
+    $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10) NOT NULL DEFAULT 'en'");
+} catch (Throwable $e) {
+    // Ignore if DB permissions restrict alter operations.
+}
+
+$stmt = $pdo->prepare('SELECT id, first_name, last_name, password_hash, preferred_language FROM users WHERE email = :email LIMIT 1');
 $stmt->execute(['email' => $email]);
 $user = $stmt->fetch();
 
@@ -28,6 +34,9 @@ if (!$user || !password_verify($password, $user['password_hash'])) {
 
 $fullName = trim($user['first_name'] . ' ' . $user['last_name']);
 login_user((int) $user['id'], $fullName);
+$_SESSION['preferred_language'] = in_array((string) ($user['preferred_language'] ?? 'en'), ['en', 'fr'], true)
+    ? (string) $user['preferred_language']
+    : 'en';
 set_flash('success', 'Connexion reussie.');
 
 redirect('../../pages/cours.php');

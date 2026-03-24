@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
     last_name VARCHAR(80) NOT NULL,
     email VARCHAR(190) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
+    preferred_language VARCHAR(10) NOT NULL DEFAULT 'en',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

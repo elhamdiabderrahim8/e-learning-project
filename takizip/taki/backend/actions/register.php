@@ -36,6 +36,12 @@ if ($password !== $confirmPassword) {
 
 $pdo = db();
 
+try {
+    $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10) NOT NULL DEFAULT 'en'");
+} catch (Throwable $e) {
+    // Ignore if DB permissions restrict alter operations.
+}
+
 $existing = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
 $existing->execute(['email' => $email]);
 if ($existing->fetch()) {
@@ -45,17 +51,19 @@ if ($existing->fetch()) {
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
-$insert = $pdo->prepare('INSERT INTO users (first_name, last_name, email, password_hash) VALUES (:first_name, :last_name, :email, :password_hash) RETURNING id');
+$insert = $pdo->prepare('INSERT INTO users (first_name, last_name, email, password_hash, preferred_language) VALUES (:first_name, :last_name, :email, :password_hash, :preferred_language) RETURNING id');
 $insert->execute([
     'first_name' => $firstName,
     'last_name' => $lastName,
     'email' => $email,
     'password_hash' => $hash,
+    'preferred_language' => 'en',
 ]);
 
 $userId = (int) $insert->fetchColumn();
 $fullName = $firstName . ' ' . $lastName;
 login_user($userId, $fullName);
+$_SESSION['preferred_language'] = 'en';
 
 set_flash('success', 'Compte cree avec succes.');
 redirect('../../pages/offres.php');

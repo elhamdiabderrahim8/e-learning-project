@@ -73,8 +73,6 @@ $success = get_flash('success');
                     <li><a href="cours.php">Mes Cours</a></li>
                     <li class="active"><a href="tache_a_fair.php">Mes Taches</a></li>
                     <li><a href="offres.php">Choisir une offre</a></li>
-                    <li><a href="calendrier.php">Calendrier</a></li>
-                    <li><a href="certificats.php">Certificats</a></li>
                     <li><a href="reclamation.php">Reclamation</a></li>
                     <li><a href="profil.php">Mon Profil</a></li>
                 </ul>

@@ -15,8 +15,6 @@
                     <li class="active"><a href="cours.php">Mes Cours</a></li>
                     <li><a href="tache_a_fair.php">Mes T&acirc;ches</a></li>
                     <li><a href="offres.php">Choisir une offre</a></li>
-                    <li><a href="calendrier.php">Calendrier</a></li>
-                    <li><a href="certificats.php">Certificats</a></li>
                     <li><a href="reclamation.php">R&eacute;clamation</a></li>
                     <li><a href="profil.php">Mon Profil</a></li>
                 </ul>
@@ -31,20 +29,23 @@
                         <p>Continuez votre progression l&agrave; o&ugrave; vous vous &ecirc;tes arr&ecirc;t&eacute;.</p>
                     </div>
                     <div class="search-bar">
-                        <input type="text" placeholder="Rechercher un cours...">
+                        <input type="text" id="course-search" placeholder="Rechercher un cours..." autocomplete="off" aria-label="Rechercher un cours">
                     </div>
                 </div>
             </header>
 
-            <div class="filters">
-                <span class="filter-tag active">Tous</span>
-                <span class="filter-tag">D&eacute;veloppement</span>
-                <span class="filter-tag">Design</span>
-                <span class="filter-tag">Business</span>
+            <div class="course-toolbar">
+                <div class="filters" id="course-filters">
+                    <button type="button" class="filter-tag active" data-category="all">Tous</button>
+                    <button type="button" class="filter-tag" data-category="developpement">D&eacute;veloppement</button>
+                    <button type="button" class="filter-tag" data-category="design">Design</button>
+                    <button type="button" class="filter-tag" data-category="business">Business</button>
+                </div>
+                <p class="results-count" id="course-results-count">3 cours trouv&eacute;s</p>
             </div>
 
-            <section class="courses-grid">
-                <div class="course-card">
+            <section class="courses-grid" id="courses-grid">
+                <div class="course-card" data-category="developpement">
                     <div class="course-image dev-bg">
                         <span class="badge">Programmation</span>
                     </div>
@@ -61,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="course-card">
+                <div class="course-card" data-category="design">
                     <div class="course-image design-bg">
                         <span class="badge">Design</span>
                     </div>
@@ -78,7 +79,7 @@
                     </div>
                 </div>
 
-                <div class="course-card">
+                <div class="course-card" data-category="business">
                     <div class="course-image agile-bg">
                         <span class="badge">Gestion</span>
                     </div>
@@ -95,7 +96,95 @@
                     </div>
                 </div>
             </section>
+
+            <p class="course-empty-state" id="course-empty-state" hidden>Aucun cours ne correspond &agrave; votre recherche.</p>
         </main>
     </div>
+
+    <script>
+    (function () {
+        var searchInput = document.getElementById('course-search');
+        var filters = document.getElementById('course-filters');
+        var cards = Array.prototype.slice.call(document.querySelectorAll('#courses-grid .course-card'));
+        var resultsCount = document.getElementById('course-results-count');
+        var emptyState = document.getElementById('course-empty-state');
+        var activeCategory = 'all';
+
+        function normalizeText(value) {
+            return (value || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '');
+        }
+
+        function buildCardText(card) {
+            var title = card.querySelector('h3');
+            var desc = card.querySelector('.course-body p');
+            var badge = card.querySelector('.badge');
+            var text = '';
+            text += title ? title.textContent + ' ' : '';
+            text += desc ? desc.textContent + ' ' : '';
+            text += badge ? badge.textContent : '';
+            return normalizeText(text);
+        }
+
+        function updateResultText(count) {
+            if (!resultsCount) {
+                return;
+            }
+            resultsCount.textContent = count > 1 ? count + ' cours trouves' : count + ' cours trouve';
+        }
+
+        function applyFilters() {
+            var query = normalizeText(searchInput ? searchInput.value : '');
+            var visibleCount = 0;
+
+            cards.forEach(function (card) {
+                var category = card.getAttribute('data-category') || 'all';
+                var categoryMatch = activeCategory === 'all' || category === activeCategory;
+                var queryMatch = query === '' || buildCardText(card).indexOf(query) !== -1;
+                var show = categoryMatch && queryMatch;
+
+                card.style.display = show ? '' : 'none';
+                if (show) {
+                    visibleCount++;
+                }
+            });
+
+            updateResultText(visibleCount);
+            if (emptyState) {
+                emptyState.hidden = visibleCount !== 0;
+            }
+        }
+
+        if (filters) {
+            filters.addEventListener('click', function (event) {
+                var button = event.target.closest('[data-category]');
+                if (!button) {
+                    return;
+                }
+
+                activeCategory = button.getAttribute('data-category') || 'all';
+                filters.querySelectorAll('.filter-tag').forEach(function (tag) {
+                    tag.classList.remove('active');
+                });
+                button.classList.add('active');
+                applyFilters();
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', applyFilters);
+            searchInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    searchInput.value = '';
+                    applyFilters();
+                }
+            });
+        }
+
+        applyFilters();
+    })();
+    </script>
 </body>
 </html>

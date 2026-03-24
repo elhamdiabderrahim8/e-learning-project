@@ -574,61 +574,6 @@ input[type="file"] {
     min-width: 120px;
 }
 
-/* Calendar */
-.calendar-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-}
-
-.calendar-header {
-    background: var(--surface-soft);
-    border-bottom: 1px solid var(--line);
-    text-align: center;
-    padding: 12px;
-    font-weight: 700;
-    color: #334155;
-}
-
-.day {
-    min-height: 96px;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding: 8px;
-    color: var(--text);
-    display: block;
-    text-decoration: none;
-}
-
-.day:hover {
-    background: #f8fafc;
-    text-decoration: none;
-}
-
-.day.empty {
-    background: #fbfdff;
-}
-
-.event {
-    margin-top: 6px;
-    padding: 4px 7px;
-    font-size: 0.72rem;
-    border-radius: 8px;
-    color: #fff;
-}
-
-.bg-turquoise { background: var(--brand); }
-
 /* Modal */
 .modal-overlay {
     position: fixed;
@@ -838,16 +783,6 @@ input[type="file"] {
     .add-task {
         grid-template-columns: 1fr;
         display: grid;
-    }
-
-    .calendar-header {
-        font-size: 0.78rem;
-        padding: 8px 4px;
-    }
-
-    .day {
-        min-height: 76px;
-        font-size: 0.88rem;
     }
 
     .btn-complete,

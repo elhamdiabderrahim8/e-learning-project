@@ -6,9 +6,29 @@ require_once __DIR__ . '/../backend/includes/bootstrap.php';
 require_auth();
 
 $pdo = db();
-$stmt = $pdo->prepare('SELECT id, first_name, last_name, email, created_at FROM users WHERE id = :user_id');
+try {
+    $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10) NOT NULL DEFAULT 'en'");
+} catch (Throwable $e) {
+    // Ignore if DB permissions restrict alter operations.
+}
+
+$stmt = $pdo->prepare('SELECT id, first_name, last_name, email, created_at, preferred_language FROM users WHERE id = :user_id');
 $stmt->execute(['user_id' => user_id()]);
 $user = $stmt->fetch();
+
+if (!$user) {
+    set_flash('error', 'Utilisateur introuvable.');
+    redirect('../backend/actions/logout.php');
+}
+
+$createdDate = new DateTime((string) $user['created_at']);
+$memberSince = $createdDate->format('d F Y');
+$initials = strtoupper(substr((string) $user['first_name'], 0, 1) . substr((string) $user['last_name'], 0, 1));
+$fullName = trim((string) $user['first_name'] . ' ' . (string) $user['last_name']);
+$preferredLanguage = (string) ($user['preferred_language'] ?? 'en');
+if (!in_array($preferredLanguage, ['en', 'fr'], true)) {
+    $preferredLanguage = 'en';
+}
 
 $error = get_flash('error');
 $success = get_flash('success');
@@ -35,8 +55,6 @@ $success = get_flash('success');
                     <li><a href="cours.php">Mes Cours</a></li>
                     <li><a href="tache_a_fair.php">Mes Taches</a></li>
                     <li><a href="offres.php">Choisir une offre</a></li>
-                    <li><a href="calendrier.php">Calendrier</a></li>
-                    <li><a href="certificats.php">Certificats</a></li>
                     <li><a href="reclamation.php">Reclamation</a></li>
                     <li class="active"><a href="profil.php">Mon Profil</a></li>
                 </ul>
@@ -50,46 +68,82 @@ $success = get_flash('success');
             </header>
 
             <?php if ($error): ?>
-                <p class="auth-message auth-error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                <div class="profile-alert profile-alert-error" role="alert"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
             <?php if ($success): ?>
-                <p class="auth-message auth-success"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
+                <div class="profile-alert profile-alert-success" role="status"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
 
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar"><?php echo htmlspecialchars(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1), ENT_QUOTES, 'UTF-8'); ?></div>
-                    <h2><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name'], ENT_QUOTES, 'UTF-8'); ?></h2>
-                </div>
+            <section class="profile-shell">
+                <article class="profile-hero profile-card">
+                    <div class="profile-avatar"><?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?></div>
+                    <div class="profile-hero-text">
+                        <h2><?php echo htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8'); ?></h2>
+                        <p><?php echo htmlspecialchars((string) $user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                    <div class="profile-badges">
+                        <span class="profile-chip">Compte actif</span>
+                        <span class="profile-chip profile-chip-soft">Membre depuis <?php echo htmlspecialchars($memberSince, ENT_QUOTES, 'UTF-8'); ?></span>
+                    </div>
+                </article>
 
-                <div class="profile-info">
-                    <div class="info-row">
-                        <span class="info-label">Prenom</span>
-                        <span class="info-value"><?php echo htmlspecialchars($user['first_name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                <article class="profile-details profile-card">
+                    <h3>Informations du compte</h3>
+                    <div class="profile-info">
+                        <div class="info-row">
+                            <span class="info-label">Prenom</span>
+                            <span class="info-value"><?php echo htmlspecialchars((string) $user['first_name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Nom</span>
+                            <span class="info-value"><?php echo htmlspecialchars((string) $user['last_name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Adresse email</span>
+                            <span class="info-value"><?php echo htmlspecialchars((string) $user['email'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Langue</span>
+                            <span class="info-value"><?php echo $preferredLanguage === 'fr' ? 'Francais' : 'English'; ?></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Membre depuis</span>
+                            <span class="info-value"><?php echo htmlspecialchars($memberSince, ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Nom</span>
-                        <span class="info-value"><?php echo htmlspecialchars($user['last_name'], ENT_QUOTES, 'UTF-8'); ?></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Email</span>
-                        <span class="info-value"><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Membre depuis</span>
-                        <span class="info-value">
-                            <?php 
-                            $createdDate = new DateTime($user['created_at']);
-                            echo htmlspecialchars($createdDate->format('d F Y'), ENT_QUOTES, 'UTF-8');
-                            ?>
-                        </span>
-                    </div>
-                </div>
 
-                <div class="profile-actions">
-                    <a href="../backend/actions/logout.php" class="btn-logout">Se deconnecter</a>
-                </div>
-            </div>
+                    <h3>Parametres</h3>
+                    <form class="profile-settings-form" action="../backend/actions/update_profile_settings.php" method="post">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="first_name">Prenom</label>
+                                <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars((string) $user['first_name'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="last_name">Nom</label>
+                                <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars((string) $user['last_name'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="preferred_language">Langue du site</label>
+                            <select id="preferred_language" name="preferred_language">
+                                <option value="en" <?php echo $preferredLanguage === 'en' ? 'selected' : ''; ?>>English (default)</option>
+                                <option value="fr" <?php echo $preferredLanguage === 'fr' ? 'selected' : ''; ?>>Francais</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-primary profile-settings-btn">Enregistrer les parametres</button>
+                    </form>
+
+                    <div class="profile-actions">
+                        <a href="../backend/actions/logout.php" class="btn-logout">Se deconnecter</a>
+                        <form action="../backend/actions/delete_profile.php" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer votre profil ? Cette action est definitive.');">
+                            <button type="submit" class="btn-danger">Supprimer le profil</button>
+                        </form>
+                    </div>
+                </article>
+            </section>
         </main>
     </div>
 
