@@ -15,17 +15,24 @@ $success = get_flash('success');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Smart Learning</title>
+    <title>Connexion - Enjah</title>
     <link rel="stylesheet" href="../style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="../media/favicon_io/favicon.ico">
+    <link rel="manifest" href="../media/favicon_io/site.webmanifest">
 </head>
 <body class="login-page">
 
     <div class="login-container">
         <div class="login-box">
             <div class="login-header">
-                <div class="logo">Smart Learning</div>
-                <h1>Bon retour !</h1>
-                <p>Veuillez vous connecter pour acceder a vos cours.</p>
+                <a href="../index.php" class="logo-link">
+                    <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
+                </a>
+                <h1>Connexion</h1>
+                <p>Connectez-vous pour acceder a votre espace d'apprentissage.</p>
             </div>
 
             <?php if ($error): ?>
@@ -55,5 +62,7 @@ $success = get_flash('success');
         </div>
     </div>
 
-</body>
+    </body>
 </html>
+
+

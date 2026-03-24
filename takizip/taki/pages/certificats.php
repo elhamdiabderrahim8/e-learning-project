@@ -6,3 +6,5 @@ require_once __DIR__ . '/../backend/includes/bootstrap.php';
 require_auth();
 
 include __DIR__ . '/../certificats.html';
+
+

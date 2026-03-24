@@ -19,12 +19,17 @@ $success = get_flash('success');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taches</title>
     <link rel="stylesheet" href="../style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="../media/favicon_io/favicon.ico">
+    <link rel="manifest" href="../media/favicon_io/site.webmanifest">
 </head>
 <body>
 
     <div class="dashboard-container">
         <aside class="sidebar">
-            <div class="logo">Smart Learning</div>
+            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
             <nav>
                 <ul>
                     <li><a href="cours.php">Mes Cours</a></li>
@@ -33,6 +38,7 @@ $success = get_flash('success');
                     <li><a href="calendrier.php">Calendrier</a></li>
                     <li><a href="certificats.php">Certificats</a></li>
                     <li><a href="reclamation.php">Reclamation</a></li>
+                    <li><a href="profil.php">Mon Profil</a></li>
                 </ul>
             </nav>
         </aside>
@@ -41,7 +47,6 @@ $success = get_flash('success');
             <header class="header">
                 <h1>Mes Taches a faire</h1>
                 <p>Suivez vos devoirs et projets en cours.</p>
-                <p><a href="../backend/actions/logout.php">Se deconnecter</a></p>
             </header>
 
             <?php if ($error): ?>
@@ -93,5 +98,7 @@ $success = get_flash('success');
         </main>
     </div>
 
-</body>
+    </body>
 </html>
+
+

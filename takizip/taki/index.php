@@ -8,4 +8,4 @@ if (is_authenticated()) {
     redirect('pages/cours.php');
 }
 
-redirect('pages/login.php');
+require __DIR__ . '/home.html';
