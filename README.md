@@ -1,103 +1,55 @@
-# e-learning-project
+# Enjah - E-Learning Platform
 
-Native PHP learning platform using XAMPP + MySQL (or MariaDB).
+A simple PHP learning platform using XAMPP + MySQL.
 
-## Stack
+## Quick Start
 
-- PHP (no framework)
-- MySQL / MariaDB (XAMPP)
-- HTML/CSS/JS templates
+1. **Copy environment file:**
+   ```
+   takizip/taki/database/.env.example → takizip/taki/database/.env
+   ```
 
-## Project Structure
+2. **Start MySQL:** Open XAMPP Control Panel and start MySQL
 
-- `takizip/taki` : app root
-- `takizip/taki/pages` : page routes (`*.php`)
-- `takizip/taki/backend/actions` : form and feature actions
-- `takizip/taki/backend/includes` : auth/session/helpers/bootstrap
-- `takizip/taki/database/database.php` : PDO connection (MySQL)
-- `takizip/taki/database/schema.sql` : MySQL schema
-- `takizip/taki/database/seed.sql` : optional demo data
+3. **Run setup script:**
+   ```powershell
+   cd c:\Users\YourUsername\e-learning-project
+   powershell -ExecutionPolicy Bypass -File takizip\taki\database\setup_mysql.ps1
+   ```
 
-## Main Features
+4. **Start the app:**
+   ```
+   cd takizip/taki
+   php -S localhost:8000
+   ```
 
-- Authentication (register/login/logout)
-- Protected pages with session checks
-- Tasks board with statuses (`a_faire`, `en_cours`, `terminee`)
-- Reclamation form with multiple file uploads
-- Profile settings (name, language, account deletion)
+5. **Open in browser:** http://localhost:8000
 
-## XAMPP Local Setup
+## Features
 
-1. Start `Apache` and `MySQL` in XAMPP Control Panel.
-2. Create database (example: `elearning`) from phpMyAdmin.
-3. Create `.env` from the example and configure DB credentials:
-	- copy `takizip/taki/database/.env.example` -> `takizip/taki/database/.env`
+- User login & register
+- Task management board (3 columns)
+- Course content
+- Support reclamation form
+- User profile & settings
 
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_NAME=elearning
-DB_USER=root
-DB_PASS=
-DB_CHARSET=utf8mb4
+## Folder Structure
+
+```
+takizip/taki/
+├── pages/              (web pages)
+├── backend/
+│   ├── actions/        (form processing)
+│   ├── includes/       (auth, helpers)
+│   └── uploads/        (file uploads)
+└── database/           (MySQL setup, schema)
 ```
 
-4. Import schema in phpMyAdmin SQL tab:
-	- `takizip/taki/database/schema.sql`
-5. Optional: import seed data:
-	- `takizip/taki/database/seed.sql`
+## Tech Stack
 
-### One-click setup (Windows PowerShell)
-
-From repository root:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\takizip\taki\database\setup_mysql.ps1
-```
-
-Options:
-
-- Skip seed import:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\takizip\taki\database\setup_mysql.ps1 -SkipSeed
-```
-
-- Custom mysql.exe path:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\takizip\taki\database\setup_mysql.ps1 -MysqlExe "C:\xampp\mysql\bin\mysql.exe"
-```
-
-## Run App
-
-From repository root:
-
-```bash
-cd takizip/taki
-php -S localhost:8000
-```
-
-Open:
-
-- App: `http://localhost:8000`
-- Health check: `http://localhost:8000/pages/health.php`
-
-## Backend Test Checklist
-
-Run these checks from repository root after setup:
-
-1. Syntax check all PHP files:
-
-```powershell
-Get-ChildItem -Path .\takizip\taki -Recurse -Filter *.php | ForEach-Object { & 'C:\xampp\php\php.exe' -l $_.FullName }
-```
-
-2. Start server:
-
-```powershell
-& 'C:\xampp\php\php.exe' -S localhost:8000 -t .\takizip\taki
+- PHP (vanilla, no framework)
+- MySQL / MariaDB
+- HTML + CSS
 ```
 
 3. In another terminal, verify health endpoint:

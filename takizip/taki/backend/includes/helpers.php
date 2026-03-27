@@ -1,20 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
-function redirect(string $path): void
+function redirect($path)
 {
-    header('Location: ' . $path);
+    header('Location: ' . (string) $path);
     exit;
 }
 
-function set_flash(string $key, string $message): void
+function set_flash($key, $message)
 {
-    $_SESSION['flash'][$key] = $message;
+    $_SESSION['flash'][(string) $key] = (string) $message;
 }
 
-function get_flash(string $key): ?string
+function get_flash($key)
 {
+    $key = (string) $key;
     if (!isset($_SESSION['flash'][$key])) {
         return null;
     }
@@ -22,17 +21,22 @@ function get_flash(string $key): ?string
     $message = $_SESSION['flash'][$key];
     unset($_SESSION['flash'][$key]);
 
-    return $message;
+    return (string) $message;
 }
 
-function current_language(): string
+function current_language()
 {
     $lang = (string) ($_SESSION['preferred_language'] ?? 'en');
-    return in_array($lang, ['en', 'fr'], true) ? $lang : 'en';
+    if ($lang !== 'en' && $lang !== 'fr') {
+        return 'en';
+    }
+
+    return $lang;
 }
 
-function translate_output_to_english(string $content): string
+function translate_output_to_english($content)
 {
+    $content = (string) $content;
     static $map = null;
 
     if ($map === null) {

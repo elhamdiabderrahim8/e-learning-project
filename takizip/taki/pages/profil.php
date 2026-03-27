@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../backend/includes/bootstrap.php';
 require_auth();
 
@@ -21,13 +19,22 @@ if (!$user) {
     redirect('../backend/actions/logout.php');
 }
 
-$createdDate = new DateTime((string) $user['created_at']);
-$memberSince = $createdDate->format('d F Y');
+$createdAt = (string) $user['created_at'];
+$memberSince = date('d/m/Y', strtotime($createdAt));
 $initials = strtoupper(substr((string) $user['first_name'], 0, 1) . substr((string) $user['last_name'], 0, 1));
 $fullName = trim((string) $user['first_name'] . ' ' . (string) $user['last_name']);
 $preferredLanguage = (string) ($user['preferred_language'] ?? 'en');
 if (!in_array($preferredLanguage, ['en', 'fr'], true)) {
     $preferredLanguage = 'en';
+}
+
+$languageLabel = 'English';
+$selectedEn = 'selected';
+$selectedFr = '';
+if ($preferredLanguage === 'fr') {
+    $languageLabel = 'Francais';
+    $selectedEn = '';
+    $selectedFr = 'selected';
 }
 
 $error = get_flash('error');
@@ -68,10 +75,10 @@ $success = get_flash('success');
             </header>
 
             <?php if ($error): ?>
-                <div class="profile-alert profile-alert-error" role="alert"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="profile-alert profile-alert-error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
             <?php if ($success): ?>
-                <div class="profile-alert profile-alert-success" role="status"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="profile-alert profile-alert-success"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
 
             <section class="profile-shell">
@@ -104,7 +111,7 @@ $success = get_flash('success');
                         </div>
                         <div class="info-row">
                             <span class="info-label">Langue</span>
-                            <span class="info-value"><?php echo $preferredLanguage === 'fr' ? 'Francais' : 'English'; ?></span>
+                            <span class="info-value"><?php echo $languageLabel; ?></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Membre depuis</span>
@@ -128,18 +135,18 @@ $success = get_flash('success');
                         <div class="input-group">
                             <label for="preferred_language">Langue du site</label>
                             <select id="preferred_language" name="preferred_language">
-                                <option value="en" <?php echo $preferredLanguage === 'en' ? 'selected' : ''; ?>>English (default)</option>
-                                <option value="fr" <?php echo $preferredLanguage === 'fr' ? 'selected' : ''; ?>>Francais</option>
+                                <option value="en" <?php echo $selectedEn; ?>>English (default)</option>
+                                <option value="fr" <?php echo $selectedFr; ?>>Francais</option>
                             </select>
                         </div>
 
-                        <button type="submit" class="btn-primary profile-settings-btn">Enregistrer les parametres</button>
+                        <input type="submit" class="btn-primary profile-settings-btn" value="Enregistrer les parametres">
                     </form>
 
                     <div class="profile-actions">
                         <a href="../backend/actions/logout.php" class="btn-logout">Se deconnecter</a>
-                        <form action="../backend/actions/delete_profile.php" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer votre profil ? Cette action est definitive.');">
-                            <button type="submit" class="btn-danger">Supprimer le profil</button>
+                        <form action="../backend/actions/delete_profile.php" method="post" onsubmit="var answer = prompt('Tapez OUI pour confirmer la suppression du profil', ''); if (answer == null) { return false; } answer = answer.trim().toUpperCase(); if (answer != 'OUI') { alert('Suppression annulee.'); return false; } return true;">
+                            <input type="submit" class="btn-danger" value="Supprimer le profil">
                         </form>
                     </div>
                 </article>

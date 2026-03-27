@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../backend/includes/bootstrap.php';
 
 if (is_authenticated()) {
@@ -53,7 +51,7 @@ $success = get_flash('success');
                     <input type="password" id="password" name="password" placeholder="********" required>
                 </div>
 
-                <button type="submit" class="btn-login">Se connecter</button>
+                <input type="submit" class="btn-login" value="Se connecter">
 
                 <div class="login-footer">
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a>

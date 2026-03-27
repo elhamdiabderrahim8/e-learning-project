@@ -52,10 +52,10 @@
 
             <div class="course-toolbar">
                 <div class="filters" id="course-filters">
-                    <button type="button" class="filter-tag active" data-category="all">Tous</button>
-                    <button type="button" class="filter-tag" data-category="developpement">D&eacute;veloppement</button>
-                    <button type="button" class="filter-tag" data-category="design">Design</button>
-                    <button type="button" class="filter-tag" data-category="business">Business</button>
+                    <input type="button" class="filter-tag active" value="Tous">
+                    <input type="button" class="filter-tag" value="D&eacute;veloppement">
+                    <input type="button" class="filter-tag" value="Design">
+                    <input type="button" class="filter-tag" value="Business">
                 </div>
                 <div class="course-toolbar-right">
                     <p class="results-count" id="course-results-count">3 cours trouv&eacute;s</p>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="course-footer">
                             <span>75% Compl&eacute;t&eacute;</span>
-                            <button class="btn-primary">Continuer</button>
+                            <input type="button" class="btn-primary" value="Continuer">
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="course-footer">
                             <span>30% Compl&eacute;t&eacute;</span>
-                            <button class="btn-primary">Continuer</button>
+                            <input type="button" class="btn-primary" value="Continuer">
                         </div>
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                         </div>
                         <div class="course-footer">
                             <span>10% Compl&eacute;t&eacute;</span>
-                            <button class="btn-primary">Continuer</button>
+                            <input type="button" class="btn-primary" value="Continuer">
                         </div>
                     </div>
                 </div>
@@ -146,138 +146,5 @@
         </main>
     </div>
 
-    <script>
-    (function () {
-        var searchInput = document.getElementById('course-search');
-        var filters = document.getElementById('course-filters');
-        var sortSelect = document.getElementById('course-sort');
-        var grid = document.getElementById('courses-grid');
-        var cards = Array.prototype.slice.call(document.querySelectorAll('#courses-grid .course-card'));
-        var resultsCount = document.getElementById('course-results-count');
-        var emptyState = document.getElementById('course-empty-state');
-        var activeCategory = 'all';
-
-        function normalizeText(value) {
-            return (value || '')
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '');
-        }
-
-        function buildCardText(card) {
-            var title = card.querySelector('h3');
-            var desc = card.querySelector('.course-body p');
-            var badge = card.querySelector('.badge');
-            var meta = card.querySelector('.course-meta');
-            var text = '';
-            text += title ? title.textContent + ' ' : '';
-            text += desc ? desc.textContent + ' ' : '';
-            text += badge ? badge.textContent + ' ' : '';
-            text += meta ? meta.textContent : '';
-            return normalizeText(text);
-        }
-
-        function updateResultText(count) {
-            if (!resultsCount) {
-                return;
-            }
-            resultsCount.textContent = count > 1 ? count + ' cours trouves' : count + ' cours trouve';
-        }
-
-        function sortCards(items) {
-            var sortMode = sortSelect ? sortSelect.value : 'default';
-            if (sortMode === 'default') {
-                return items;
-            }
-
-            return items.slice().sort(function (a, b) {
-                var aProgress = parseInt(a.getAttribute('data-progress') || '0', 10);
-                var bProgress = parseInt(b.getAttribute('data-progress') || '0', 10);
-                var aTitle = normalizeText(a.getAttribute('data-title') || '');
-                var bTitle = normalizeText(b.getAttribute('data-title') || '');
-
-                if (sortMode === 'progress_desc') {
-                    return bProgress - aProgress;
-                }
-
-                if (sortMode === 'progress_asc') {
-                    return aProgress - bProgress;
-                }
-
-                if (sortMode === 'title_asc') {
-                    return aTitle.localeCompare(bTitle);
-                }
-
-                return 0;
-            });
-        }
-
-        function applyFilters() {
-            var query = normalizeText(searchInput ? searchInput.value : '');
-            var visibleCards = [];
-
-            cards.forEach(function (card) {
-                var category = card.getAttribute('data-category') || 'all';
-                var categoryMatch = activeCategory === 'all' || category === activeCategory;
-                var queryMatch = query === '' || buildCardText(card).indexOf(query) !== -1;
-                var show = categoryMatch && queryMatch;
-
-                if (show) {
-                    visibleCards.push(card);
-                }
-            });
-
-            cards.forEach(function (card) {
-                card.style.display = 'none';
-            });
-
-            sortCards(visibleCards).forEach(function (card) {
-                card.style.display = '';
-                if (grid) {
-                    grid.appendChild(card);
-                }
-            });
-
-            var visibleCount = visibleCards.length;
-            updateResultText(visibleCount);
-
-            if (emptyState) {
-                emptyState.hidden = visibleCount !== 0;
-            }
-        }
-
-        if (filters) {
-            filters.addEventListener('click', function (event) {
-                var button = event.target.closest('[data-category]');
-                if (!button) {
-                    return;
-                }
-
-                activeCategory = button.getAttribute('data-category') || 'all';
-                filters.querySelectorAll('.filter-tag').forEach(function (tag) {
-                    tag.classList.remove('active');
-                });
-                button.classList.add('active');
-                applyFilters();
-            });
-        }
-
-        if (searchInput) {
-            searchInput.addEventListener('input', applyFilters);
-            searchInput.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') {
-                    searchInput.value = '';
-                    applyFilters();
-                }
-            });
-        }
-
-        if (sortSelect) {
-            sortSelect.addEventListener('change', applyFilters);
-        }
-
-        applyFilters();
-    })();
-    </script>
 </body>
 </html>

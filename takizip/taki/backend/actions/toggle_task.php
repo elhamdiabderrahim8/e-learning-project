@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../includes/bootstrap.php';
 
 require_auth();
@@ -31,7 +29,8 @@ if (!$task) {
     redirect('../../pages/tache_a_fair.php');
 }
 
-$nextState = ((int) $task['is_completed']) === 1 ? 0 : 1;
+$isCompletedNow = ((int) $task['is_completed']) === 1;
+$nextState = $isCompletedNow ? 0 : 1;
 $nextStatus = $nextState === 1 ? 'terminee' : 'en_cours';
 
 $update = $pdo->prepare('UPDATE tasks SET is_completed = :is_completed, status = :status WHERE id = :id AND user_id = :user_id');

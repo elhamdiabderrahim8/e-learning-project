@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../includes/bootstrap.php';
 
 require_auth();
@@ -19,8 +17,7 @@ if ($firstName === '' || $lastName === '') {
     redirect('../../pages/profil.php');
 }
 
-$allowedLanguages = ['en', 'fr'];
-if (!in_array($language, $allowedLanguages, true)) {
+if ($language !== 'en' && $language !== 'fr') {
     $language = 'en';
 }
 

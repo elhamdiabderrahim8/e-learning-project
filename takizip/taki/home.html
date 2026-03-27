@@ -1,193 +1,81 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Enjah - Plateforme d'apprentissage</title>
-	<meta name="description" content="Enjah est une plateforme moderne pour apprendre, progresser et reussir.">
-	<link rel="apple-touch-icon" sizes="180x180" href="media/favicon_io/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="media/favicon_io/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
-	<link rel="shortcut icon" href="media/favicon_io/favicon.ico">
-	<link rel="manifest" href="media/favicon_io/site.webmanifest">
-	<link rel="stylesheet" href="landing.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enjah - Plateforme d'apprentissage</title>
+    <meta name="description" content="Enjah est une plateforme simple pour apprendre et progresser.">
+    <link rel="apple-touch-icon" sizes="180x180" href="media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="media/favicon_io/favicon.ico">
+    <link rel="manifest" href="media/favicon_io/site.webmanifest">
+    <link rel="stylesheet" href="landing.css">
 </head>
 <body>
-	<div class="bg-shape bg-shape-one" aria-hidden="true"></div>
-	<div class="bg-shape bg-shape-two" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand" href="index.php">
+            <img src="media/logo.jpg" alt="Logo Enjah">
+            <span>Enjah</span>
+        </a>
 
-	<header class="topbar">
-		<a class="brand" href="index.php" aria-label="Accueil Enjah">
-			<img src="media/logo.jpg" alt="Logo Enjah">
-			<span>Enjah</span>
-		</a>
+        <nav class="nav-links">
+            <a href="#about">A propos</a>
+            <a href="#steps">Etapes</a>
+            <a href="#start">Commencer</a>
+        </nav>
 
-		<nav class="nav-links" aria-label="Navigation principale">
-			<a href="#parcours">Parcours</a>
-			<a href="#methode">Methode</a>
-			<a href="#avis">Avis</a>
-		</nav>
+        <div class="top-actions">
+            <a href="pages/login.php" class="btn btn-light">Connexion</a>
+            <a href="pages/registre.php" class="btn btn-main">Inscription</a>
+        </div>
+    </header>
 
-		<nav class="top-actions">
-			<a href="pages/login.php" class="btn btn-ghost">Connexion</a>
-			<a href="pages/registre.php" class="btn btn-solid">Essai gratuit</a>
-		</nav>
-	</header>
+    <main class="page">
+        <section class="card hero">
+            <p class="hero-tag">Plateforme e-learning simple</p>
+            <h1>Bienvenue sur Enjah</h1>
+            <p>
+                Une plateforme simple pour apprendre chaque jour, suivre vos cours et organiser vos taches.
+            </p>
+            <ul class="hero-mini-list">
+                <li>Cours faciles a suivre</li>
+                <li>Suivi de vos progres</li>
+                <li>Support rapide</li>
+            </ul>
+            <div class="hero-actions">
+                <a href="pages/registre.php" class="btn btn-main">Commencer</a>
+                <a href="pages/login.php" class="btn btn-light">J'ai deja un compte</a>
+            </div>
+        </section>
 
-	<main class="layout">
-		<section class="hero reveal">
-			<div class="hero-copy">
-				<p class="eyebrow">Plateforme E-learning</p>
-				<h1>Apprends plus vite avec une experience <em>simple, claire et motivante</em>.</h1>
-				<p class="lead">
-					Enjah combine cours, exercices, taches et suivi des progres dans un espace unique. Tu te concentres sur l'apprentissage, pas sur la complexite.
-				</p>
+        <section class="card" id="about">
+            <h2>Pourquoi Enjah ?</h2>
+            <ul class="simple-list">
+                <li>Interface claire et facile a utiliser</li>
+                <li>Cours, taches et profil dans le meme espace</li>
+                <li>Support rapide en cas de probleme</li>
+            </ul>
+        </section>
 
-				<div class="hero-cta">
-					<a href="pages/registre.php" class="btn btn-xl btn-solid">Commencer maintenant</a>
-					<a href="pages/login.php" class="btn btn-xl btn-outline">J'ai deja un compte</a>
-				</div>
+        <section class="card" id="steps">
+            <h2>Comment ca marche</h2>
+            <ol class="simple-list">
+                <li>Creer un compte</li>
+                <li>Choisir vos cours et vos objectifs</li>
+                <li>Avancer un peu chaque semaine</li>
+            </ol>
+        </section>
 
-				<div class="inline-metrics">
-					<article>
-						<strong data-count="12000">12 000+</strong>
-						<span>Apprenants</span>
-					</article>
-					<article>
-						<strong data-count="95">95%</strong>
-						<span>Taux de satisfaction</span>
-					</article>
-					<article>
-						<strong data-count="320">320+</strong>
-						<span>Heures de contenu</span>
-					</article>
-				</div>
-			</div>
+        <section class="card" id="start">
+            <h2>Prets a commencer ?</h2>
+            <p>Inscription rapide en 2 minutes.</p>
+            <a href="pages/registre.php" class="btn btn-main">Creer mon compte</a>
+        </section>
+    </main>
 
-			<aside class="hero-panel" aria-label="Apercu de progression">
-				<div class="panel-head">
-					<img src="media/logo.jpg" alt="Logo Enjah">
-					<div>
-						<strong>Tableau de progression</strong>
-						<p>Mise a jour en temps reel</p>
-					</div>
-				</div>
-
-				<div class="progress-item">
-					<div class="progress-top">
-						<span>Developpement Web</span>
-						<span>78%</span>
-					</div>
-					<div class="bar"><span style="width:78%"></span></div>
-				</div>
-
-				<div class="progress-item">
-					<div class="progress-top">
-						<span>UX Design</span>
-						<span>51%</span>
-					</div>
-					<div class="bar"><span style="width:51%"></span></div>
-				</div>
-
-				<div class="progress-item">
-					<div class="progress-top">
-						<span>Gestion Agile</span>
-						<span>34%</span>
-					</div>
-					<div class="bar"><span style="width:34%"></span></div>
-				</div>
-
-				<a class="panel-link" href="pages/cours.php">Voir mes cours -></a>
-			</aside>
-		</section>
-
-		<section class="tracks reveal" id="parcours">
-			<header>
-				<p class="section-label">Parcours populaires</p>
-				<h2>Choisis une voie claire et passe a l'action</h2>
-			</header>
-
-			<div class="track-grid">
-				<article class="track-card">
-					<h3>Dev Full-Stack</h3>
-					<p>HTML, CSS, JS, PHP et bases de donnees avec projets concrets.</p>
-					<span>8 modules</span>
-				</article>
-				<article class="track-card">
-					<h3>UI/UX Product Design</h3>
-					<p>Methodes design, wireframes, tests utilisateurs et portfolio.</p>
-					<span>6 modules</span>
-				</article>
-				<article class="track-card">
-					<h3>Cloud & Microservices</h3>
-					<p>Architecture moderne, API, monitoring et bonnes pratiques pro.</p>
-					<span>7 modules</span>
-				</article>
-			</div>
-		</section>
-
-		<section class="steps reveal" id="methode">
-			<header>
-				<p class="section-label">Methode Enjah</p>
-				<h2>Un parcours simple en trois etapes</h2>
-			</header>
-
-			<div class="step-grid">
-				<article>
-					<span>01</span>
-					<h3>Planifier</h3>
-					<p>Selectionne ton parcours et fixe tes objectifs hebdomadaires.</p>
-				</article>
-				<article>
-					<span>02</span>
-					<h3>Apprendre</h3>
-					<p>Suivre les chapitres, pratiques guidées et quiz progressifs.</p>
-				</article>
-				<article>
-					<span>03</span>
-					<h3>Valider</h3>
-					<p>Finalise ton projet, obtient ton certificat et partage ton profil.</p>
-				</article>
-			</div>
-		</section>
-
-		<section class="testimonials reveal" id="avis">
-			<header>
-				<p class="section-label">Retours d'apprenants</p>
-				<h2>Une experience utile, claire et motivante</h2>
-			</header>
-
-			<div class="testimonial-grid">
-				<article>
-					<p>"Enfin une plateforme claire. J'ai gagne en rigueur et en confiance en 2 mois."</p>
-					<strong>Imane, Dev Junior</strong>
-				</article>
-				<article>
-					<p>"Les taches et le suivi de progression m'ont aide a garder un vrai rythme."</p>
-					<strong>Youssef, Etudiant</strong>
-				</article>
-				<article>
-					<p>"Le format est propre, pas surcharge. Tu sais toujours quoi faire ensuite."</p>
-					<strong>Salma, Product Designer</strong>
-				</article>
-			</div>
-		</section>
-
-		<section class="cta reveal">
-			<div>
-				<h2>Pret a transformer ton apprentissage ?</h2>
-				<p>Creer ton compte prend moins de 2 minutes.</p>
-			</div>
-			<a href="pages/registre.php" class="btn btn-solid btn-xl">Demarrer avec Enjah</a>
-		</section>
-	</main>
-
-	<footer class="footer">
-		<p>© 2026 Enjah. Tous droits reserves.</p>
-	</footer>
-
-	<script src="landing.js"></script>
-	</body>
+    <footer class="footer">
+        <p>© 2026 Enjah - Tous droits reserves.</p>
+    </footer>
+</body>
 </html>
-
-

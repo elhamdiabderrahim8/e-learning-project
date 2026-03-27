@@ -1,20 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/helpers.php';
 
-function user_id(): ?int
+function user_id()
 {
-    return isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
+    if (!isset($_SESSION['user_id'])) {
+        return null;
+    }
+
+    return (int) $_SESSION['user_id'];
 }
 
-function is_authenticated(): bool
+function is_authenticated()
 {
     return user_id() !== null;
 }
 
-function require_auth(): void
+function require_auth()
 {
     if (!is_authenticated()) {
         set_flash('error', 'Veuillez vous connecter pour continuer.');
@@ -22,14 +24,14 @@ function require_auth(): void
     }
 }
 
-function login_user(int $id, string $fullName): void
+function login_user($id, $fullName)
 {
     session_regenerate_id(true);
-    $_SESSION['user_id'] = $id;
-    $_SESSION['full_name'] = $fullName;
+    $_SESSION['user_id'] = (int) $id;
+    $_SESSION['full_name'] = (string) $fullName;
 }
 
-function logout_user(): void
+function logout_user()
 {
     $_SESSION = [];
 

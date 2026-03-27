@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../includes/bootstrap.php';
 
 require_auth();
@@ -18,8 +16,6 @@ if ($taskId <= 0) {
     redirect('../../pages/tache_a_fair.php');
 }
 
-$allowedStatuses = ['a_faire', 'en_cours', 'terminee'];
-
 $pdo = db();
 
 $check = $pdo->prepare('SELECT id, status, is_completed FROM tasks WHERE id = :id AND user_id = :user_id LIMIT 1');
@@ -35,8 +31,12 @@ if (!$task) {
 }
 
 $currentStatus = (string) ($task['status'] ?? '');
-if (!in_array($currentStatus, $allowedStatuses, true)) {
-    $currentStatus = ((int) ($task['is_completed'] ?? 0)) === 1 ? 'terminee' : 'a_faire';
+if ($currentStatus !== 'a_faire' && $currentStatus !== 'en_cours' && $currentStatus !== 'terminee') {
+    if ((int) ($task['is_completed'] ?? 0) === 1) {
+        $currentStatus = 'terminee';
+    } else {
+        $currentStatus = 'a_faire';
+    }
 }
 
 if ($currentStatus === 'terminee') {
@@ -54,7 +54,11 @@ if ($currentStatus === 'terminee') {
     redirect('../../pages/tache_a_fair.php');
 }
 
-$nextStatus = $currentStatus === 'a_faire' ? 'en_cours' : 'terminee';
+$nextStatus = 'terminee';
+if ($currentStatus === 'a_faire') {
+    $nextStatus = 'en_cours';
+}
+
 $isCompletedFlag = $nextStatus === 'terminee' ? 1 : 0;
 
 $update = $pdo->prepare('UPDATE tasks SET status = :status, is_completed = :is_completed WHERE id = :id AND user_id = :user_id');

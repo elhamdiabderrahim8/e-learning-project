@@ -1,203 +1,51 @@
-# E-Learning Project - Complete Team Setup & Testing Guide
-
-This guide is for you and your teammates to set up and test the project locally.
-
----
+# Setup Guide
 
 ## Prerequisites
 
-Before starting, make sure you have:
+- XAMPP (https://www.apachefriends.org)
+- Git (https://git-scm.com)
+- Any browser
 
-1. **XAMPP installed** (includes PHP, MySQL/MariaDB, Apache)
-   - Download from: https://www.apachefriends.org
-   - Default install path: C:\xampp
+## Installation
 
-2. **Git installed** (to clone/pull code)
-   - Download from: https://git-scm.com
-
-3. **Any web browser** (Chrome, Firefox, Edge)
-
----
-
-## Step 1: Get the Latest Code
-
-### For the first time:
+### 1. Clone the project
 ```powershell
 git clone <your-repo-url> e-learning-project
 cd e-learning-project
 ```
 
-### For subsequent updates:
+### 2. Create .env file
+Copy `takizip/taki/database/.env.example` to `takizip/taki/database/.env`
+
+Edit `.env` if your MySQL has a password:
+```
+DB_PASS=your_password_here
+```
+
+### 3. Start MySQL
+Open XAMPP Control Panel and click **Start** next to MySQL (wait for green)
+
+### 4. Run setup
 ```powershell
-cd c:\Users\YourUsername\e-learning-project
-git pull origin main
+powershell -ExecutionPolicy Bypass -File takizip\taki\database\setup_mysql.ps1
 ```
 
----
-
-## Step 2: Create Your Local Environment File
-
-### Do once per machine:
-
-1. Go to: `takizip/taki/database/`
-2. Copy `.env.example` and paste in same folder
-3. Rename the new copy to `.env` (exactly `.env`, not `.env.txt`)
-4. Open `.env` and verify values:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_NAME=elearning
-DB_USER=root
-DB_PASS=
-DB_CHARSET=utf8mb4
-```
-
-**If your MySQL has a password**, update `DB_PASS`:
-```env
-DB_PASS=your_mysql_password
-```
-tafha 7kayt ili password
-
-**Important Windows Note:** In File Explorer, enable View → Show → File name extensions so you can see real file names.
-
----
-
-## Step 3: Start MySQL & Run Database Setup
-
-### Step 3A: Start MySQL
-
-1. Open XAMPP Control Panel
-2. Click **Start** next to MySQL
-3. Wait for it to turn green
-4. Leave it running
-
-### Step 3B: Run Setup Script
-
-1. Open PowerShell
-2. Go to project root:
+### 5. Start the app
 ```powershell
-cd C:\Users\YourUsername\e-learning-project
+cd takizip\taki
+php -S localhost:8000
 ```
 
-3. Run setup script:
-```powershell
-powershell -ExecutionPolicy Bypass -File .\takizip\taki\database\setup_mysql.ps1
-```
+Open: http://localhost:8000
 
-4. Expected output:
-```
-Using mysql client: C:\xampp\mysql\bin\mysql.exe
-Target DB: elearning on 127.0.0.1:3306
-Seed imported successfully.
-MySQL setup completed successfully.
-```
+## Troubleshooting
 
-**If you get ERROR 2002:**
-- MySQL is not running. Go back and start MySQL in XAMPP
-
-**If script succeeds but says "Failed to import schema.sql":**
-- Check DB_HOST/DB_PORT/DB_USER/DB_PASS in `.env` match your MySQL config
-
----
-
-## Step 4: View Database Tables (Optional But Recommended)
-
-### Option A: phpMyAdmin (GUI - easiest)
-
-1. Start Apache in XAMPP
-2. Open browser: http://localhost/phpmyadmin
-3. In left sidebar, click database: **elearning**
-4. View tables: users, tasks, reclamations, courses, enrollments, certificates
-
-### Option B: Command Line
-
-```powershell
-& 'C:\xampp\mysql\bin\mysql.exe' -h 127.0.0.1 -P 3306 -u root -e "USE elearning; SHOW TABLES; SELECT COUNT(*) FROM users; SELECT COUNT(*) FROM tasks; SELECT COUNT(*) FROM courses;"
-```
-
----
-
-## Step 5: Start the PHP Web Server
-
-1. Open PowerShell at project root:
-```powershell
-cd C:\Users\YourUsername\e-learning-project
-```
-
-2. Run PHP server:
-```powershell
-& 'C:\xampp\php\php.exe' -S localhost:8000 -t .\takizip\taki
-```
-
-3. Expected output:
-```
-[TIME] PHP 8.2.12 Development Server (http://localhost:8000) started
-```
-
-4. **Keep this PowerShell window open** while testing. If you close it, the server stops.
-
-**If port 8000 is busy**, use 8001 instead:
-```powershell
-& 'C:\xampp\php\php.exe' -S localhost:8001 -t .\takizip\taki
-```
-
----
-
-## Step 6: Verify Backend Health
-
-1. Open browser: http://localhost:8000/pages/health.php
-2. You should see JSON response:
-```json
-{
-    "status": "success",
-    "message": "Database connection successful.",
-    "details": {
-        "driver": "mysql",
-        "current_time": "2026-03-24 18:25:04",
-        "db_version": "10.4.32-MariaDB"
-    }
-}
-```
-
-**If you see status: error:**
-- Check MySQL is running
-- Check .env DB_HOST/DB_PORT/DB_USER/DB_PASS are correct
-- Run setup script again
-
-**If you cannot connect to localhost:**
-- Check PHP server terminal is still running (did not close it)
-- If closed, restart it with the command from Step 5
-
----
-
-## Step 7: Manual Functional Testing
-
-### Test 1: Register a New Account
-
-1. Open: http://localhost:8000/pages/registre.php
-2. Fill form:
-   - First name: John
-   - Last name: Doe
-   - Email: john@example.com
-   - Password: TestPassword123
-   - Confirm password: TestPassword123
-3. Click Sign up
-4. Expected: Redirects to offers page and shows "Account created successfully"
-
-### Test 2: Login
-
-1. Open: http://localhost:8000/pages/login.php
-2. Email: john@example.com
-3. Password: TestPassword123
-4. Click Login
-5. Expected: Redirects to courses page, shows "Login successful"
-
-### Test 3: Create Task
-
-1. Go to: http://localhost:8000/pages/tache_a_fair.php
-2. Fill task form:
+| Problem | Solution |
+|---------|----------|
+| ERROR 2002 | Start MySQL in XAMPP Control Panel |
+| Port 8000 in use | Use `php -S localhost:8001` instead |
+| Cannot connect | Check MySQL is running + .env values are correct |
+| File extensions hidden | Windows: View → Show → File name extensions |
    - Title: Learn PHP
    - Priority: High
    - Due date: 2026-12-31

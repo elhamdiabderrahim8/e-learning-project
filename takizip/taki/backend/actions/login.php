@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../includes/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -28,9 +26,13 @@ if (!$user || !password_verify($password, $user['password_hash'])) {
 
 $fullName = trim($user['first_name'] . ' ' . $user['last_name']);
 login_user((int) $user['id'], $fullName);
-$_SESSION['preferred_language'] = in_array((string) ($user['preferred_language'] ?? 'en'), ['en', 'fr'], true)
-    ? (string) $user['preferred_language']
-    : 'en';
+
+$preferredLanguage = (string) ($user['preferred_language'] ?? 'en');
+if ($preferredLanguage !== 'fr' && $preferredLanguage !== 'en') {
+    $preferredLanguage = 'en';
+}
+
+$_SESSION['preferred_language'] = $preferredLanguage;
 $_SESSION['preferred_language_synced'] = true;
 set_flash('success', 'Connexion reussie.');
 

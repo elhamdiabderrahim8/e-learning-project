@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/auth.php';
@@ -13,20 +11,22 @@ if (!isset($_SESSION['preferred_language'])) {
 
 if (is_authenticated()) {
 	try {
-		if (!isset($_SESSION['preferred_language_synced']) || $_SESSION['preferred_language_synced'] !== true) {
+		$needSync = !isset($_SESSION['preferred_language_synced']) || $_SESSION['preferred_language_synced'] !== true;
+		if ($needSync) {
 			$pdo = db();
 			$stmt = $pdo->prepare('SELECT preferred_language FROM users WHERE id = :id LIMIT 1');
 			$stmt->execute(['id' => user_id()]);
-			$lang = (string) ($stmt->fetchColumn() ?: 'en');
 
-			if (in_array($lang, ['en', 'fr'], true)) {
-				$_SESSION['preferred_language'] = $lang;
+			$lang = (string) ($stmt->fetchColumn() ?: 'en');
+			if ($lang !== 'en' && $lang !== 'fr') {
+				$lang = 'en';
 			}
 
+			$_SESSION['preferred_language'] = $lang;
 			$_SESSION['preferred_language_synced'] = true;
 		}
 	} catch (Throwable $e) {
-		// Ignore DB sync failures and keep session value.
+		// Keep current session language if DB sync fails.
 	}
 }
 
