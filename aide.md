@@ -2,7 +2,7 @@
 1. Récupérer le projet (Pull/Clone)
 Ouvrez un terminal dans votre dossier C:/xampp/htdocs/ et tapez :
 
-Bash
+
 git clone git@github.com:elhamdiabderrahim8/e-learning-project.git
 
 git checkout -b abderrahim-attempt origin/abderrahim-attempt
