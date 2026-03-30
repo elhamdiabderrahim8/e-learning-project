@@ -1,4 +1,5 @@
 Installer xampp via https://www.apachefriends.org/fr/index.html
+
 🚀 Étapes d'installation
 1. Récupérer le projet (Pull/Clone)
 Ouvrez un terminal dans votre dossier C:/xampp/htdocs/ et tapez :
