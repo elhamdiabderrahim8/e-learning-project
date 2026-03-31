@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Calendrier</title>
+
+<style>
+:root{
+--grey-border:#E5E7EB;
+--white:#fff;
+}
+
+body{font-family:Segoe UI;background:#F9FAFB;}
+
+.calendar{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+background:white;
+border:1px solid var(--grey-border);
+}
+
+.day{
+border:1px solid var(--grey-border);
+padding:20px;
+height:100px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Emploi du temps</h1>
+
+<div class="calendar">
+<div class="day">1</div>
+<div class="day">2</div>
+<div class="day">3</div>
+<div class="day">4</div>
+<div class="day">5</div>
+<div class="day">6</div>
+<div class="day">7</div>
+</div>
+
+</body>
+</html>

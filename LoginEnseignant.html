@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+
+<style>
+/* --- VARIABLES DE COULEURS --- */
+:root {
+    --turquoise: #06B6D4;
+    --green: #22C55E;
+    --grey-light: #F9FAFB;
+    --grey-border: #E5E7EB;
+    --text-dark: #1F2937;
+    --text-muted: #6B7280;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* BASE */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Segoe UI;background:var(--grey-light);}
+
+/* LOGIN */
+.login-page{display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#f0fdfa,#e0f2fe);}
+.login-box{background:white;padding:30px;border-radius:20px;box-shadow:var(--shadow);width:350px;text-align:center;}
+.logo{color:var(--turquoise);font-weight:bold;font-size:20px;margin-bottom:10px;}
+
+input{width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:10px;}
+button{width:100%;padding:10px;background:var(--turquoise);color:white;border:none;border-radius:10px;}
+</style>
+
+</head>
+
+<body class="login-page">
+
+<div class="login-box">
+    <div class="logo">Smart Learning</div>
+    <h2>Connexion</h2>
+
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Mot de passe">
+
+    <button>Se connecter</button>
+</div>
+
+</body>
+</html>

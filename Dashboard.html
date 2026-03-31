@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<style>
+:root {
+    --turquoise:#06B6D4;
+    --grey-light:#F9FAFB;
+    --grey-border:#E5E7EB;
+    --white:#fff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Segoe UI;background:var(--grey-light);}
+
+.dashboard{display:grid;grid-template-columns:200px 1fr;height:100vh;}
+
+.sidebar{
+    background:white;
+    padding:20px;
+    border-right:1px solid var(--grey-border);
+}
+
+.sidebar li{
+    list-style:none;
+    padding:10px;
+    margin:5px 0;
+    cursor:pointer;
+}
+
+.sidebar li:hover{background:#e0f2fe;color:var(--turquoise);}
+
+.main{padding:30px;}
+
+.card{
+    background:white;
+    padding:20px;
+    margin:10px;
+    border-radius:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<div class="sidebar">
+    <ul>
+        <li>Dashboard</li>
+        <li>Emploi du temps</li>
+        <li>Tâches</li>
+    </ul>
+</div>
+
+<div class="main">
+    <h1>Dashboard</h1>
+
+    <div class="card">Présenter un cours</div>
+    <div class="card">Ajouter une tâche</div>
+</div>
+
+</div>
+
+</body>
+</html>
