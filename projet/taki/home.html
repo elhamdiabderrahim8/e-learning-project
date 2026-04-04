@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enjah - Plateforme d'apprentissage</title>
-    <meta name="description" content="Enjah est une plateforme simple pour apprendre et progresser.">
+    <meta name="description" content="Enjah : cours clairs, progression visible, tâches organisées, support réactif. Apprenez mieux et avancez plus vite.">
     <link rel="apple-touch-icon" sizes="180x180" href="media/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="media/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
@@ -15,76 +15,152 @@
 <body>
     <header class="topbar">
         <div class="container topbar-inner">
-            <a class="brand" href="index.php">
+            <a class="brand" href="index.php" aria-label="Accueil Enjah">
                 <img src="media/logo.jpg" alt="Logo Enjah">
                 <span>Enjah</span>
             </a>
 
-            <nav class="nav-links" aria-label="Navigation">
+            <nav class="nav-links" aria-label="Navigation principale">
+                <a href="#produit">Produit</a>
                 <a href="#parcours">Parcours</a>
-                <a href="#methode">Methode</a>
-                <a href="#avis">Avis</a>
+                <a href="#tarifs">Tarifs</a>
+                <a href="#faq">FAQ</a>
             </nav>
 
             <div class="top-actions">
                 <a href="pages/login.php" class="btn btn-ghost">Connexion</a>
                 <a href="pages/registre.php" class="btn btn-primary">Inscription</a>
-                <a href="../professeur/index.php" class="btn">Espace Professeur</a>
+                <a href="../professeur/index.php" class="btn btn-soft">Espace Professeur</a>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="hero">
+        <section class="hero" id="top">
             <div class="container hero-grid">
-                <div class="hero-card">
-                    <span class="hero-tag">Plateforme E-learning</span>
-                    <h1>Apprends mieux, avance plus vite.</h1>
-                    <p>
-                        Des cours clairs, un suivi simple, et un espace pour organiser tes taches.
-                        Enjah t'aide a rester regulier, meme avec un planning charge.
+                <div class="hero-left">
+                    <div class="hero-badges" aria-label="Points forts">
+                        <span class="pill pill-brand">Plateforme e-learning</span>
+                        <span class="pill">Progression &amp; tâches</span>
+                        <span class="pill">Support réactif</span>
+                    </div>
+
+                    <h1>Apprends mieux, garde le rythme, progresse pour de vrai.</h1>
+                    <p class="hero-subtitle">
+                        Enjah réunit tes cours, ta progression et tes tâches dans un seul espace.
+                        Moins de friction, plus de régularité, et un suivi clair à chaque étape.
                     </p>
 
                     <div class="hero-actions">
-                        <a href="pages/registre.php" class="btn btn-primary">Commencer maintenant</a>
-                        <a href="pages/login.php" class="btn">J'ai deja un compte</a>
+                        <a href="pages/registre.php" class="btn btn-primary">Créer mon compte</a>
+                        <a href="#produit" class="btn btn-ghost">Découvrir la plateforme</a>
                     </div>
 
-                    <div class="hero-meta" role="list">
-                        <div class="meta-tile" role="listitem">
-                            <strong>+120</strong>
-                            <span>Heures de contenu</span>
+                    <div class="trustbar" aria-label="Ce que vous obtenez">
+                        <div class="trust-item">
+                            <strong>Suivi</strong>
+                            <span>progression par cours</span>
                         </div>
-                        <div class="meta-tile" role="listitem">
-                            <strong>92%</strong>
-                            <span>Taux de satisfaction</span>
+                        <div class="trust-item">
+                            <strong>Organisation</strong>
+                            <span>tableau de tâches simple</span>
                         </div>
-                        <div class="meta-tile" role="listitem">
-                            <strong>+5k</strong>
-                            <span>Apprenants</span>
+                        <div class="trust-item">
+                            <strong>Premium</strong>
+                            <span>offres et accès étendu</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="hero-visual">
-                    <div class="visual-card">
-                        <p class="visual-title">Ce que tu peux faire</p>
-                        <ul class="visual-list">
-                            <li><span class="check">✓</span><span>Voir tes cours et ta progression</span></li>
-                            <li><span class="check">✓</span><span>Marquer les lecons terminees</span></li>
-                            <li><span class="check">✓</span><span>Choisir une offre premium</span></li>
-                            <li><span class="check">✓</span><span>Envoyer une reclamation ou demander du support</span></li>
-                        </ul>
-                    </div>
+                <div class="hero-right" aria-label="Aperçu du tableau de bord">
+                    <div class="glass-frame">
+                        <div class="mock-header">
+                            <div class="dots" aria-hidden="true">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="mock-title">Tableau de bord</div>
+                            <div class="mock-chip">Aujourd’hui</div>
+                        </div>
 
-                    <div class="visual-card">
-                        <p class="visual-title">Un seul espace, une seule routine</p>
-                        <ul class="visual-list">
-                            <li><span class="check">✓</span><span>Interface rapide a prendre en main</span></li>
-                            <li><span class="check">✓</span><span>Pages coherentes et navigation stable</span></li>
-                            <li><span class="check">✓</span><span>Design moderne et lisible</span></li>
-                        </ul>
+                        <div class="mock-grid">
+                            <div class="mock-card">
+                                <div class="mock-kicker">Cours actifs</div>
+                                <div class="mock-value">3</div>
+                                <div class="mock-progress" aria-label="Progression globale 72%">
+                                    <div class="bar" style="width: 72%;"></div>
+                                </div>
+                                <div class="mock-note">Progression globale 72%</div>
+                            </div>
+
+                            <div class="mock-card mock-card-soft">
+                                <div class="mock-kicker">Prochaine étape</div>
+                                <div class="mock-value">Leçon 8</div>
+                                <div class="mock-list">
+                                    <div class="mock-row"><span class="dot ok"></span><span>Regarder la vidéo</span></div>
+                                    <div class="mock-row"><span class="dot"></span><span>Quiz rapide</span></div>
+                                    <div class="mock-row"><span class="dot"></span><span>Exercice</span></div>
+                                </div>
+                            </div>
+
+                            <div class="mock-card mock-card-wide">
+                                <div class="mock-kicker">Routine de la semaine</div>
+                                <div class="mock-timeline" aria-label="Routine de la semaine">
+                                    <div class="pill-mini">Lun</div>
+                                    <div class="pill-mini active">Mar</div>
+                                    <div class="pill-mini">Mer</div>
+                                    <div class="pill-mini">Jeu</div>
+                                    <div class="pill-mini">Ven</div>
+                                </div>
+                                <div class="mock-note">20–30 min/jour suffisent pour rester régulier.</div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="produit">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2>Tout ce qu’il faut pour apprendre sereinement</h2>
+                        <p class="lead">Un design clair, des étapes simples, et des outils utiles au quotidien.</p>
+                    </div>
+                    <a href="pages/login.php" class="btn btn-soft">Accéder à mon espace</a>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature feature-accent">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">📚</span>
+                            <h3>Cours clairs</h3>
+                        </div>
+                        <p>Accédez à vos cours, reprenez là où vous vous êtes arrêté, et avancez sans vous disperser.</p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">📈</span>
+                            <h3>Progression visible</h3>
+                        </div>
+                        <p>Marquez les leçons terminées, suivez votre progression, et gardez une motivation constante.</p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">✅</span>
+                            <h3>Tâches organisées</h3>
+                        </div>
+                        <p>Un tableau simple pour planifier, prioriser et terminer ce qui compte chaque semaine.</p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">💬</span>
+                            <h3>Support &amp; réclamation</h3>
+                        </div>
+                        <p>Besoin d’aide ? Envoyez une demande et suivez votre échange, sans quitter la plateforme.</p>
+                    </article>
                 </div>
             </div>
         </section>
@@ -92,19 +168,40 @@
         <section class="section" id="parcours">
             <div class="container">
                 <h2>Parcours populaires</h2>
-                <p class="lead">Des parcours pensés pour progresser sans te disperser.</p>
-                <div class="grid-3">
-                    <article class="feature">
-                        <h3>Developpement Web</h3>
-                        <p>Les bases solides, puis des projets concrets pour pratiquer.</p>
+                <p class="lead">Des parcours pensés pour progresser sans vous disperser.</p>
+                <div class="track-grid">
+                    <article class="track">
+                        <div class="track-head">
+                            <h3>Développement Web</h3>
+                            <span class="track-badge">Projets</span>
+                        </div>
+                        <p>HTML/CSS, bases PHP, pratiques guidées et mini-projets pour apprendre en faisant.</p>
+                        <div class="track-meta">
+                            <span class="chip">Débutant → Intermédiaire</span>
+                            <span class="chip">Suivi progression</span>
+                        </div>
                     </article>
-                    <article class="feature">
-                        <h3>Design & UI</h3>
-                        <p>Apprends a construire des interfaces propres et coherentes.</p>
+                    <article class="track">
+                        <div class="track-head">
+                            <h3>Design &amp; UI</h3>
+                            <span class="track-badge soft">Interface</span>
+                        </div>
+                        <p>Hiérarchie visuelle, composants, cohérence et bonnes pratiques pour des interfaces modernes.</p>
+                        <div class="track-meta">
+                            <span class="chip">Design system</span>
+                            <span class="chip">Exercices</span>
+                        </div>
                     </article>
-                    <article class="feature">
-                        <h3>Methodes & Organisation</h3>
-                        <p>Des habitudes simples pour rester regulier toute l'annee.</p>
+                    <article class="track">
+                        <div class="track-head">
+                            <h3>Méthodes &amp; Organisation</h3>
+                            <span class="track-badge ok">Routine</span>
+                        </div>
+                        <p>Objectifs simples, gestion du temps et tâches hebdomadaires pour garder le rythme.</p>
+                        <div class="track-meta">
+                            <span class="chip">Productivité</span>
+                            <span class="chip">Habitudes</span>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -112,28 +209,36 @@
 
         <section class="section" id="methode">
             <div class="container">
-                <h2>Methode Enjah</h2>
-                <p class="lead">Trois etapes claires pour garder le rythme.</p>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div>
-                            <strong>Choisis un cours</strong>
-                            <div style="color: var(--muted); font-weight: 600;">Parcours gratuits ou premium selon tes objectifs.</div>
+                <h2>Méthode Enjah</h2>
+                <p class="lead">Une routine simple à suivre, même avec un planning chargé.</p>
+
+                <div class="timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-badge">1</div>
+                        <div class="timeline-body">
+                            <strong>Choisissez un cours</strong>
+                            <p>Parcours gratuits ou premium selon vos objectifs, vos horaires et votre niveau.</p>
                         </div>
                     </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div>
-                            <strong>Avance un peu chaque semaine</strong>
-                            <div style="color: var(--muted); font-weight: 600;">Marque les lecons terminees pour voir ta progression.</div>
+                    <div class="timeline-step">
+                        <div class="timeline-badge">2</div>
+                        <div class="timeline-body">
+                            <strong>Avancez en petites étapes</strong>
+                            <p>Des leçons courtes, un suivi de progression, et un point clair sur ce qu’il reste à faire.</p>
                         </div>
                     </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div>
-                            <strong>Demande de l'aide quand il faut</strong>
-                            <div style="color: var(--muted); font-weight: 600;">Reclamation et support pour ne pas rester bloque.</div>
+                    <div class="timeline-step">
+                        <div class="timeline-badge">3</div>
+                        <div class="timeline-body">
+                            <strong>Organisez vos tâches</strong>
+                            <p>Planifiez la semaine, priorisez, et terminez sans perdre le fil.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-badge">4</div>
+                        <div class="timeline-body">
+                            <strong>Recevez de l’aide rapidement</strong>
+                            <p>Support &amp; réclamation : vous n’êtes jamais bloqué seul.</p>
                         </div>
                     </div>
                 </div>
@@ -143,15 +248,72 @@
         <section class="section" id="avis">
             <div class="container">
                 <h2>Retours d'apprenants</h2>
-                <p class="lead">Quelques avis pour se faire une idee.</p>
+                <p class="lead">Quelques avis pour se faire une idée.</p>
                 <div class="testimonials">
                     <article class="quote">
-                        <p>"Navigation simple, je retrouve tout rapidement. Les lecons sont bien organisees."</p>
-                        <span>Etudiant</span>
+                        <p>“Navigation simple : je retrouve tout rapidement. Les cours sont bien organisés.”</p>
+                        <span>Étudiant</span>
                     </article>
                     <article class="quote">
-                        <p>"Je vois la progression et je peux reprendre facilement. Ca motive."</p>
+                        <p>“Je vois la progression et je reprends facilement. Ça motive à continuer.”</p>
                         <span>Apprenant premium</span>
+                    </article>
+                    <article class="quote">
+                        <p>“Le tableau des tâches est pratique pour rester régulier chaque semaine.”</p>
+                        <span>Apprenant</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="tarifs">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2>Tarifs simples</h2>
+                        <p class="lead">Commencez gratuitement, puis passez en premium quand vous êtes prêt.</p>
+                    </div>
+                </div>
+
+                <div class="pricing">
+                    <article class="price-card">
+                        <div class="price-top">
+                            <h3>Gratuit</h3>
+                            <div class="price">0<span>DT</span></div>
+                        </div>
+                        <ul class="price-list">
+                            <li><span class="check" aria-hidden="true">✓</span><span>Accès aux cours gratuits</span></li>
+                            <li><span class="check" aria-hidden="true">✓</span><span>Suivi de progression</span></li>
+                            <li><span class="check" aria-hidden="true">✓</span><span>Support &amp; réclamation</span></li>
+                        </ul>
+                        <a href="pages/registre.php" class="btn btn-soft btn-block">Démarrer</a>
+                    </article>
+
+                    <article class="price-card price-highlight">
+                        <div class="price-ribbon">Le plus choisi</div>
+                        <div class="price-top">
+                            <h3>Premium</h3>
+                            <div class="price">À la carte<span>DT</span></div>
+                        </div>
+                        <ul class="price-list">
+                            <li><span class="check" aria-hidden="true">✓</span><span>Accès aux cours premium</span></li>
+                            <li><span class="check" aria-hidden="true">✓</span><span>Contenu et exercices étendus</span></li>
+                            <li><span class="check" aria-hidden="true">✓</span><span>Priorité sur les demandes</span></li>
+                        </ul>
+                        <a href="pages/offres.php" class="btn btn-primary btn-block">Voir les offres</a>
+                    </article>
+
+                    <article class="price-card">
+                        <div class="price-top">
+                            <h3>Professeur</h3>
+                            <div class="price">Espace<span>pro</span></div>
+                        </div>
+                        <ul class="price-list">
+                            <li><span class="check" aria-hidden="true">✓</span><span>Gérer vos cours</span></li>
+                            <li><span class="check" aria-hidden="true">✓</span><span>Suivre vos apprenants</span></li>
+                            <li><span class="check" aria-hidden="true">✓</span><span>Administration simplifiée</span></li>
+                        </ul>
+                        <a href="../professeur/index.php" class="btn btn-soft btn-block">Accéder</a>
                     </article>
                 </div>
             </div>
@@ -161,13 +323,34 @@
             <div class="container">
                 <div class="cta">
                     <div>
-                        <h2>Pret a transformer ton apprentissage ?</h2>
-                        <p>Inscription rapide, puis tu peux commencer tout de suite.</p>
+                        <h2>Prêt à commencer ?</h2>
+                        <p>Inscription rapide, puis vous pouvez apprendre immédiatement.</p>
                     </div>
                     <div class="hero-actions">
-                        <a href="pages/registre.php" class="btn btn-primary">Demarrer avec Enjah</a>
-                        <a href="pages/cours.php" class="btn">Voir mes cours</a>
+                        <a href="pages/registre.php" class="btn btn-primary">Démarrer avec Enjah</a>
+                        <a href="pages/login.php" class="btn btn-ghost">Se connecter</a>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="faq">
+            <div class="container">
+                <h2>FAQ</h2>
+                <p class="lead">Les réponses aux questions les plus fréquentes.</p>
+                <div class="faq">
+                    <details class="faq-item">
+                        <summary>Comment fonctionne la progression ?</summary>
+                        <p>Quand vous terminez une leçon, elle est marquée comme faite et la progression du cours se met à jour.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Puis-je commencer gratuitement ?</summary>
+                        <p>Oui. Créez un compte, accédez aux cours gratuits et activez le premium uniquement si vous en avez besoin.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Et si j’ai un problème ?</summary>
+                        <p>Vous pouvez envoyer une réclamation depuis votre espace étudiant. Notre support vous répondra au plus vite.</p>
+                    </details>
                 </div>
             </div>
         </section>
@@ -175,9 +358,8 @@
 
     <footer class="footer">
         <div class="container">
-            © 2026 Enjah - Tous droits reserves.
+            © 2026 Enjah · Plateforme d’apprentissage · Tous droits réservés.
         </div>
     </footer>
 </body>
 </html>
-

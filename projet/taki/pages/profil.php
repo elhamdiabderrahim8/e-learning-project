@@ -27,6 +27,10 @@ if (!empty($user['data'])) {
 // Variables d'affichage
 $memberSince = date('d/m/Y', strtotime((string)$user['date_inscription']));
 $fullName = trim((string) $user['prenom'] . ' ' . (string) $user['nom']);
+$cinDisplay = (string) ($user['CIN'] ?? '');
+if ($cinDisplay !== '' && ctype_digit($cinDisplay) && strlen($cinDisplay) < 8) {
+    $cinDisplay = str_pad($cinDisplay, 8, '0', STR_PAD_LEFT);
+}
 
 $error = get_flash('error');
 $success = get_flash('success');
@@ -114,11 +118,11 @@ $success = get_flash('success');
                     <div class="profile-hero-text">
                         <h2><?php echo htmlspecialchars($fullName); ?></h2>
                         <p><?php echo htmlspecialchars((string) $user['email']); ?></p>
-                        <p><small>CIN : <?php echo htmlspecialchars((string) $user['CIN']); ?></small></p>
+                        <p><small>CIN : <?php echo htmlspecialchars($cinDisplay); ?></small></p>
                     </div>
                 </article>
 
-                <article class="profile-details profile-card">
+                <article class="profile-details profile-card" id="settings">
                     <h3>Mettre à jour mes informations</h3>
                     <form class="profile-settings-form" action="../backend/actions/update_profile_settings.php" method="post" enctype="multipart/form-data">
                         <div class="input-row">
