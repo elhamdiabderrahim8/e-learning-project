@@ -37,21 +37,10 @@ if (!$result) {
     <meta charset="UTF-8">
     <title>Choisir une offre - Enjah</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../../professeur/nouvel.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="logo"><img src="../media/logo.jpg" alt="Logo"><span>Enjah</span></div>
-            <nav>
-                <ul>
-                    <li><a href="cours.php"><span>Mes Cours</span></a></li>
-                    <li><a href="tache_a_fair.php"><span>Mes Tâches</span></a></li>
-                    <li class="active"><a href="offres.php"><span>Choisir une offre</span></a></li>
-                    <li><a href="profil.php"><span>Mon Profil</span></a></li>
-                </ul>
-            </nav>
-        </aside>
+        <?php $active = 'offres'; require __DIR__ . '/partials/sidebar.php'; ?>
 
         <main class="main-content">
             <header class="header">
@@ -67,7 +56,7 @@ if (!$result) {
                 ?>
                         <div class="course-card">
                              <div style="background-image: url('<?php echo $image_src; ?>'); height:160px; background-size:cover; background-position:center; position: relative;">
-                                <span class="badge or" style="position: absolute; top: 10px; right: 10px;">Premium</span>
+                                <span class="badge badge-premium" style="position: absolute; top: 10px; right: 10px;">Premium</span>
                             </div>
                             <div style="padding: 15px;">
                                 <h3 style="margin:0;"><?php echo htmlspecialchars($row['nom_cours']); ?></h3>

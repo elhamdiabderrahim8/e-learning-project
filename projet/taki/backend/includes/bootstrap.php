@@ -6,7 +6,7 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../../database/database.php';
 
 if (!isset($_SESSION['preferred_language'])) {
-	$_SESSION['preferred_language'] = 'en';
+	$_SESSION['preferred_language'] = 'fr';
 }
 
 if (is_authenticated()) {

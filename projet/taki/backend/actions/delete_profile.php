@@ -14,7 +14,18 @@ if ($userId === null) {
 }
 
 $pdo = db();
-$delete = $pdo->prepare('DELETE FROM users WHERE id = :id');
+
+try {
+    $pdo->prepare('DELETE FROM tasks WHERE user_id = :id')->execute(['id' => $userId]);
+    $pdo->prepare('DELETE FROM reclamations WHERE user_id = :id')->execute(['id' => $userId]);
+    $pdo->prepare('DELETE FROM enrollments WHERE user_id = :id')->execute(['id' => $userId]);
+    $pdo->prepare('DELETE FROM certificates WHERE user_id = :id')->execute(['id' => $userId]);
+    $pdo->prepare('DELETE FROM support_messages WHERE student_cin = :id')->execute(['id' => $userId]);
+} catch (Throwable $e) {
+    // Ignore cleanup errors for optional tables during prototype stage.
+}
+
+$delete = $pdo->prepare('DELETE FROM etudiant WHERE CIN = :id');
 $delete->execute(['id' => $userId]);
 
 logout_user();

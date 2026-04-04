@@ -31,6 +31,7 @@ $success = get_flash('success');
                 </a>
                 <h1>Inscription</h1>
                 <p>Creez votre compte pour commencer votre parcours d'apprentissage.</p>
+                <p class="input-help" style="margin-top: 8px;">Espace professeur</p>
             </div>
 
             <?php if ($error): ?>
@@ -43,18 +44,18 @@ $success = get_flash('success');
             <form class="register-form" action="../backend/actions/register.php" method="post">
                 <div class="input-row">
                     <div class="input-group">
-                        <label for="firstname">Prenom</label>
-                        <input type="text" id="firstname" name="firstname" placeholder="Jean" autocomplete="given-name" required>
+                        <label for="CIN">CIN</label>
+                        <input type="text" id="CIN" name="CIN" placeholder="13456789" inputmode="numeric" autocomplete="username" required>
                     </div>
                     <div class="input-group">
-                        <label for="lastname">Nom</label>
-                        <input type="text" id="lastname" name="lastname" placeholder="Dupont" autocomplete="family-name" required>
+                        <label for="prenom">Prenom</label>
+                        <input type="text" id="prenom" name="prenom" placeholder="Jean" autocomplete="given-name" required>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="email">Adresse Email</label>
-                    <input type="email" id="email" name="email" placeholder="jean.dupont@exemple.com" autocomplete="email" required>
+                    <label for="nom">Nom</label>
+                    <input type="text" id="nom" name="nom" placeholder="Dupont" autocomplete="family-name" required>
                 </div>
 
                 <div class="input-group">
@@ -78,6 +79,9 @@ $success = get_flash('success');
 
                 <div class="login-footer">
                         Vous avez deja un compte ? <a href="login.php">Se connecter</a>
+                        <div style="margin-top: 10px;">
+                            Vous etes etudiant ? <a href="../../taki/pages/registre.php">Inscription etudiant</a>
+                        </div>
                 </div>
             </form>
         </div>

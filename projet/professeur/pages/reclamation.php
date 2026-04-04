@@ -20,18 +20,7 @@ $success = get_flash('success');
 </head>
 <body>
     <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
-            <nav>
-                <ul>
-                    <li><a href="cours.php"><span class="nav-icon">&#8962;</span><span>Mes Cours</span></a></li>
-                    <li><a href="tache_a_fair.php"><span class="nav-icon">&#128221;</span><span>Mes Taches</span></a></li>
-                    <li><a href="offres.php"><span class="nav-icon">&#9671;</span><span>Choisir une offre</span></a></li>
-                    <li class="active"><a href="reclamation.php"><span class="nav-icon">&#128172;</span><span>Reclamation</span></a></li>
-                    <li><a href="profil.php"><span class="nav-icon">&#128100;</span><span>Mon Profil</span></a></li>
-                </ul>
-            </nav>
-        </aside>
+        <?php $active = 'reclamation'; require __DIR__ . '/partials/sidebar.php'; ?>
 
         <main class="main-content">
             <header class="header">

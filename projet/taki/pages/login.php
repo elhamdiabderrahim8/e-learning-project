@@ -31,6 +31,7 @@ $success = get_flash('success');
                 </a>
                 <h1>Connexion</h1>
                 <p>Connectez-vous pour acceder a votre espace d'apprentissage.</p>
+                <p class="input-help" style="margin-top: 8px;">Espace etudiant</p>
             </div>
 
             <?php if ($error): ?>
@@ -42,8 +43,8 @@ $success = get_flash('success');
 
             <form class="login-form" action="../backend/actions/login.php" method="post">
                 <div class="input-group">
-                    <label for="CIN">Adresse Email</label>
-                    <input type="text" id="CIN" name="CIN" placeholder="1345675542" required>
+                    <label for="CIN">CIN</label>
+                    <input type="text" id="CIN" name="CIN" placeholder="13456789" inputmode="numeric" autocomplete="username" required>
                 </div>
 
                 <div class="input-group">
@@ -56,6 +57,9 @@ $success = get_flash('success');
                 <div class="login-footer">
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a><br>
                     or <a href="invité(a).php">mode invité</a>
+                    <div style="margin-top: 10px;">
+                        Vous etes professeur ? <a href="../../professeur/pages/login.php">Connexion professeur</a>
+                    </div>
                 </div>
             </form>
         </div>

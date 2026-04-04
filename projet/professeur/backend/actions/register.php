@@ -6,19 +6,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('../../pages/registre.php');
 }
 
-$firstName = trim((string) ($_POST['firstname'] ?? ''));
-$lastName = trim((string) ($_POST['lastname'] ?? ''));
-$email = strtolower(trim((string) ($_POST['email'] ?? '')));
+$cin = trim((string) ($_POST['CIN'] ?? ''));
+$firstName = trim((string) ($_POST['prenom'] ?? ''));
+$lastName = trim((string) ($_POST['nom'] ?? ''));
 $password = (string) ($_POST['password'] ?? '');
 $confirmPassword = (string) ($_POST['confirm_password'] ?? '');
 
-if ($firstName === '' || $lastName === '' || $email === '' || $password === '' || $confirmPassword === '') {
+if ($cin === '' || $firstName === '' || $lastName === '' || $password === '' || $confirmPassword === '') {
     set_flash('error', 'Tous les champs sont obligatoires.');
-    redirect('../../pages/registre.php');
-}
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    set_flash('error', 'Adresse email invalide.');
     redirect('../../pages/registre.php');
 }
 
@@ -34,28 +29,26 @@ if ($password !== $confirmPassword) {
 
 $pdo = db();
 
-$existing = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
-$existing->execute(['email' => $email]);
+$existing = $pdo->prepare('SELECT CIN FROM professeur WHERE CIN = :cin LIMIT 1');
+$existing->execute(['cin' => $cin]);
 if ($existing->fetch()) {
-    set_flash('error', 'Cet email est deja utilise.');
+    set_flash('error', 'Ce CIN est deja utilise.');
     redirect('../../pages/registre.php');
 }
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
-$insert = $pdo->prepare('INSERT INTO users (first_name, last_name, email, password_hash, preferred_language) VALUES (:first_name, :last_name, :email, :password_hash, :preferred_language)');
+$insert = $pdo->prepare('INSERT INTO professeur (CIN, nom, prenom, password) VALUES (:cin, :nom, :prenom, :password_hash)');
 $insert->execute([
-    'first_name' => $firstName,
-    'last_name' => $lastName,
-    'email' => $email,
+    'cin' => $cin,
+    'nom' => $lastName,
+    'prenom' => $firstName,
     'password_hash' => $hash,
-    'preferred_language' => 'en',
 ]);
 
-$userId = (int) $pdo->lastInsertId();
-$fullName = $firstName . ' ' . $lastName;
-login_user($userId, $fullName);
-$_SESSION['preferred_language'] = 'en';
+$fullName = $lastName . ' ' . $firstName;
+login_user((int) $cin, $fullName);
+$_SESSION['preferred_language'] = 'fr';
 $_SESSION['preferred_language_synced'] = true;
 
 set_flash('success', 'Compte cree avec succes.');

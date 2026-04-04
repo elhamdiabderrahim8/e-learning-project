@@ -31,8 +31,6 @@ $mes_cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Cours - Enjah</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../../professeur/nouvel.css">
-    <link rel="stylesheet" href="../../professeur/form_cours.css">
     <style>
         /* Styles spécifiques pour la barre de progression si non présents dans tes CSS */
         .progression-wrapper {
@@ -63,19 +61,7 @@ $mes_cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
-            <nav>
-                <ul>
-                    <li class="active"><a href="cours.php"><span class="nav-icon">&#8962;</span><span>Mes Cours</span></a></li>
-                    <li><a href="tache_a_fair.php"><span class="nav-icon">&#128221;</span><span>Mes T&acirc;ches</span></a></li>
-                    <li><a href="offres.php"><span class="nav-icon">&#9671;</span><span>Choisir une offre</span></a></li>
-                    <li><a href="reclamation.php"><span class="nav-icon">&#128172;</span><span>R&eacute;clamation</span></a></li>
-                    <li><a href="profil.php"><span class="nav-icon">&#128100;</span><span>Mon Profil</span></a></li>
-                    <li><a href="certificat.php"><span class="nav-icon">&#128100;</span><span>Mes certificats</span></a></li>
-                </ul>
-            </nav>
-        </aside>
+        <?php $active = 'cours'; require __DIR__ . '/partials/sidebar.php'; ?>
 
         <main class="main-content">
             <header style="padding: 20px; border-bottom: 1px solid #eee;">
@@ -114,12 +100,12 @@ $fait_docs = (int)$stmt_f->fetchColumn();
 // 3. Calcul du pourcentage final
 $prog = ($total_docs > 0) ? (int)round(($fait_docs / $total_docs) * 100) : 0;
                         $statut     = $row['statut_certificat'] ?? 'aucun';
-                        $badge_class = ($cat == 'Premium') ? 'or' : 'silver';
+                        $badge_class = ($cat === 'Premium') ? 'badge-premium' : 'badge-free';
                 ?>
                         <div class="course-card" id="cours-<?php echo $id_c; ?>">
                             <div class="course-image dev-bg" 
                                  style="background-image: url('<?php echo $image_src; ?>'); background-size: cover; background-position: center;">
-                                <span class="<?php echo $badge_class;?>"><?php echo $cat; ?></span>
+                                <span class="badge <?php echo $badge_class; ?>"><?php echo htmlspecialchars((string) $cat, ENT_QUOTES, 'UTF-8'); ?></span>
                             </div>
                             
                             <div class="course-body">

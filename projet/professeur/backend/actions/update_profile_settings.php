@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $firstName = trim((string) ($_POST['first_name'] ?? ''));
 $lastName = trim((string) ($_POST['last_name'] ?? ''));
-$language = (string) ($_POST['preferred_language'] ?? 'en');
+$language = (string) ($_POST['preferred_language'] ?? 'fr');
 
 if ($firstName === '' || $lastName === '') {
     set_flash('error', 'Le prenom et le nom sont obligatoires.');
@@ -18,20 +18,28 @@ if ($firstName === '' || $lastName === '') {
 }
 
 if ($language !== 'en' && $language !== 'fr') {
-    $language = 'en';
+    $language = 'fr';
 }
 
 $pdo = db();
 
-$update = $pdo->prepare('UPDATE users SET first_name = :first_name, last_name = :last_name, preferred_language = :preferred_language WHERE id = :id');
+$update = $pdo->prepare('UPDATE professeur SET prenom = :prenom, nom = :nom WHERE CIN = :cin');
 $update->execute([
-    'first_name' => $firstName,
-    'last_name' => $lastName,
-    'preferred_language' => $language,
-    'id' => user_id(),
+    'prenom' => $firstName,
+    'nom' => $lastName,
+    'cin' => user_id(),
 ]);
 
-$_SESSION['full_name'] = trim($firstName . ' ' . $lastName);
+try {
+    $pdo->prepare('UPDATE professeur SET preferred_language = :lang WHERE CIN = :cin')->execute([
+        'lang' => $language,
+        'cin' => user_id(),
+    ]);
+} catch (Throwable $e) {
+    // Column may not exist on older schemas.
+}
+
+$_SESSION['nom'] = trim($lastName . ' ' . $firstName);
 $_SESSION['preferred_language'] = $language;
 $_SESSION['preferred_language_synced'] = true;
 

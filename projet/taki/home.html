@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -14,68 +14,170 @@
 </head>
 <body>
     <header class="topbar">
-        <a class="brand" href="index.php">
-            <img src="media/logo.jpg" alt="Logo Enjah">
-            <span>Enjah</span>
-        </a>
+        <div class="container topbar-inner">
+            <a class="brand" href="index.php">
+                <img src="media/logo.jpg" alt="Logo Enjah">
+                <span>Enjah</span>
+            </a>
 
-        <nav class="nav-links">
-            <a href="#about">A propos</a>
-            <a href="#steps">Etapes</a>
-            <a href="#start">Commencer</a>
-        </nav>
+            <nav class="nav-links" aria-label="Navigation">
+                <a href="#parcours">Parcours</a>
+                <a href="#methode">Methode</a>
+                <a href="#avis">Avis</a>
+            </nav>
 
-        <div class="top-actions">
-            <a href="pages/login.php" class="btn btn-light">Connexion</a>
-            <a href="pages/registre.php" class="btn btn-main">Inscription</a>
+            <div class="top-actions">
+                <a href="pages/login.php" class="btn btn-ghost">Connexion</a>
+                <a href="pages/registre.php" class="btn btn-primary">Inscription</a>
+                <a href="../professeur/index.php" class="btn">Espace Professeur</a>
+            </div>
         </div>
     </header>
 
-    <main class="page">
-        <section class="card hero">
-            <p class="hero-tag">Plateforme e-learning simple</p>
-            <h1>Bienvenue sur Enjah</h1>
-            <p>
-                Une plateforme simple pour apprendre chaque jour, suivre vos cours et organiser vos taches.
-            </p>
-            <ul class="hero-mini-list">
-                <li>Cours faciles a suivre</li>
-                <li>Suivi de vos progres</li>
-                <li>Support rapide</li>
-            </ul>
-            <div class="hero-actions">
-                <a href="pages/registre.php" class="btn btn-main">Commencer</a>
-                <a href="pages/login.php" class="btn btn-light">J'ai deja un compte</a>
+    <main>
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-card">
+                    <span class="hero-tag">Plateforme E-learning</span>
+                    <h1>Apprends mieux, avance plus vite.</h1>
+                    <p>
+                        Des cours clairs, un suivi simple, et un espace pour organiser tes taches.
+                        Enjah t'aide a rester regulier, meme avec un planning charge.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="pages/registre.php" class="btn btn-primary">Commencer maintenant</a>
+                        <a href="pages/login.php" class="btn">J'ai deja un compte</a>
+                    </div>
+
+                    <div class="hero-meta" role="list">
+                        <div class="meta-tile" role="listitem">
+                            <strong>+120</strong>
+                            <span>Heures de contenu</span>
+                        </div>
+                        <div class="meta-tile" role="listitem">
+                            <strong>92%</strong>
+                            <span>Taux de satisfaction</span>
+                        </div>
+                        <div class="meta-tile" role="listitem">
+                            <strong>+5k</strong>
+                            <span>Apprenants</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="visual-card">
+                        <p class="visual-title">Ce que tu peux faire</p>
+                        <ul class="visual-list">
+                            <li><span class="check">✓</span><span>Voir tes cours et ta progression</span></li>
+                            <li><span class="check">✓</span><span>Marquer les lecons terminees</span></li>
+                            <li><span class="check">✓</span><span>Choisir une offre premium</span></li>
+                            <li><span class="check">✓</span><span>Envoyer une reclamation ou demander du support</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="visual-card">
+                        <p class="visual-title">Un seul espace, une seule routine</p>
+                        <ul class="visual-list">
+                            <li><span class="check">✓</span><span>Interface rapide a prendre en main</span></li>
+                            <li><span class="check">✓</span><span>Pages coherentes et navigation stable</span></li>
+                            <li><span class="check">✓</span><span>Design moderne et lisible</span></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="card" id="about">
-            <h2>Pourquoi Enjah ?</h2>
-            <ul class="simple-list">
-                <li>Interface claire et facile a utiliser</li>
-                <li>Cours, taches et profil dans le meme espace</li>
-                <li>Support rapide en cas de probleme</li>
-            </ul>
+        <section class="section" id="parcours">
+            <div class="container">
+                <h2>Parcours populaires</h2>
+                <p class="lead">Des parcours pensés pour progresser sans te disperser.</p>
+                <div class="grid-3">
+                    <article class="feature">
+                        <h3>Developpement Web</h3>
+                        <p>Les bases solides, puis des projets concrets pour pratiquer.</p>
+                    </article>
+                    <article class="feature">
+                        <h3>Design & UI</h3>
+                        <p>Apprends a construire des interfaces propres et coherentes.</p>
+                    </article>
+                    <article class="feature">
+                        <h3>Methodes & Organisation</h3>
+                        <p>Des habitudes simples pour rester regulier toute l'annee.</p>
+                    </article>
+                </div>
+            </div>
         </section>
 
-        <section class="card" id="steps">
-            <h2>Comment ca marche</h2>
-            <ol class="simple-list">
-                <li>Creer un compte</li>
-                <li>Choisir vos cours et vos objectifs</li>
-                <li>Avancer un peu chaque semaine</li>
-            </ol>
+        <section class="section" id="methode">
+            <div class="container">
+                <h2>Methode Enjah</h2>
+                <p class="lead">Trois etapes claires pour garder le rythme.</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <strong>Choisis un cours</strong>
+                            <div style="color: var(--muted); font-weight: 600;">Parcours gratuits ou premium selon tes objectifs.</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <strong>Avance un peu chaque semaine</strong>
+                            <div style="color: var(--muted); font-weight: 600;">Marque les lecons terminees pour voir ta progression.</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <strong>Demande de l'aide quand il faut</strong>
+                            <div style="color: var(--muted); font-weight: 600;">Reclamation et support pour ne pas rester bloque.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="card" id="start">
-            <h2>Prets a commencer ?</h2>
-            <p>Inscription rapide en 2 minutes.</p>
-            <a href="pages/registre.php" class="btn btn-main">Creer mon compte</a>
+        <section class="section" id="avis">
+            <div class="container">
+                <h2>Retours d'apprenants</h2>
+                <p class="lead">Quelques avis pour se faire une idee.</p>
+                <div class="testimonials">
+                    <article class="quote">
+                        <p>"Navigation simple, je retrouve tout rapidement. Les lecons sont bien organisees."</p>
+                        <span>Etudiant</span>
+                    </article>
+                    <article class="quote">
+                        <p>"Je vois la progression et je peux reprendre facilement. Ca motive."</p>
+                        <span>Apprenant premium</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="cta">
+                    <div>
+                        <h2>Pret a transformer ton apprentissage ?</h2>
+                        <p>Inscription rapide, puis tu peux commencer tout de suite.</p>
+                    </div>
+                    <div class="hero-actions">
+                        <a href="pages/registre.php" class="btn btn-primary">Demarrer avec Enjah</a>
+                        <a href="pages/cours.php" class="btn">Voir mes cours</a>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
     <footer class="footer">
-        <p>© 2026 Enjah - Tous droits reserves.</p>
+        <div class="container">
+            © 2026 Enjah - Tous droits reserves.
+        </div>
     </footer>
 </body>
 </html>
+

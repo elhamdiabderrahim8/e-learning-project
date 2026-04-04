@@ -31,6 +31,7 @@ $success = get_flash('success');
                 </a>
                 <h1>Inscription</h1>
                 <p>Creez votre compte pour commencer votre parcours d'apprentissage.</p>
+                <p class="input-help" style="margin-top: 8px;">Espace etudiant</p>
             </div>
 
             <?php if ($error): ?>
@@ -80,6 +81,9 @@ $success = get_flash('success');
 
                 <div class="login-footer">
                         Vous avez deja un compte ? <a href="login.php">Se connecter</a>
+                        <div style="margin-top: 10px;">
+                            Vous etes professeur ? <a href="../../professeur/pages/registre.php">Inscription professeur</a>
+                        </div>
                 </div>
             </form>
         </div>

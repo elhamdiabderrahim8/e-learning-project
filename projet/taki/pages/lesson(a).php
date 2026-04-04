@@ -1,111 +1,124 @@
 <?php
-session_start();
-require_once  __DIR__ .'/../../professeur/config/connexion.php';
 
-// On récupère le CIN de l'étudiant en session
-$cin_etudiant = $_SESSION['CIN'] ?? 0;
+declare(strict_types=1);
 
-if (isset($_GET['id'])) {
-    $id_cours = intval($_GET['id']);
-    $_SESSION['id_cours_actuel'] = $id_cours;
-} elseif (isset($_SESSION['id_cours_actuel'])) {
-    $id_cours = $_SESSION['id_cours_actuel'];
-} else {
-    die("Erreur : Aucun cours sélectionné.");
+require_once __DIR__ . '/../backend/includes/bootstrap.php';
+require_auth();
+
+$pdo = db();
+
+$cinEtudiant = (int) ($_SESSION['CIN'] ?? 0);
+$courseId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($courseId <= 0) {
+    set_flash('error', 'Cours invalide.');
+    redirect('cours.php');
 }
 
-$res = $conn->query("SELECT nom_cours FROM cours WHERE id = $id_cours");
-$cours = $res->fetch_assoc();
-?>
+$stmtCourse = $pdo->prepare('SELECT id, nom_cours FROM cours WHERE id = :id LIMIT 1');
+$stmtCourse->execute(['id' => $courseId]);
+$course = $stmtCourse->fetch();
+if (!$course) {
+    set_flash('error', 'Cours introuvable.');
+    redirect('cours.php');
+}
 
-<!DOCTYPE html>
-<html>
+$stmtLessons = $pdo->prepare('SELECT id_lecon, titre, description, type_fichier FROM lecon WHERE id_cours = :id_cours ORDER BY id_lecon ASC');
+$stmtLessons->execute(['id_cours' => $courseId]);
+$lessons = $stmtLessons->fetchAll();
+
+$stmtDone = $pdo->prepare('SELECT id_lecon FROM suivi_lecons WHERE id_etudiant = :cin AND id_cours = :id_cours');
+$stmtDone->execute(['cin' => $cinEtudiant, 'id_cours' => $courseId]);
+$doneLessons = [];
+foreach ($stmtDone->fetchAll() as $row) {
+    $doneLessons[(int) $row['id_lecon']] = true;
+}
+
+$error = get_flash('error');
+$success = get_flash('success');
+
+function lesson_icon(string $mimeType): string
+{
+    $mimeType = strtolower($mimeType);
+    if (str_contains($mimeType, 'video')) {
+        return '&#9654;';
+    }
+    if (str_contains($mimeType, 'pdf')) {
+        return '&#128196;';
+    }
+    if (str_contains($mimeType, 'audio') || str_contains($mimeType, 'mpeg')) {
+        return '&#127911;';
+    }
+    return '&#128196;';
+}
+
+?><!DOCTYPE html>
+<html lang="fr">
 <head>
-     <link rel="stylesheet" href="../../professeur/nouvel.css">
-     <link rel="stylesheet" href="../../professeur/form_cours.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-   <link rel="stylesheet" href="../../professeur/lesson.css">
-   <style>
-       /* Style pour le badge de statut */
-       .status-indicator {
-           font-size: 11px;
-           padding: 3px 8px;
-           border-radius: 12px;
-           margin-top: 5px;
-           display: inline-block;
-       }
-       .status-done { background: #d1fae5; color: #065f46; border: 1px solid #34d399; }
-       .status-todo { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
-       
-       /* On ajuste un peu le lecon-item pour accueillir le badge */
-       .lecon-info { display: flex; flex-direction: column; }
-   </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leçons - <?php echo htmlspecialchars((string) $course['nom_cours'], ENT_QUOTES, 'UTF-8'); ?></title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="../media/favicon_io/favicon.ico">
+    <link rel="manifest" href="../media/favicon_io/site.webmanifest">
 </head>
 <body>
-    <main class="main-content">
-        <header class="header">
-            <h1>Visualiser les leçons de votre cours</h1>
-        </header>
-        <div class="leçons-container">
-            <h3 style="text-align:center; color: #4d68e1; margin-bottom: 25px;">
-                Contenu du cours : <?php echo htmlspecialchars($cours['nom_cours'] ?? 'Cours inconnu'); ?>
-            </h3>
+    <div class="dashboard-container">
+        <?php $active = 'cours'; require __DIR__ . '/partials/sidebar.php'; ?>
 
-            <?php
-            $sql_lecons = "SELECT * FROM lecon WHERE id_cours = $id_cours ORDER BY id_lecon ASC";
-            $res_lecons = $conn->query($sql_lecons);
-
-            if ($res_lecons && $res_lecons->num_rows > 0) {
-                while ($row = $res_lecons->fetch_assoc()) {
-                    $id_l = $row['id_lecon'];
-                    
-                    // --- LOGIQUE DE PROGRESSION : Vérifier si terminée ---
-                    $check = $conn->query("SELECT id_suivi FROM suivi_lecons WHERE id_etudiant = '$cin_etudiant' AND id_lecon = $id_l");
-                    $est_terminee = ($check->num_rows > 0);
-
-                    // Icônes selon le type
-                    $type = $row['type_fichier'];
-                    $icon = "fas fa-file"; 
-                    $btnText = "Ouvrir";
-
-                    if (strpos($type, 'video') !== false) {
-                        $icon = "fas fa-play-circle";
-                        $btnText = "Regarder";
-                    } elseif (strpos($type, 'pdf') !== false) {
-                        $icon = "fas fa-file-pdf";
-                        $btnText = "Lire PDF";
-                    } elseif (strpos($type, 'audio') !== false) {
-                        $icon = "fas fa-volume-up";
-                        $btnText = "Écouter";
-                    }
-            ?>
-            
-            <div class="lecon-item" style="opacity: <?php echo $est_terminee ? '0.8' : '1'; ?>;">
-                <div class="lecon-icon" style="color: <?php echo $est_terminee ? '#20c997' : '#4d68e1'; ?>;">
-                    <i class="<?php echo $icon; ?>"></i>
+        <main class="main-content">
+            <header class="header header-flex">
+                <div>
+                    <h1>Leçons</h1>
+                    <p>Contenu du cours : <strong><?php echo htmlspecialchars((string) $course['nom_cours'], ENT_QUOTES, 'UTF-8'); ?></strong></p>
                 </div>
-                <div class="lecon-info">
-                    <h4><?php echo htmlspecialchars($row['titre']); ?></h4>
-                    <span style="font-size: 0.85em; color: #666;"><?php echo htmlspecialchars($row['description']); ?></span>
-                    
-                    <?php if($est_terminee): ?>
-                        <span class="status-indicator status-done"><i class="fas fa-check"></i> Terminée</span>
-                    <?php else: ?>
-                        <span class="status-indicator status-todo">À faire</span>
-                    <?php endif; ?>
+                <div class="header-actions">
+                    <a class="btn-nav" href="cours.php">Retour aux cours</a>
                 </div>
-                
-                <a href="visualiser_leçon.php?id=<?php echo $id_l; ?>" class="btn-view" style="text-decoration: none; background: <?php echo $est_terminee ? '#20c997' : ''; ?>;">
-                    <?php echo $est_terminee ? "Revoir" : $btnText; ?>
-                </a>
-            </div>
-            <?php 
-                }
-            } else {
-                echo "<p style='text-align: center; color: #94a3b8;'>Aucune leçon disponible.</p>";
-            }
-            ?>
-        </div>
-    </main>
+            </header>
+
+            <?php if ($error): ?>
+                <div class="task-alert task-alert-error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
+            <?php if ($success): ?>
+                <div class="task-alert task-alert-success"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
+
+            <?php if (!$lessons): ?>
+                <section class="card" style="padding: 18px;">
+                    <p style="color: var(--muted);">Aucune leçon disponible pour le moment.</p>
+                </section>
+            <?php endif; ?>
+
+            <section class="lesson-list">
+                <?php foreach ($lessons as $lesson): ?>
+                    <?php
+                    $lessonId = (int) $lesson['id_lecon'];
+                    $isDone = isset($doneLessons[$lessonId]);
+                    ?>
+                    <article class="lesson-card card <?php echo $isDone ? 'lesson-card-done' : ''; ?>">
+                        <div class="lesson-icon" aria-hidden="true"><?php echo lesson_icon((string) ($lesson['type_fichier'] ?? '')); ?></div>
+                        <div class="lesson-body">
+                            <h3><?php echo htmlspecialchars((string) $lesson['titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                            <p><?php echo htmlspecialchars((string) ($lesson['description'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <?php if ($isDone): ?>
+                                <span class="lesson-badge lesson-badge-done">Terminée</span>
+                            <?php else: ?>
+                                <span class="lesson-badge">À faire</span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="lesson-actions">
+                            <a class="btn-primary" href="visualiser_leçon.php?id=<?php echo $lessonId; ?>">
+                                <?php echo $isDone ? 'Revoir' : 'Ouvrir'; ?>
+                            </a>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </section>
+        </main>
+    </div>
 </body>
 </html>
+

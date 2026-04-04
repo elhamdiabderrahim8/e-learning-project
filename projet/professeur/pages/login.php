@@ -31,6 +31,7 @@ $success = get_flash('success');
                 </a>
                 <h1>Connexion</h1>
                 <p>Connectez-vous pour acceder a votre espace d'apprentissage.</p>
+                <p class="input-help" style="margin-top: 8px;">Espace professeur</p>
             </div>
 
             <?php if ($error): ?>
@@ -42,8 +43,8 @@ $success = get_flash('success');
 
             <form class="login-form" action="../backend/actions/login.php" method="post">
                 <div class="input-group">
-                    <label for="email">Adresse Email</label>
-                    <input type="email" id="email" name="email" placeholder="nom@exemple.com" required>
+                    <label for="CIN">CIN</label>
+                    <input type="text" id="CIN" name="CIN" placeholder="13456789" inputmode="numeric" autocomplete="username" required>
                 </div>
 
                 <div class="input-group">
@@ -55,6 +56,9 @@ $success = get_flash('success');
 
                 <div class="login-footer">
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a>
+                    <div style="margin-top: 10px;">
+                        Vous etes etudiant ? <a href="../../taki/pages/login.php">Connexion etudiant</a>
+                    </div>
                 </div>
             </form>
         </div>

@@ -1,199 +1,122 @@
 <?php
-session_start();
-// Connexion à la base de données
-$conn = new mysqli('localhost', 'root', '', 'elearning');
 
-if ($conn->connect_error) {
-    die("La connexion a échoué: " . $conn->connect_error);
+declare(strict_types=1);
+
+require_once __DIR__ . '/../backend/includes/bootstrap.php';
+require_auth();
+
+$pdo = db();
+
+$lessonId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($lessonId <= 0) {
+    set_flash('error', 'Leçon invalide.');
+    redirect('cours.php');
 }
 
-if (!isset($_GET['id'])) {
-    die("ID de leçon manquant.");
+$stmt = $pdo->prepare('SELECT id_lecon, titre, description, type_fichier, nom_fichier, id_cours FROM lecon WHERE id_lecon = :id LIMIT 1');
+$stmt->execute(['id' => $lessonId]);
+$lesson = $stmt->fetch();
+if (!$lesson) {
+    set_flash('error', 'Leçon introuvable.');
+    redirect('cours.php');
 }
 
-$id_lecon = intval($_GET['id']);
+$courseId = (int) $lesson['id_cours'];
+$filePath = '../../professeur/uploads/' . (string) $lesson['nom_fichier'];
+$mimeType = (string) ($lesson['type_fichier'] ?? '');
 
-// RÉCUPÉRATION DE LA LEÇON
-$res = $conn->query("SELECT * FROM lecon WHERE id_lecon = $id_lecon");
-$lecon = $res->fetch_assoc();
-
-if (!$lecon) {
-    die("Leçon introuvable.");
+$mode = 'file';
+if (stripos($mimeType, 'video') !== false) {
+    $mode = 'video';
+} elseif (stripos($mimeType, 'pdf') !== false) {
+    $mode = 'pdf';
+} elseif (stripos($mimeType, 'audio') !== false || stripos($mimeType, 'mpeg') !== false) {
+    $mode = 'audio';
 }
 
-// --- CRUCIAL : On récupère l'ID du cours pour la redirection et le suivi ---
-$id_cours = intval($lecon['id_cours']); 
-
-$chemin = "../../professeur/uploads/" . $lecon['nom_fichier'];
-$type = $lecon['type_fichier'];
-
-// Détermination de la classe dynamique
-$mode_class = "mode-empty";
-if (strpos($type, 'video') !== false) {
-    $mode_class = "mode-video";
-} elseif (strpos($type, 'pdf') !== false) {
-    $mode_class = "mode-pdf";
-} elseif (strpos($type, 'audio') !== false || strpos($type, 'mpeg') !== false) {
-    $mode_class = "mode-audio";
-}
-?>
-
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($lecon['titre']); ?> - Enjah</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../../professeur/visualisation.css">
-    <style>
-        :root {
-            --primary-blue: #4d68e1;
-            --slate-dark: #1e293b;
-            --white: #ffffff;
-            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
-
-        .viewer-container {
-            max-width: 1100px;
-            margin: 20px auto;
-            background: var(--white);
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .back-nav { padding: 20px; border-bottom: 1px solid #eee; }
-        .back-link { text-decoration: none; color: var(--slate-dark); font-weight: 600; display: flex; align-items: center; gap: 8px; }
-
-        /* ZONE MÉDIA */
-        .media-box {
-            display: flex; justify-content: center; align-items: center;
-            min-height: 500px; width: 100%; transition: all 0.3s ease;
-        }
-
-        .mode-video { background: #0f172a; }
-        .mode-video video { width: 90%; max-width: 900px; max-height: 80vh; border-radius: 12px; }
-
-        .mode-pdf { background: #f1f5f9; padding: 40px; }
-        .pdf-viewer { width: 95%; height: 80vh; border-radius: 12px; border: 8px solid white; box-shadow: var(--shadow-lg); }
-
-        .mode-audio { background: linear-gradient(135deg, #1e293b, #4d68e1); flex-direction: column; padding: 60px; }
-        .audio-icon { font-size: 80px; color: white; margin-bottom: 20px; animation: pulse 2s infinite ease-in-out; }
-        .mode-audio audio { width: 100%; max-width: 500px; filter: invert(1) brightness(1.5); }
-
-        .media-info { padding: 30px 40px; }
-        .btn-primary {
-            background: var(--primary-blue); color: white; border: none;
-            padding: 12px 25px; border-radius: 12px; font-weight: bold;
-            cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px;
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(77, 104, 225, 0.4); }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars((string) $lesson['titre'], ENT_QUOTES, 'UTF-8'); ?> - Enjah</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="../media/favicon_io/favicon.ico">
+    <link rel="manifest" href="../media/favicon_io/site.webmanifest">
 </head>
 <body>
+    <div class="dashboard-container">
+        <?php $active = 'cours'; require __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="viewer-container">
-    <div class="back-nav">
-        <a href="lesson(a).php?id=<?php echo $id_cours; ?>" class="back-link">
-            <i class="fas fa-arrow-left"></i> Retour aux leçons
-        </a>
+        <main class="main-content">
+            <header class="header header-flex">
+                <div>
+                    <h1><?php echo htmlspecialchars((string) $lesson['titre'], ENT_QUOTES, 'UTF-8'); ?></h1>
+                    <p><?php echo htmlspecialchars((string) ($lesson['description'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+                <div class="header-actions">
+                    <a class="btn-nav" href="lesson(a).php?id=<?php echo $courseId; ?>">Retour aux leçons</a>
+                </div>
+            </header>
+
+            <section class="lesson-viewer card">
+                <div class="lesson-media lesson-media-<?php echo htmlspecialchars($mode, ENT_QUOTES, 'UTF-8'); ?>">
+                    <?php if ($mode === 'video'): ?>
+                        <video id="mainVideo" controls autoplay>
+                            <source src="<?php echo htmlspecialchars($filePath, ENT_QUOTES, 'UTF-8'); ?>" type="<?php echo htmlspecialchars($mimeType, ENT_QUOTES, 'UTF-8'); ?>">
+                            Votre navigateur ne supporte pas la vidéo.
+                        </video>
+                    <?php elseif ($mode === 'pdf'): ?>
+                        <embed class="lesson-pdf" src="<?php echo htmlspecialchars($filePath, ENT_QUOTES, 'UTF-8'); ?>#toolbar=0" type="application/pdf">
+                    <?php elseif ($mode === 'audio'): ?>
+                        <div class="lesson-audio-shell">
+                            <div class="lesson-audio-icon" aria-hidden="true">&#127911;</div>
+                            <audio controls>
+                                <source src="<?php echo htmlspecialchars($filePath, ENT_QUOTES, 'UTF-8'); ?>" type="<?php echo htmlspecialchars($mimeType, ENT_QUOTES, 'UTF-8'); ?>">
+                            </audio>
+                        </div>
+                    <?php else: ?>
+                        <div class="lesson-file-shell">
+                            <p style="color: var(--muted); margin-bottom: 14px;">Aperçu non disponible pour ce format.</p>
+                            <a class="btn-primary" href="<?php echo htmlspecialchars($filePath, ENT_QUOTES, 'UTF-8'); ?>" download>Télécharger le fichier</a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="lesson-viewer-actions">
+                    <a class="btn-primary" href="../backend/actions/valider_lesson.php?id_lecon=<?php echo $lessonId; ?>&id_cours=<?php echo $courseId; ?>">
+                        Marquer comme terminée
+                    </a>
+                </div>
+            </section>
+
+            <script>
+                function markLessonDone() {
+                    const idLecon = <?php echo $lessonId; ?>;
+                    const idCours = <?php echo $courseId; ?>;
+
+                    fetch('../backend/actions/valider_lesson.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'id_lecon=' + encodeURIComponent(idLecon) + '&id_cours=' + encodeURIComponent(idCours)
+                    })
+                        .then(function (response) { return response.json(); })
+                        .then(function () { window.location.href = 'lesson(a).php?id=' + idCours; })
+                        .catch(function () { window.location.href = 'lesson(a).php?id=' + idCours; });
+                }
+
+                const video = document.getElementById('mainVideo');
+                if (video) {
+                    video.addEventListener('ended', function () {
+                        markLessonDone();
+                    });
+                }
+            </script>
+        </main>
     </div>
-
-    <div class="media-box <?php echo $mode_class; ?>">
-        <?php if ($mode_class === "mode-video"): ?>
-            <video id="mainVideo" controls autoplay>
-                <source src="<?php echo $chemin; ?>" type="<?php echo $type; ?>">
-                Votre navigateur ne supporte pas la vidéo.
-            </video>
-
-        <?php elseif ($mode_class === "mode-pdf"): ?>
-            <embed src="<?php echo $chemin; ?>#toolbar=0" type="application/pdf" class="pdf-viewer" />
-
-        <?php elseif ($mode_class === "mode-audio"): ?>
-            <div class="audio-player-wrapper">
-                <div class="audio-icon">♫</div>
-                <audio controls>
-                    <source src="<?php echo $chemin; ?>" type="<?php echo $type; ?>">
-                </audio>
-            </div>
-
-        <?php else: ?>
-            <div class="empty-state" style="text-align:center; padding:50px;">
-                <i class="fas fa-exclamation-triangle" style="font-size:40px; color:#e74c3c;"></i>
-                <p>Format non supporté pour l'aperçu.</p>
-                <a href="<?php echo $chemin; ?>" download class="btn-primary">Télécharger le fichier</a>
-            </div>
-        <?php endif; ?>
-    </div>
-
-    <div class="media-info">
-        <h2><?php echo htmlspecialchars($lecon['titre']); ?></h2>
-        <p style="color: #64748b; margin-bottom: 20px;"><?php echo htmlspecialchars($lecon['description']); ?></p>
-        
-        <hr style="border:0; border-top:1px solid #eee; margin: 20px 0;">
-
-       
-        <div style="text-align: center; margin-top: 20px;">
-    <a href="../backend/actions/valider_lesson.php?id_lecon=<?php echo $id_lecon; ?>&id_cours=<?php echo $id_cours; ?>" 
-       class="btn-primary" 
-       style="text-decoration: none;">
-        <i class="fas fa-check-circle"></i> Marquer cette leçon comme terminée
-    </a>
-</div>
-    </div>
-</div>
-
-<script>
-/**
- * FONCTION UNIQUE POUR VALIDER LA LEÇON
- * Utilisée par le bouton ET par la fin de la vidéo
- */
-function confirmerLeconTerminee() {
-    const idLecon = <?php echo $id_lecon; ?>;
-    const idCours = <?php echo $id_cours; ?>;
-
-    console.log("Validation en cours pour la leçon : " + idLecon);
-
-    // Envoi des données vers valider_lecon.php
-    fetch('../backend/actions/valider_lesson.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'id_lecon=' + idLecon + '&id_cours=' + idCours
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Félicitations ! Votre progression a été enregistrée.");
-            // Redirection pour voir la mise à jour (barre de progression / badge vert)
-            window.location.href = 'lesson(a).php?id=' + idCours;
-        } else {
-            console.warn("Réponse serveur : ", data.message);
-            // Si c'est déjà validé, on redirige quand même pour l'expérience utilisateur
-            window.location.href = 'lesson(a).php?id=' + idCours;
-        }
-    })
-    .catch(error => {
-        console.error('Erreur Fetch :', error);
-        alert("Erreur lors de la sauvegarde. Vérifiez votre connexion.");
-    });
-}
-
-// GESTION AUTOMATIQUE POUR LES VIDÉOS
-const video = document.getElementById('mainVideo');
-if (video) {
-    video.onended = function() {
-        console.log("Vidéo finie. Validation automatique...");
-        confirmerLeconTerminee();
-    };
-}
-</script>
-
 </body>
 </html>
+

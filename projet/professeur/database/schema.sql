@@ -1,14 +1,5 @@
--- MySQL / MariaDB schema (XAMPP compatible)
-
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(80) NOT NULL,
-    last_name VARCHAR(80) NOT NULL,
-    email VARCHAR(190) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    preferred_language VARCHAR(10) NOT NULL DEFAULT 'en',
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- MySQL / MariaDB schema (prototype)
+-- Note: this app uses `user_id` as a numeric identifier (CIN) and does not rely on a `users` table.
 
 CREATE TABLE IF NOT EXISTS tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,7 +12,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     is_completed TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_tasks_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    KEY idx_tasks_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS reclamations (
@@ -34,7 +25,7 @@ CREATE TABLE IF NOT EXISTS reclamations (
     status ENUM('open', 'in_progress', 'resolved') NOT NULL DEFAULT 'open',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_reclamations_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    KEY idx_reclamations_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS courses (
@@ -54,9 +45,9 @@ CREATE TABLE IF NOT EXISTS enrollments (
     progress TINYINT UNSIGNED NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_enrollment UNIQUE (user_id, course_id),
-    CONSTRAINT fk_enrollments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_enrollments_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-    CONSTRAINT chk_enrollments_progress CHECK (progress BETWEEN 0 AND 100)
+    CONSTRAINT chk_enrollments_progress CHECK (progress BETWEEN 0 AND 100),
+    KEY idx_enrollments_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS certificates (
@@ -66,5 +57,6 @@ CREATE TABLE IF NOT EXISTS certificates (
     issued_on DATE NOT NULL,
     file_path VARCHAR(500) NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_certificates_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    KEY idx_certificates_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/helpers.php';
 
 function user_id()
 {
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['CIN'])) {
         return null;
     }
 
-    return (int) $_SESSION['user_id'];
+    return (int) $_SESSION['CIN'];
 }
 
 function is_authenticated()
@@ -20,15 +22,17 @@ function require_auth()
 {
     if (!is_authenticated()) {
         set_flash('error', 'Veuillez vous connecter pour continuer.');
-        redirect('/pages/login.php');
+        $script = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
+        $path = str_contains($script, '/backend/') ? '../../pages/login.php' : 'login.php';
+        redirect($path);
     }
 }
 
 function login_user($id, $fullName)
 {
     session_regenerate_id(true);
-    $_SESSION['user_id'] = (int) $id;
-    $_SESSION['full_name'] = (string) $fullName;
+    $_SESSION['CIN'] = (int) $id;
+    $_SESSION['nom'] = (string) $fullName;
 }
 
 function logout_user()
@@ -42,3 +46,4 @@ function logout_user()
 
     session_destroy();
 }
+

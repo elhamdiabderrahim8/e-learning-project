@@ -6,7 +6,7 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../../database/database.php';
 
 if (!isset($_SESSION['preferred_language'])) {
-	$_SESSION['preferred_language'] = 'en';
+	$_SESSION['preferred_language'] = 'fr';
 }
 
 if (is_authenticated()) {
@@ -14,8 +14,8 @@ if (is_authenticated()) {
 		$needSync = !isset($_SESSION['preferred_language_synced']) || $_SESSION['preferred_language_synced'] !== true;
 		if ($needSync) {
 			$pdo = db();
-			$stmt = $pdo->prepare('SELECT preferred_language FROM users WHERE id = :id LIMIT 1');
-			$stmt->execute(['id' => user_id()]);
+			$stmt = $pdo->prepare('SELECT preferred_language FROM professeur WHERE CIN = :cin LIMIT 1');
+			$stmt->execute(['cin' => user_id()]);
 
 			$lang = (string) ($stmt->fetchColumn() ?: 'en');
 			if ($lang !== 'en' && $lang !== 'fr') {

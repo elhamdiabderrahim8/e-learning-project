@@ -4,14 +4,8 @@ require_once __DIR__ . '/../backend/includes/bootstrap.php';
 require_auth();
 
 $pdo = db();
-try {
-    $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10) NOT NULL DEFAULT 'en'");
-} catch (Throwable $e) {
-    // Ignore if DB permissions restrict alter operations.
-}
-
-$stmt = $pdo->prepare('SELECT id, first_name, last_name, email, created_at, preferred_language FROM users WHERE id = :user_id');
-$stmt->execute(['user_id' => user_id()]);
+$stmt = $pdo->prepare('SELECT CIN, nom, prenom FROM professeur WHERE CIN = :cin LIMIT 1');
+$stmt->execute(['cin' => user_id()]);
 $user = $stmt->fetch();
 
 if (!$user) {
@@ -19,22 +13,21 @@ if (!$user) {
     redirect('../backend/actions/logout.php');
 }
 
-$createdAt = (string) $user['created_at'];
-$memberSince = date('d/m/Y', strtotime($createdAt));
-$initials = strtoupper(substr((string) $user['first_name'], 0, 1) . substr((string) $user['last_name'], 0, 1));
-$fullName = trim((string) $user['first_name'] . ' ' . (string) $user['last_name']);
-$preferredLanguage = (string) ($user['preferred_language'] ?? 'en');
+$initials = strtoupper(substr((string) $user['nom'], 0, 1) . substr((string) $user['prenom'], 0, 1));
+$fullName = trim((string) $user['nom'] . ' ' . (string) $user['prenom']);
+$preferredLanguage = (string) ($_SESSION['preferred_language'] ?? 'fr');
 if (!in_array($preferredLanguage, ['en', 'fr'], true)) {
-    $preferredLanguage = 'en';
+    $preferredLanguage = 'fr';
 }
 
-$languageLabel = 'English';
+$languageLabel = 'Francais';
 $selectedEn = 'selected';
 $selectedFr = '';
 if ($preferredLanguage === 'fr') {
-    $languageLabel = 'Francais';
     $selectedEn = '';
     $selectedFr = 'selected';
+} else {
+    $languageLabel = 'English';
 }
 
 $error = get_flash('error');
@@ -55,18 +48,7 @@ $success = get_flash('success');
 <body>
 
     <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
-            <nav>
-                <ul>
-                    <li><a href="cours.php"><span class="nav-icon">&#8962;</span><span>Mes Cours</span></a></li>
-                    <li><a href="tache_a_fair.php"><span class="nav-icon">&#128221;</span><span>Mes Taches</span></a></li>
-                    <li><a href="offres.php"><span class="nav-icon">&#9671;</span><span>Choisir une offre</span></a></li>
-                    <li><a href="reclamation.php"><span class="nav-icon">&#128172;</span><span>Reclamation</span></a></li>
-                    <li class="active"><a href="profil.php"><span class="nav-icon">&#128100;</span><span>Mon Profil</span></a></li>
-                </ul>
-            </nav>
-        </aside>
+        <?php $active = 'profil'; require __DIR__ . '/partials/sidebar.php'; ?>
 
         <main class="main-content">
             <header class="header">
@@ -86,11 +68,11 @@ $success = get_flash('success');
                     <div class="profile-avatar"><?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?></div>
                     <div class="profile-hero-text">
                         <h2><?php echo htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8'); ?></h2>
-                        <p><?php echo htmlspecialchars((string) $user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p style="color: var(--muted); font-weight: 700;">CIN : <?php echo htmlspecialchars((string) $user['CIN'], ENT_QUOTES, 'UTF-8'); ?></p>
                     </div>
                     <div class="profile-badges">
                         <span class="profile-chip">Compte actif</span>
-                        <span class="profile-chip profile-chip-soft">Membre depuis <?php echo htmlspecialchars($memberSince, ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="profile-chip profile-chip-soft">Espace professeur</span>
                     </div>
                 </article>
 
@@ -99,23 +81,19 @@ $success = get_flash('success');
                     <div class="profile-info">
                         <div class="info-row">
                             <span class="info-label">Prenom</span>
-                            <span class="info-value"><?php echo htmlspecialchars((string) $user['first_name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="info-value"><?php echo htmlspecialchars((string) $user['prenom'], ENT_QUOTES, 'UTF-8'); ?></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Nom</span>
-                            <span class="info-value"><?php echo htmlspecialchars((string) $user['last_name'], ENT_QUOTES, 'UTF-8'); ?></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Adresse email</span>
-                            <span class="info-value"><?php echo htmlspecialchars((string) $user['email'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="info-value"><?php echo htmlspecialchars((string) $user['nom'], ENT_QUOTES, 'UTF-8'); ?></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Langue</span>
                             <span class="info-value"><?php echo $languageLabel; ?></span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Membre depuis</span>
-                            <span class="info-value"><?php echo htmlspecialchars($memberSince, ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="info-label">Role</span>
+                            <span class="info-value">Professeur</span>
                         </div>
                     </div>
 
@@ -124,18 +102,18 @@ $success = get_flash('success');
                         <div class="input-row">
                             <div class="input-group">
                                 <label for="first_name">Prenom</label>
-                                <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars((string) $user['first_name'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars((string) $user['prenom'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="input-group">
                                 <label for="last_name">Nom</label>
-                                <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars((string) $user['last_name'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars((string) $user['nom'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                         </div>
 
                         <div class="input-group">
                             <label for="preferred_language">Langue du site</label>
                             <select id="preferred_language" name="preferred_language">
-                                <option value="en" <?php echo $selectedEn; ?>>English (default)</option>
+                                <option value="en" <?php echo $selectedEn; ?>>English</option>
                                 <option value="fr" <?php echo $selectedFr; ?>>Francais</option>
                             </select>
                         </div>

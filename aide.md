@@ -29,7 +29,12 @@ Choisissez le fichier SQL situé dans le dossier :projet/taki/database/elearning
 
 Cliquez sur "Importer" en bas de la page.
 
-4. Vérification de la Connexion
+4. Appliquer la migration Support / suppression de `users`
+Après l'import, exécutez le script SQL :
+projet/taki/database/migrations/2026-04-04_support_and_remove_users.sql
+dans phpMyAdmin (onglet SQL). Cela supprime la table `users` et ajoute la table `support_messages`.
+
+5. Vérification de la Connexion
 Assurez-vous que votre fichier de configuration (ex: backend/config/database.php) utilise ces paramètres par défaut :
 
 Serveur : localhost

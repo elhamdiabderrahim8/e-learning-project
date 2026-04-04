@@ -20,7 +20,9 @@ function require_auth()
 {
     if (!is_authenticated()) {
         set_flash('error', 'Veuillez vous connecter pour continuer.');
-        redirect('/pages/login.php');
+        $script = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
+        $path = str_contains($script, '/backend/') ? '../../pages/login.php' : 'login.php';
+        redirect($path);
     }
 }
 
