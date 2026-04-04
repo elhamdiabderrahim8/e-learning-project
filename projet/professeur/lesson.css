@@ -1,0 +1,754 @@
+/* Palette de couleurs Enjah */
+:root {
+    --primary-blue: #4d68e1;      /* Bleu Royal Enjah */
+    --slate-dark: #1e293b;        /* Bleu Ardoise de la Sidebar */
+    --accent-pink: #e280c4;       /* Accent Rose du logo */
+    --danger-red: #ff4b2b;        /* Rouge pour la suppression */
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Sidebar Style --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--slate-blue);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+}
+
+.sidebar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-pink);
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    color: #cbd5e0;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar nav ul li.active a, .sidebar nav ul li a:hover {
+    background-color: var(--primary-blue);
+    color: white;
+}
+.head{
+    display: flex;
+    align-items: center;    /* Centre verticalement les deux éléments */
+    gap: 15px;             /* Espace entre le logo et le texte */
+    padding: 5;
+}
+#logo{
+height: 60px;          /* Taille cohérente avec le texte */
+    width: auto;
+}
+.brand-name{
+   padding-top:15px;
+   margin-left:-5px;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+}
+
+/* --- Mise en page globale --- */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    padding: 40px;
+}
+
+.header h1 {
+    color: var(--slate-dark);
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+/* --- Conteneur des leçons --- */
+.leçons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.leçons-container h3 {
+    color: var(--primary-blue);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* --- Cartes de leçons --- */
+.lecon-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    padding: 20px 25px;
+    border-radius: 20px; /* Bords arrondis Enjah */
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.lecon-item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(77, 104, 225, 0.2);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.lecon-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(77, 104, 225, 0.1);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+}
+
+.lecon-info {
+    flex: 1;
+}
+
+.lecon-info h4 {
+    margin: 0;
+    color: var(--slate-dark);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.lecon-info span {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* --- Boutons d'action --- */
+.btn-view {
+    background: var(--primary-blue);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-view:hover {
+    background: var(--slate-dark);
+    transform: scale(1.05);
+}
+
+.btn-add-lecon {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(77, 104, 225, 0.3);
+}
+
+.btn-add-lecon:hover {
+    background: var(--accent-pink); /* Change vers le rose au survol */
+    transform: translateY(-2px);
+}
+
+/* --- Modal & Formulaire --- */
+.modal {
+    background: rgba(30, 41, 59, 0.6); /* Overlay sombre ardoise */
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--slate-dark);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-blue);
+    outline: none;
+}
+
+.btn-save {
+    width: 100%;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* --- Fenêtre Modale (Background) --- */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 41, 59, 0.7); /* Slate Blue avec transparence */
+    backdrop-filter: blur(5px); /* Effet de flou moderne en arrière-plan */
+}
+
+/* --- Contenu de la carte du formulaire --- */
+.modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 35px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 24px; /* Bords très arrondis comme vos autres cartes */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    text-align: left; /* Alignement propre du texte */
+}
+
+/* --- Bouton de fermeture (X) --- */
+.close-btn {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    font-size: 28px;
+    color: #64748b;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: #4d68e1; /* Passage au Bleu Royal au survol */
+}
+
+/* --- Titre du formulaire --- */
+.modal-content h2 {
+    color: #1e293b; /* Slate Blue foncé */
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 15px;
+}
+
+/* --- Groupes de saisie --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #475569; /* Gris foncé lisible */
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0; /* Bordure légère */
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    color: #1e293b;
+    background-color: #f8fafc; /* Fond très légèrement grisé pour le contraste */
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Évite que l'input ne dépasse */
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4d68e1; /* Bordure Bleu Royal au clic */
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(77, 104, 225, 0.1);
+}
+
+/* --- Bouton Publier --- */
+.btn-save {
+    width: 100%;
+    background-color: #4d68e1; /* Bleu Royal Enjah */
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.2s, background-color 0.3s;
+    box-shadow: 0 10px 20px rgba(77, 104, 225, 0.2);
+}
+
+.btn-save:hover {
+    background-color: #3b52c1;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(77, 104, 225, 0.3);
+}
+
+
+
+
+
+/* --- Overlay du Modal --- */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(30, 41, 59, 0.7); /* Fond ardoise transparent */
+    backdrop-filter: blur(8px); /* Flou d'arrière-plan moderne */
+}
+
+/* --- Fenêtre du Formulaire --- */
+.modal-content {
+    background-color: #ffffff;
+    margin: 8% auto;
+    padding: 40px;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 24px; /* Bords arrondis Enjah */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    position: relative;
+    border: none;
+}
+
+/* --- Titre du Formulaire --- */
+.modal-content h2 {
+    color: #1e293b; /* Ardoise foncé */
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* --- Champs de saisie et Labels --- */
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 700; /* Plus gras pour la lisibilité */
+    color: #475569;   /* Gris ardoise clair */
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0; /* Bordure plus visible */
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #1e293b;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* Interaction au clic */
+.form-group input:focus {
+    outline: none;
+    border-color: #4d68e1; /* Bleu Royal Enjah */
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(77, 104, 225, 0.15);
+}
+
+/* --- Style spécifique pour l'input File --- */
+.form-group input[type="file"] {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    border: 2px dashed #cbd5e0; /* Style "upload" */
+}
+
+/* --- Bouton de Publication --- */
+.btn-save {
+    width: 100%;
+    background: linear-gradient(135deg, #4d68e1, #3b52c1); /* Dégradé Bleu Royal */
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(77, 104, 225, 0.25);
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(77, 104, 225, 0.4);
+    filter: brightness(1.1);
+}
+
+/* Bouton Fermer (X) */
+.close-btn {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    font-size: 24px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #e280c4; /* Rose Enjah au survol */
+}
+
+
+
+
+/* --- L'overlay (Le bloc vague derrière) --- */
+/* --- L'Overlay (Le fond flou derrière) --- */
+.modal {
+    display: none; /* Caché par défaut */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 41, 59, 0.5); /* Slate Blue transparent */
+    backdrop-filter: blur(8px); /* Effet de flou moderne */
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- La Boîte Blanche (Contenu) --- */
+.modal-content {
+    background-color: #ffffff;
+    padding: 40px;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 24px; /* Bords arrondis Enjah */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- Titre et Labels --- */
+.modal-content h2 {
+    color: #1e293b; /* Ardoise foncé */
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Espace entre label et input */
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Champs de saisie --- */
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4d68e1; /* Bleu Royal */
+    box-shadow: 0 0 0 4px rgba(77, 104, 225, 0.1);
+}
+
+/* --- Bouton Publier --- */
+.btn-save {
+    width: 100%;
+    background: linear-gradient(135deg, #4d68e1, #3b52c1);
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 10px 20px rgba(77, 104, 225, 0.2);
+    transition: 0.3s;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* Bouton Fermer (X) */
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Palette de couleurs Enjah */
+:root {
+    --primary-blue: #4d68e1;      /* Bleu Royal Enjah */
+    --slate-dark: #1e293b;        /* Bleu Ardoise foncé (de la Sidebar) */
+    --accent-pink: #e280c4;       /* Accent Rose du logo */
+    --border-light: #e2e8f0;
+    --bg-input: #f8fafc;
+    --shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* --- Le Conteneur de la Carte (La boîte blanche) --- */
+.modal-content {
+    background: #ffffff !important;
+    padding: 35px 30px 40px !important;
+    border-radius: 24px !important; /* Arrondi Enjah */
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important;
+    position: relative !important;
+    margin: 2% auto !important; /* Marge réduite pour laisser de la place au bouton */
+    max-height: 90vh !important; /* Empêche de sortir de l'écran */
+    overflow-y: auto !important;  /* Ajoute un scroll si nécessaire */
+    width: 90% !important;
+    max-width: 500px !important;
+}
+
+/* --- Repositionnement du Bouton de Fermeture (X) --- */
+.close-btn {
+    position: absolute !important;
+    top: 15px !important;    /* Positionné à l'extérieur de la boîte */
+    right: 15px !important;  /* En haut à droite */
+    background: #e15555 !important; /* Fond rouge vif pour la suppression */
+    color: white !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important; /* Cercle parfait */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 10px rgba(225, 85, 85, 0.4) !important;
+    transition: all 0.2s ease !important;
+    border: 2px solid #ffffff !important; /* Liseré blanc élégant */
+}
+
+.close-btn:hover {
+    transform: scale(1.1) !important;
+    filter: brightness(1.1) !important;
+}
+
+/* --- Titre du Formulaire --- */
+#form-ajout h2 {
+    color: var(--slate-dark); /* Ardoise foncée lisible */
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 30px !important;
+    text-align: center !important;
+}
+
+/* --- Style des Groupes de Champs --- */
+.form-group {
+    margin-bottom: 25px !important;
+    text-align: left !important;
+}
+
+.form-group label {
+    display: block !important;
+    font-weight: 700 !important;
+    color: var(--slate-dark) !important; /* Ardoise foncé pour la clarté */
+    margin-bottom: 8px !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* --- Champs de Saisie Texte et Nombre --- */
+.form-group input[type="text"],
+.form-group input[type="number"] {
+    width: 100% !important;
+    height: 50px !important;
+    padding: 12px 18px !important;
+    border: 2px solid var(--border-light) !important; /* Bordure discrète */
+    border-radius: 12px !important;
+    font-size: 1rem !important;
+    color: var(--slate-dark) !important;
+    background-color: var(--bg-input) !important;
+    box-sizing: border-box !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Effet Focus */
+.form-group input:focus {
+    outline: none !important;
+    border-color: var(--primary-blue) !important; /* Bleu Royal au clic */
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(77, 104, 225, 0.1) !important;
+}
+
+/* --- Nouveau Design de l'Input Type File (Zone d'Upload) --- */
+.form-group input[type="file"] {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 60px !important; /* Plus haut pour un aspect "Zone de dépôt" */
+    cursor: pointer !important;
+    background-color: var(--bg-input) !important;
+    border: 2px dashed #cbd5e0 !important; /* Bordure pointillée pour l'upload */
+    border-radius: 12px !important;
+    padding: 0 15px !important;
+    color: #4a5568 !important; /* Gris foncé pour le texte par défaut */
+    font-size: 0.9rem !important;
+}
+
+/* Personnalisation du texte du bouton "Choisir un fichier" */
+.form-group input[type="file"]::-webkit-file-upload-button {
+    background-color: var(--primary-blue) !important; /* Bleu Royal Enjah */
+    color: white !important;
+    padding: 8px 15px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    margin-right: 15px !important;
+    transition: background-color 0.3s !important;
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: var(--accent-pink) !important; /* Passage au rose au survol */
+}
+
+/* --- Bouton Publier --- */
+.btn-save {
+    width: 100% !important;
+    background: linear-gradient(135deg, var(--primary-blue), #3b52c1) !important; /* Dégradé Bleu Royal */
+    color: white !important;
+    padding: 18px !important;
+    border: none !important;
+    border-radius: 15px !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    margin-top: 15px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 10px 20px rgba(77, 104, 225, 0.3) !important; /* Ombre portée cliquable */
+}
+
+.btn-save:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 15px 30px rgba(77, 104, 225, 0.4) !important;
+    filter: brightness(1.1) !important;
+}
