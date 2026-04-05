@@ -89,4 +89,4 @@ if (-not $SkipSeed -and (Test-Path -Path $seedFile)) {
 }
 
 Write-Host "MySQL setup completed successfully." -ForegroundColor Green
-Write-Host "You can now run: php -S localhost:8000 -t takizip/taki" -ForegroundColor Green
+Write-Host "You can now run: php -S localhost:8000 -t kmr/professeur" -ForegroundColor Green

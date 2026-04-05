@@ -47,7 +47,7 @@ $success = get_flash('success');
             <?php if (!$supportReady): ?>
                 <div class="task-alert task-alert-error">
                     Table <code>support_messages</code> manquante. Importez la migration SQL dans
-                    <code>projet/taki/database/migrations/2026-04-04_support_and_remove_users.sql</code>.
+                    <code>kmr/student/database/migrations/2026-04-04_support_and_remove_users.sql</code>.
                 </div>
             <?php endif; ?>
 

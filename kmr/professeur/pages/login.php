@@ -57,7 +57,7 @@ $success = get_flash('success');
                 <div class="login-footer">
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a>
                     <div style="margin-top: 10px;">
-                        Vous etes etudiant ? <a href="../../taki/pages/login.php">Connexion etudiant</a>
+                        Vous etes etudiant ? <a href="../../student/pages/login.php">Connexion etudiant</a>
                     </div>
                 </div>
             </form>

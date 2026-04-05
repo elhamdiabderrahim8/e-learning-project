@@ -16,7 +16,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Cours Gratuits - Enjah</title>
-    <link rel="stylesheet" href="D:\programmes\xampp\htdocs\projet\professeur\form_cours.css">
+    <link rel="stylesheet" href="../../professeur/form_cours.css">
     <link rel="stylesheet" href="../../professeur/nouvel.css">
     <style>
         img{

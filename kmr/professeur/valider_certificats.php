@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../taki/backend/config/database.php');
+require_once __DIR__ . '/backend/config/database.php';
 
 $pdo = db(); 
 
