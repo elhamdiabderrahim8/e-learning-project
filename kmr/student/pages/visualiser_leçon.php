@@ -22,7 +22,7 @@ if (!$lesson) {
 }
 
 $courseId = (int) $lesson['id_cours'];
-$filePath = '../../professeur/uploads/' . (string) $lesson['nom_fichier'];
+$filePath = '../../../professeur/uploads/' . (string) $lesson['nom_fichier'];
 $mimeType = (string) ($lesson['type_fichier'] ?? '');
 
 $mode = 'file';

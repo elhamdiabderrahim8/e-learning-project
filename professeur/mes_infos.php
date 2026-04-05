@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION["CIN"])) {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 

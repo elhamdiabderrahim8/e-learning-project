@@ -9,7 +9,7 @@ require_auth();
 $current_student_cin = $_SESSION['CIN'] ?? null;
 
 // 3. Inclusion de la connexion externe
-require_once __DIR__ .'/../../professeur/config/connexion.php'; 
+require_once __DIR__ .'/../../../professeur/config/connexion.php'; 
 
 // 4. RESTAURATION : On s'assure que le CIN reste celui de l'élève
 if ($current_student_cin) {

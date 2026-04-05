@@ -30,11 +30,16 @@ $dbName = if ($config.ContainsKey("DB_NAME")) { $config["DB_NAME"] } else { "ele
 $dbUser = if ($config.ContainsKey("DB_USER")) { $config["DB_USER"] } else { "root" }
 $dbPass = if ($config.ContainsKey("DB_PASS")) { $config["DB_PASS"] } else { "" }
 
-$schemaFile = Join-Path $scriptDir "schema.sql"
+$schemaFile = Join-Path $scriptDir "elearning_unified.sql"
 $seedFile = Join-Path $scriptDir "seed.sql"
 
 if (-not (Test-Path -Path $schemaFile)) {
-    throw "schema.sql not found in $scriptDir"
+    $legacySchemaFile = Join-Path $scriptDir "schema.sql"
+    if (Test-Path -Path $legacySchemaFile) {
+        $schemaFile = $legacySchemaFile
+    } else {
+        throw "elearning_unified.sql not found in $scriptDir"
+    }
 }
 
 if ($MysqlExe -eq "") {
@@ -77,7 +82,7 @@ if ($LASTEXITCODE -ne 0) {
 
 (Get-Content -Path $schemaFile -Raw) | & $MysqlExe @authArgs $dbName
 if ($LASTEXITCODE -ne 0) {
-    throw "Failed to import schema.sql"
+    throw "Failed to import schema file: $schemaFile"
 }
 
 if (-not $SkipSeed -and (Test-Path -Path $seedFile)) {

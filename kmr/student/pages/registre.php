@@ -82,7 +82,7 @@ $success = get_flash('success');
                 <div class="login-footer">
                         Vous avez deja un compte ? <a href="login.php">Se connecter</a>
                         <div style="margin-top: 10px;">
-                            Vous etes professeur ? <a href="../../professeur/pages/registre.php">Inscription professeur</a>
+                            Vous etes professeur ? <a href="../../../professeur/registre.php">Inscription professeur</a>
                         </div>
                 </div>
             </form>

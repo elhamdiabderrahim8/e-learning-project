@@ -3,7 +3,7 @@ session_start();
 
 // 1. Vérification de sécurité
 if (empty($_SESSION["CIN"]) || !isset($_POST['modifier_infos'])) {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 

@@ -21,7 +21,7 @@ if (!empty($user['data'])) {
     $base64 = base64_encode($user['data']);
     $src = "data:" . $user['type'] . ";base64," . $base64;
 } else {
-    $src = "../../professeur/profil.avif"; // Image par défaut
+    $src = "../../../professeur/profil.avif"; // Image par défaut
 }
 
 // Variables d'affichage

@@ -58,7 +58,7 @@ $success = get_flash('success');
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a><br>
                     or <a href="invité(a).php">mode invité</a>
                     <div style="margin-top: 10px;">
-                        Vous etes professeur ? <a href="../../professeur/pages/login.php">Connexion professeur</a>
+                        Vous etes professeur ? <a href="../../../professeur/login.php">Connexion professeur</a>
                     </div>
                 </div>
             </form>

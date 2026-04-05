@@ -199,13 +199,13 @@ if (!empty($user['data'])) {
             
 <nav>
     <ul>
-        <li><a href="cours.html">Mes Cours</a></li>
+        <li><a href="offres.php">Mes Cours</a></li>
         
-        <li><a href="tache_a_fair.html">Mes Tâches</a></li>
+        <li><a href="offres.php">Mes Tâches</a></li>
         
         <li ><a href="offres.php">Vos Cours</a></li>
         
-        <li><a href="calendrier.html">Calendrier</a></li>
+        <li><a href="offres.php">Calendrier</a></li>
         
         <li><a href="certificats.html">Certificats</a></li>
         

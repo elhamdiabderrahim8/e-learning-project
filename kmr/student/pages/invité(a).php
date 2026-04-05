@@ -1,6 +1,6 @@
 <?php
 // On inclut le fichier de connexion que vous venez de créer
-require_once  __DIR__ .'/../../professeur/config/connexion.php'; 
+require_once  __DIR__ .'/../../../professeur/config/connexion.php'; 
 
 // Requête pour récupérer uniquement les cours gratuits
 // On suppose que votre table s'appelle 'cours'
@@ -16,8 +16,8 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Cours Gratuits - Enjah</title>
-    <link rel="stylesheet" href="../../professeur/form_cours.css">
-    <link rel="stylesheet" href="../../professeur/nouvel.css">
+    <link rel="stylesheet" href="../../../professeur/form_cours.css">
+    <link rel="stylesheet" href="../../../professeur/nouvel.css">
     <style>
         img{
             width:100px;
@@ -27,7 +27,7 @@ $result = $conn->query($sql);
 </head>
 <body>
 <div class="dashboard">
-                <img  id="logo"src="../../professeur/enjah.png" alt="logo">
+                <img  id="logo"src="../../../professeur/enjah.png" alt="logo">
                 <h3 class="logo brand-name">ENJAH</h3>
 <div class="container">
     

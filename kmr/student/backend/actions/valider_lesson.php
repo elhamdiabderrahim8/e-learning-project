@@ -1,7 +1,7 @@
 <?php
 session_start();
-// On remonte de 3 niveaux pour atteindre la configuration de connexion
-require_once __DIR__ . '/../../../professeur/config/connexion.php';
+// On remonte de 4 niveaux pour atteindre la configuration de connexion
+require_once __DIR__ . '/../../../../professeur/config/connexion.php';
 
 // 1. Récupération des données sécurisées depuis l'URL
 $id_lecon = isset($_GET['id_lecon']) ? intval($_GET['id_lecon']) : 0;
