@@ -138,6 +138,7 @@ $success = get_flash('success');
                         <div class="input-group">
                             <label>Changer la photo de profil</label>
                             <input type="file" name="profile_image" class="input-file-enjah" accept="image/*">
+                            <p class="input-help">Formats supportes: JPG, PNG, GIF, WEBP (max 5 MB).</p>
                         </div>
 
                         <div class="input-group">

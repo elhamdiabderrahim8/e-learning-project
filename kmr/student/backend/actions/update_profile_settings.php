@@ -34,24 +34,53 @@ try {
         'cin'    => $cin,
     ]);
 
-    // 3. Gestion de la PHOTO (Colonnes 'data' et 'type')
-    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-        
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
-        $fileType = $_FILES['profile_image']['type'];
+    // 3. Gestion de la photo de profil (colonnes data/type)
+    if (isset($_FILES['profile_image']) && is_array($_FILES['profile_image'])) {
+        $fileError = (int) ($_FILES['profile_image']['error'] ?? UPLOAD_ERR_NO_FILE);
 
-        if (in_array($fileType, $allowedTypes)) {
-            $imageData = file_get_contents($_FILES['profile_image']['tmp_name']);
+        if ($fileError !== UPLOAD_ERR_NO_FILE) {
+            if ($fileError !== UPLOAD_ERR_OK) {
+                set_flash('error', 'Echec de televersement de l\'image.');
+                redirect('../../pages/profil.php');
+            }
 
-            // --- CORRECTION ICI : Utilisation de 'data' et 'type' ---
+            $tmpName = (string) ($_FILES['profile_image']['tmp_name'] ?? '');
+            $fileSize = (int) ($_FILES['profile_image']['size'] ?? 0);
+
+            if ($tmpName === '' || !is_uploaded_file($tmpName)) {
+                set_flash('error', 'Fichier image invalide.');
+                redirect('../../pages/profil.php');
+            }
+
+            // 5 MB max for profile pictures.
+            if ($fileSize <= 0 || $fileSize > 5 * 1024 * 1024) {
+                set_flash('error', 'Image trop volumineuse (max 5 MB).');
+                redirect('../../pages/profil.php');
+            }
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $detectedType = $finfo ? (string) finfo_file($finfo, $tmpName) : '';
+            if ($finfo) {
+                finfo_close($finfo);
+            }
+
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!in_array($detectedType, $allowedTypes, true)) {
+                set_flash('error', 'Format d\'image non supporte.');
+                redirect('../../pages/profil.php');
+            }
+
+            $imageData = file_get_contents($tmpName);
+            if ($imageData === false) {
+                set_flash('error', 'Impossible de lire le fichier image.');
+                redirect('../../pages/profil.php');
+            }
+
             $stmtImg = $pdo->prepare('UPDATE etudiant SET data = :binData, type = :mimeType WHERE CIN = :cin');
-            $stmtImg->execute([
-                'binData'  => $imageData,
-                'mimeType' => $fileType,
-                'cin'      => $cin
-            ]);
-        } else {
-            set_flash('error', 'Format d\'image non supporté.');
+            $stmtImg->bindValue(':binData', $imageData, PDO::PARAM_LOB);
+            $stmtImg->bindValue(':mimeType', $detectedType, PDO::PARAM_STR);
+            $stmtImg->bindValue(':cin', (int) $cin, PDO::PARAM_INT);
+            $stmtImg->execute();
         }
     }
 
