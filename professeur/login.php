@@ -14,13 +14,18 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - Enjah</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../kmr/student/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../kmr/student/media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../kmr/student/media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../kmr/student/media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="../kmr/student/media/favicon_io/favicon.ico">
+    <link rel="manifest" href="../kmr/student/media/favicon_io/site.webmanifest">
 </head>
 <body class="login-page">
     <div class="login-container">
-        <div class="login-box auth-box">
+        <div class="login-box">
             <div class="login-header">
-                <a href="login.php" class="logo-link">
+                <a href="index.php" class="logo-link">
                     <div class="logo">
                         <img src="enjah.png" alt="Logo Enjah" id="logo">
                         <span>Enjah</span>
@@ -28,7 +33,7 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
                 </a>
                 <h1>Connexion</h1>
                 <p>Connectez-vous pour acceder a votre espace d'apprentissage.</p>
-                <p class="input-help auth-subtitle">Espace professeur</p>
+                <p class="input-help" style="margin-top: 8px;">Espace professeur</p>
             </div>
 
             <?php if ($message !== ''): ?>
@@ -48,7 +53,7 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
                     <input type="password" id="password" name="password" placeholder="********" autocomplete="current-password" required>
                 </div>
 
-                <button type="submit" class="btn-login">Se connecter</button>
+                <input type="submit" class="btn-login" value="Se connecter">
 
                 <div class="login-footer">
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a>

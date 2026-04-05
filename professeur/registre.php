@@ -7,13 +7,18 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Enjah</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../kmr/student/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../kmr/student/media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../kmr/student/media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../kmr/student/media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="../kmr/student/media/favicon_io/favicon.ico">
+    <link rel="manifest" href="../kmr/student/media/favicon_io/site.webmanifest">
 </head>
 <body class="login-page">
     <div class="login-container">
-        <div class="login-box auth-box">
+        <div class="login-box">
             <div class="login-header">
-                <a href="login.php" class="logo-link">
+                <a href="index.php" class="logo-link">
                     <div class="logo">
                         <img src="enjah.png" alt="Logo Enjah" id="logo">
                         <span>Enjah</span>
@@ -21,7 +26,7 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
                 </a>
                 <h1>Inscription</h1>
                 <p>Creez votre compte pour acceder a l'espace professeur.</p>
-                <p class="input-help auth-subtitle">Espace professeur</p>
+                <p class="input-help" style="margin-top: 8px;">Espace professeur</p>
             </div>
 
             <?php if ($message !== ''): ?>
@@ -64,7 +69,7 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
                     </label>
                 </div>
 
-                <button type="submit" class="btn-login">S'inscrire</button>
+                <input type="submit" class="btn-login" value="S'inscrire">
 
                 <div class="login-footer">
                     Vous avez deja un compte ? <a href="login.php">Se connecter</a>
