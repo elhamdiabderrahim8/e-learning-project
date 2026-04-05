@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
     <link rel="shortcut icon" href="media/favicon_io/favicon.ico">
     <link rel="manifest" href="media/favicon_io/site.webmanifest">
-    <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="landing.css?v=20260405-1">
 </head>
 <body>
     <header class="topbar">
@@ -40,12 +40,12 @@
             <div class="container hero-grid">
                 <div class="hero-left">
                     <div class="hero-badges" aria-label="Points forts">
-                        <span class="pill pill-brand">Plateforme e-learning</span>
-                        <span class="pill">Progression &amp; tâches</span>
-                        <span class="pill">Support réactif</span>
+                        <a class="pill pill-brand" href="#produit">Plateforme e-learning</a>
+                        <a class="pill" href="#methode">Progression &amp; tâches</a>
+                        <a class="pill" href="#faq">Support réactif</a>
                     </div>
 
-                    <h1>Apprends mieux, garde le rythme, progresse pour de vrai.</h1>
+                    <h1>Apprends mieux, garde le rythme, <span class="grad">progresse pour de vrai</span>.</h1>
                     <p class="hero-subtitle">
                         Enjah réunit tes cours, ta progression et tes tâches dans un seul espace.
                         Moins de friction, plus de régularité, et un suivi clair à chaque étape.
@@ -72,54 +72,15 @@
                     </div>
                 </div>
 
-                <div class="hero-right" aria-label="Aperçu du tableau de bord">
-                    <div class="glass-frame">
-                        <div class="mock-header">
-                            <div class="dots" aria-hidden="true">
-                                <span></span><span></span><span></span>
-                            </div>
-                            <div class="mock-title">Tableau de bord</div>
-                            <div class="mock-chip">Aujourd’hui</div>
-                        </div>
-
-                        <div class="mock-grid">
-                            <div class="mock-card">
-                                <div class="mock-kicker">Cours actifs</div>
-                                <div class="mock-value">3</div>
-                                <div class="mock-progress" aria-label="Progression globale 72%">
-                                    <div class="bar" style="width: 72%;"></div>
-                                </div>
-                                <div class="mock-note">Progression globale 72%</div>
-                            </div>
-
-                            <div class="mock-card mock-card-soft">
-                                <div class="mock-kicker">Prochaine étape</div>
-                                <div class="mock-value">Leçon 8</div>
-                                <div class="mock-list">
-                                    <div class="mock-row"><span class="dot ok"></span><span>Regarder la vidéo</span></div>
-                                    <div class="mock-row"><span class="dot"></span><span>Quiz rapide</span></div>
-                                    <div class="mock-row"><span class="dot"></span><span>Exercice</span></div>
-                                </div>
-                            </div>
-
-                            <div class="mock-card mock-card-wide">
-                                <div class="mock-kicker">Routine de la semaine</div>
-                                <div class="mock-timeline" aria-label="Routine de la semaine">
-                                    <div class="pill-mini">Lun</div>
-                                    <div class="pill-mini active">Mar</div>
-                                    <div class="pill-mini">Mer</div>
-                                    <div class="pill-mini">Jeu</div>
-                                    <div class="pill-mini">Ven</div>
-                                </div>
-                                <div class="mock-note">20–30 min/jour suffisent pour rester régulier.</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="hero-right" aria-label="Aperçu de la plateforme">
+                    <figure class="hero-shot">
+                        <img src="../media/photo.png" alt="Aperçu de la plateforme Enjah">
+                    </figure>
                 </div>
             </div>
         </section>
 
-        <section class="section" id="produit">
+        <section class="section section-alt" id="produit">
             <div class="container">
                 <div class="section-head">
                     <div>
@@ -135,7 +96,6 @@
                             <span class="feature-icon" aria-hidden="true">📚</span>
                             <h3>Cours clairs</h3>
                         </div>
-                        <p>Accédez à vos cours, reprenez là où vous vous êtes arrêté, et avancez sans vous disperser.</p>
                     </article>
 
                     <article class="feature">
@@ -143,7 +103,6 @@
                             <span class="feature-icon" aria-hidden="true">📈</span>
                             <h3>Progression visible</h3>
                         </div>
-                        <p>Marquez les leçons terminées, suivez votre progression, et gardez une motivation constante.</p>
                     </article>
 
                     <article class="feature">
@@ -266,7 +225,7 @@
             </div>
         </section>
 
-        <section class="section" id="tarifs">
+        <section class="section section-alt" id="tarifs">
             <div class="container">
                 <div class="section-head">
                     <div>
@@ -361,5 +320,44 @@
             © 2026 Enjah · Plateforme d’apprentissage · Tous droits réservés.
         </div>
     </footer>
+
+    <script>
+        (function () {
+            var badgeLinks = Array.prototype.slice.call(document.querySelectorAll('.hero-badges a[href^="#"]'));
+            if (!badgeLinks.length) return;
+
+            var byId = new Map();
+            badgeLinks.forEach(function (link) {
+                var id = (link.getAttribute('href') || '').slice(1);
+                var target = id ? document.getElementById(id) : null;
+                if (target) byId.set(id, { link: link, target: target });
+            });
+
+            var setActive = function (id) {
+                badgeLinks.forEach(function (link) { link.classList.remove('active'); });
+                var item = byId.get(id);
+                if (item) item.link.classList.add('active');
+            };
+
+            badgeLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    var id = (link.getAttribute('href') || '').slice(1);
+                    if (id) setActive(id);
+                });
+            });
+
+            if (!('IntersectionObserver' in window)) return;
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && entry.target && entry.target.id) {
+                        setActive(entry.target.id);
+                    }
+                });
+            }, { root: null, threshold: 0.35 });
+
+            byId.forEach(function (item) { io.observe(item.target); });
+            setActive(badgeLinks[0].getAttribute('href').slice(1));
+        })();
+    </script>
 </body>
 </html>

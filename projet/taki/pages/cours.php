@@ -11,12 +11,10 @@ $cin_etudiant = (int)$_SESSION['CIN'];
  * REQUÊTE SQL SÉCURISÉE (PDO)
  * On récupère la progression et le statut du certificat depuis la table inscription
  */
-$sql = "SELECT DISTINCT c.*, p.nom, p.prenom, i.progression, i.statut_certificat
+$sql = "SELECT DISTINCT c.*, p.nom, p.prenom, i.statut_certificat
         FROM cours c
         INNER JOIN professeur p ON c.id_professeur = p.CIN
-        LEFT JOIN inscription i ON c.id = i.id_cours
-        WHERE c.categorie = 'Free' 
-           OR (c.categorie = 'Premium' AND i.id_etudiant = :cin)
+        INNER JOIN inscription i ON c.id = i.id_cours AND i.id_etudiant = :cin
         ORDER BY c.id DESC";
 
 $stmt = $pdo->prepare($sql);
@@ -66,12 +64,7 @@ $mes_cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <main class="main-content">
             <header style="padding: 20px; border-bottom: 1px solid #eee;">
                 <h1>Mes Cours Académiques</h1>
-                <p>Bienvenue, vous avez accès à <strong><?php echo count($mes_cours); ?></strong> cours.</p>
-                <?php if(isset($_GET['success'])): ?>
-                    <div style="background: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                        Paiement réussi ! Votre cours a été ajouté.
-                    </div>
-                <?php endif; ?>
+                <p>Bienvenue, vous avez <strong><?php echo count($mes_cours); ?></strong> cours inscrits.</p>
             </header>
 
             <div class="courses-grid" id="courses-grid">

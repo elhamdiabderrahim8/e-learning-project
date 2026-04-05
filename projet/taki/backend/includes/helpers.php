@@ -8,20 +8,14 @@ function redirect($path)
 
 function set_flash($key, $message)
 {
-    $_SESSION['flash'][(string) $key] = (string) $message;
+    // Flash messages disabled (UI request).
+    return;
 }
 
 function get_flash($key)
 {
-    $key = (string) $key;
-    if (!isset($_SESSION['flash'][$key])) {
-        return null;
-    }
-
-    $message = $_SESSION['flash'][$key];
-    unset($_SESSION['flash'][$key]);
-
-    return (string) $message;
+    // Flash messages disabled (UI request).
+    return null;
 }
 
 function current_language()

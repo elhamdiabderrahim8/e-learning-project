@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../backend/includes/bootstrap.php';
 
-if (is_logged_in()) {
-    header('Location: cours.php');
-    exit;
+if (is_authenticated()) {
+    redirect('cours.php');
 }
 
-header('Location: login.php');
-exit;
+redirect('login.php');

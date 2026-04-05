@@ -4,153 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enjah - Espace Professeur</title>
-    <meta name="description" content="Espace professeur Enjah : publier des cours, suivre les inscriptions et gérer les validations.">
+    <meta name="description" content="Espace professeur Enjah : créez des cours, ajoutez des leçons, suivez la progression, validez les certificats et répondez aux demandes.">
     <link rel="apple-touch-icon" sizes="180x180" href="media/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="media/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="media/favicon_io/favicon-16x16.png">
     <link rel="shortcut icon" href="media/favicon_io/favicon.ico">
     <link rel="manifest" href="media/favicon_io/site.webmanifest">
-    <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="landing.css?v=20260405-1">
 </head>
 <body>
     <header class="topbar">
         <div class="container topbar-inner">
-            <a class="brand" href="index.php">
+            <a class="brand" href="index.php" aria-label="Accueil Enjah (Professeur)">
                 <img src="media/logo.jpg" alt="Logo Enjah">
                 <span>Enjah</span>
             </a>
 
-            <nav class="nav-links" aria-label="Navigation">
-                <a href="#parcours">Parcours</a>
-                <a href="#methode">Methode</a>
-                <a href="#avis">Avis</a>
+            <nav class="nav-links" aria-label="Navigation principale">
+                <a href="#produit">Produit</a>
+                <a href="#workflow">Workflow</a>
+                <a href="#fonctionnalites">Fonctionnalités</a>
+                <a href="#faq">FAQ</a>
             </nav>
 
             <div class="top-actions">
                 <a href="pages/login.php" class="btn btn-ghost">Connexion</a>
                 <a href="pages/registre.php" class="btn btn-primary">Inscription</a>
-                <a href="../taki/index.php" class="btn">Espace Etudiant</a>
+                <a href="../taki/index.php" class="btn btn-soft">Espace Étudiant</a>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="hero">
+        <section class="hero" id="top">
             <div class="container hero-grid">
-                <div class="hero-card">
-                    <span class="hero-tag">Espace Professeur</span>
-                    <h1>Publie, organise, valide.</h1>
-                    <p>
-                        Un espace simple pour gerer tes cours, suivre l'avancement et
-                        accompagner tes etudiants sans perdre du temps.
+                <div class="hero-left">
+                    <div class="hero-badges" aria-label="Points forts">
+                        <a class="pill pill-brand" href="#produit">Espace professeur</a>
+                        <a class="pill" href="#workflow">Cours &amp; leçons</a>
+                        <a class="pill" href="#fonctionnalites">Certificats</a>
+                    </div>
+
+                    <h1>Publiez des cours qui <span class="grad">donnent envie</span> et suivez l’avancement en un coup d’œil.</h1>
+                    <p class="hero-subtitle">
+                        Créez votre contenu, ajoutez des leçons, suivez la progression des apprenants et validez les certificats.
+                        Tout est regroupé dans un tableau de bord propre et rapide.
                     </p>
 
                     <div class="hero-actions">
-                        <a href="pages/registre.php" class="btn btn-primary">Creer mon compte</a>
-                        <a href="pages/login.php" class="btn">J'ai deja un compte</a>
+                        <a href="pages/registre.php" class="btn btn-primary">Créer mon compte</a>
+                        <a href="#produit" class="btn btn-ghost">Voir comment ça marche</a>
                     </div>
 
-                    <div class="hero-meta" role="list">
-                        <div class="meta-tile" role="listitem">
-                            <strong>Gestion</strong>
-                            <span>Cours & lecons</span>
+                    <div class="trustbar" aria-label="Ce que vous pouvez faire">
+                        <div class="trust-item">
+                            <strong>Publier</strong>
+                            <span>cours + image + prix</span>
                         </div>
-                        <div class="meta-tile" role="listitem">
-                            <strong>Suivi</strong>
-                            <span>Progression & validations</span>
+                        <div class="trust-item">
+                            <strong>Enseigner</strong>
+                            <span>leçons &amp; ressources</span>
                         </div>
-                        <div class="meta-tile" role="listitem">
-                            <strong>Support</strong>
-                            <span>Reclamations</span>
+                        <div class="trust-item">
+                            <strong>Valider</strong>
+                            <span>certificats &amp; demandes</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="hero-visual">
-                    <div class="visual-card">
-                        <p class="visual-title">Ce que tu peux faire</p>
-                        <ul class="visual-list">
-                            <li><span class="check">✓</span><span>Publier des cours et des lecons</span></li>
-                            <li><span class="check">✓</span><span>Visualiser les demandes et reclamations</span></li>
-                            <li><span class="check">✓</span><span>Garder une interface coherente avec l'espace etudiant</span></li>
-                        </ul>
-                    </div>
+                <div class="hero-right" aria-label="Aperçu de la plateforme">
+                    <figure class="hero-shot hero-shot-prof">
+                        <img src="../media/photo.png" alt="Aperçu de la plateforme Enjah">
+                    </figure>
+                </div>
+            </div>
+        </section>
 
-                    <div class="visual-card">
-                        <p class="visual-title">Une identite unique</p>
-                        <ul class="visual-list">
-                            <li><span class="check">✓</span><span>Meme style, meme navigation</span></li>
-                            <li><span class="check">✓</span><span>Pages propres et lisibles</span></li>
-                            <li><span class="check">✓</span><span>Rapide a prendre en main</span></li>
-                        </ul>
+        <section class="section section-alt" id="produit">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2>Un espace pro, vraiment simple</h2>
+                        <p class="lead">De la création au suivi, tout est pensé pour aller vite et rester clair.</p>
+                    </div>
+                    <a href="pages/login.php" class="btn btn-soft">Accéder à mon espace</a>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature feature-accent">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">🧩</span>
+                            <h3>Créer des cours</h3>
+                        </div>
+                        <p>Publiez un cours (gratuit ou premium), ajoutez une image et rendez-le visible en quelques secondes.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">📝</span>
+                            <h3>Ajouter des leçons</h3>
+                        </div>
+                        <p>Organisez le contenu, ajoutez des supports et gardez une structure propre pour l’apprenant.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">🎓</span>
+                            <h3>Valider des certificats</h3>
+                        </div>
+                        <p>Quand un cours est terminé, vous validez rapidement et l’apprenant peut générer son certificat.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-top">
+                            <span class="feature-icon" aria-hidden="true">💬</span>
+                            <h3>Gérer les demandes</h3>
+                        </div>
+                        <p>Consultez les réclamations, répondez et suivez les échanges sans quitter la plateforme.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="workflow">
+            <div class="container">
+                <h2>Workflow en 4 étapes</h2>
+                <p class="lead">De l’idée au cours publié, puis au certificat validé.</p>
+
+                <div class="timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-badge">1</div>
+                        <div class="timeline-body">
+                            <strong>Publiez un cours</strong>
+                            <p>Nom, catégorie, prix et image : une base claire pour attirer les apprenants.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-badge">2</div>
+                        <div class="timeline-body">
+                            <strong>Ajoutez des leçons</strong>
+                            <p>Découpez le contenu, ajoutez des ressources, et facilitez la progression.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-badge">3</div>
+                        <div class="timeline-body">
+                            <strong>Suivez l’avancement</strong>
+                            <p>Les apprenants marquent les leçons terminées : vous gardez une vision globale.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-badge">4</div>
+                        <div class="timeline-body">
+                            <strong>Validez &amp; accompagnez</strong>
+                            <p>Certificats, demandes et support : un point unique pour gérer et répondre.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section" id="parcours">
+        <section class="section section-alt" id="fonctionnalites">
             <div class="container">
-                <h2>Parcours populaires</h2>
-                <p class="lead">Un catalogue pour construire des parcours progressifs.</p>
-                <div class="grid-3">
-                    <article class="feature">
-                        <h3>Developpement Web</h3>
-                        <p>Cours, supports, et projets pour evaluer la progression.</p>
-                    </article>
-                    <article class="feature">
-                        <h3>Design & UI</h3>
-                        <p>Bonnes pratiques et exercices pour des interfaces solides.</p>
-                    </article>
-                    <article class="feature">
-                        <h3>Organisation</h3>
-                        <p>Suivi, methodes, et rythme pour garder l'engagement.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
+                <h2>Fonctionnalités clés</h2>
+                <p class="lead">Ce que vous utilisez vraiment au quotidien.</p>
 
-        <section class="section" id="methode">
-            <div class="container">
-                <h2>Methode Enjah</h2>
-                <p class="lead">Une structure simple pour enseigner efficacement.</p>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div>
-                            <strong>Prepare ton contenu</strong>
-                            <div style="color: var(--muted); font-weight: 600;">Cours, lecons et ressources dans un seul espace.</div>
+                <div class="track-grid">
+                    <article class="track">
+                        <div class="track-head">
+                            <h3>Gestion des cours</h3>
+                            <span class="track-badge">Contenu</span>
                         </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div>
-                            <strong>Suis la progression</strong>
-                            <div style="color: var(--muted); font-weight: 600;">Les etudiants valident les lecons terminees.</div>
+                        <p>Publier, modifier, organiser et garder un catalogue propre et professionnel.</p>
+                        <div class="track-meta">
+                            <span class="chip">Free / Premium</span>
+                            <span class="chip">Images &amp; prix</span>
                         </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div>
-                            <strong>Reponds et valide</strong>
-                            <div style="color: var(--muted); font-weight: 600;">Reclamations, demandes et validations au meme endroit.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="avis">
-            <div class="container">
-                <h2>Retours d'apprenants</h2>
-                <p class="lead">Un outil simple, sans bruit inutile.</p>
-                <div class="testimonials">
-                    <article class="quote">
-                        <p>"Les pages sont cohérentes, je ne me perds pas quand je change de section."</p>
-                        <span>Professeur</span>
                     </article>
-                    <article class="quote">
-                        <p>"Les lecons sont faciles a retrouver, et la validation est rapide."</p>
-                        <span>Encadrant</span>
+                    <article class="track">
+                        <div class="track-head">
+                            <h3>Validation</h3>
+                            <span class="track-badge soft">Diplômes</span>
+                        </div>
+                        <p>Gérer les certificats et accélérer la validation lorsque l’apprenant a terminé.</p>
+                        <div class="track-meta">
+                            <span class="chip">Rapide</span>
+                            <span class="chip">Traçable</span>
+                        </div>
+                    </article>
+                    <article class="track">
+                        <div class="track-head">
+                            <h3>Support</h3>
+                            <span class="track-badge ok">Aide</span>
+                        </div>
+                        <p>Répondre aux demandes sans perdre de temps et garder une relation de qualité.</p>
+                        <div class="track-meta">
+                            <span class="chip">Demandes</span>
+                            <span class="chip">Suivi</span>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -160,13 +208,34 @@
             <div class="container">
                 <div class="cta">
                     <div>
-                        <h2>Pret a publier ton premier cours ?</h2>
-                        <p>Inscription rapide, puis tu peux commencer.</p>
+                        <h2>Prêt à publier votre premier cours ?</h2>
+                        <p>Inscription rapide, puis vous pouvez créer et organiser votre contenu.</p>
                     </div>
                     <div class="hero-actions">
-                        <a href="pages/registre.php" class="btn btn-primary">Demarrer avec Enjah</a>
-                        <a href="pages/login.php" class="btn">Connexion</a>
+                        <a href="pages/registre.php" class="btn btn-primary">Démarrer</a>
+                        <a href="pages/login.php" class="btn btn-ghost">Connexion</a>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="faq">
+            <div class="container">
+                <h2>FAQ</h2>
+                <p class="lead">Les réponses aux questions fréquentes côté professeur.</p>
+                <div class="faq">
+                    <details class="faq-item">
+                        <summary>Comment publier un cours premium ?</summary>
+                        <p>Lors de la création, choisissez “Premium” et ajoutez le prix. Le cours sera visible selon les règles d’accès.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Quand valider un certificat ?</summary>
+                        <p>Quand l’apprenant termine un cours, vous pouvez valider pour qu’il génère et imprime son certificat.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Où voir les demandes / réclamations ?</summary>
+                        <p>Dans votre espace : vous consultez la liste, répondez et suivez les échanges au même endroit.</p>
+                    </details>
                 </div>
             </div>
         </section>
@@ -174,9 +243,47 @@
 
     <footer class="footer">
         <div class="container">
-            © 2026 Enjah - Tous droits reserves.
+            © 2026 Enjah · Espace Professeur · Tous droits réservés.
         </div>
     </footer>
+
+    <script>
+        (function () {
+            var badgeLinks = Array.prototype.slice.call(document.querySelectorAll('.hero-badges a[href^="#"]'));
+            if (!badgeLinks.length) return;
+
+            var byId = new Map();
+            badgeLinks.forEach(function (link) {
+                var id = (link.getAttribute('href') || '').slice(1);
+                var target = id ? document.getElementById(id) : null;
+                if (target) byId.set(id, { link: link, target: target });
+            });
+
+            var setActive = function (id) {
+                badgeLinks.forEach(function (link) { link.classList.remove('active'); });
+                var item = byId.get(id);
+                if (item) item.link.classList.add('active');
+            };
+
+            badgeLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    var id = (link.getAttribute('href') || '').slice(1);
+                    if (id) setActive(id);
+                });
+            });
+
+            if (!('IntersectionObserver' in window)) return;
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && entry.target && entry.target.id) {
+                        setActive(entry.target.id);
+                    }
+                });
+            }, { root: null, threshold: 0.35 });
+
+            byId.forEach(function (item) { io.observe(item.target); });
+            setActive(badgeLinks[0].getAttribute('href').slice(1));
+        })();
+    </script>
 </body>
 </html>
-

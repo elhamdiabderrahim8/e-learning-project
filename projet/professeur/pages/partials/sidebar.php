@@ -10,6 +10,16 @@ $items = [
         'icon' => '&#8962;',
         'label' => 'Mes Cours',
     ],
+    'etudiants' => [
+        'href' => 'etudiants.php',
+        'icon' => '&#128101;',
+        'label' => 'Mes &Eacute;tudiants',
+    ],
+    'demandes' => [
+        'href' => 'demandes_inscription.php',
+        'icon' => '&#128231;',
+        'label' => 'Demandes',
+    ],
     'taches' => [
         'href' => 'tache_a_fair.php',
         'icon' => '&#128221;',
@@ -58,4 +68,3 @@ $items = [
         </ul>
     </nav>
 </aside>
-
