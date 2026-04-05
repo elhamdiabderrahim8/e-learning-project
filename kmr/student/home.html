@@ -28,6 +28,10 @@
             </nav>
 
             <div class="top-actions">
+                <div class="lang-switch" aria-label="Language setting">
+                    <a href="index.php?lang=fr" class="btn btn-ghost" hreflang="fr" lang="fr">FR</a>
+                    <a href="index.php?lang=en" class="btn btn-ghost" hreflang="en" lang="en">EN</a>
+                </div>
                 <a href="pages/login.php" class="btn btn-ghost">Connexion</a>
                 <a href="pages/registre.php" class="btn btn-primary">Inscription</a>
                 <a href="../../professeur/login.php" class="btn btn-soft">Espace Professeur</a>
@@ -357,6 +361,17 @@
 
             byId.forEach(function (item) { io.observe(item.target); });
             setActive(badgeLinks[0].getAttribute('href').slice(1));
+        })();
+
+        (function () {
+            var lang = (document.documentElement.getAttribute('lang') || 'fr').toLowerCase();
+            if (lang.indexOf('en') === 0) {
+                var en = document.querySelector('.lang-switch a[lang="en"]');
+                if (en) en.classList.add('active');
+            } else {
+                var fr = document.querySelector('.lang-switch a[lang="fr"]');
+                if (fr) fr.classList.add('active');
+            }
         })();
     </script>
 </body>
