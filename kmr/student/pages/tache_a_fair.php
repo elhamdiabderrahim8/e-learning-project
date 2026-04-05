@@ -36,6 +36,7 @@ foreach ($tasks as $task) {
 
 $error = get_flash('error');
 $success = get_flash('success');
+$isEnglish = current_language() === 'en';
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -56,8 +57,8 @@ $success = get_flash('success');
 
         <main class="main-content">
             <header class="header">
-                <h1>Tableau des taches</h1>
-                <p>Organisez votre travail en 3 etapes simples : A faire, En cours, Terminee.</p>
+                <h1><?php echo $isEnglish ? 'Task board' : 'Tableau des taches'; ?></h1>
+                <p><?php echo $isEnglish ? 'Organize your work in 3 simple stages: To do, In progress, Done.' : 'Organisez votre travail en 3 etapes simples : A faire, En cours, Terminee.'; ?></p>
             </header>
 
             <?php if ($error): ?>
@@ -163,14 +164,15 @@ $success = get_flash('success');
             return true;
         }
 
-        var answer = prompt('Tapez OUI pour supprimer cette tache terminee', '');
+        var answer = prompt(<?php echo $isEnglish ? "'Type YES to delete this completed task'" : "'Tapez OUI pour supprimer cette tache terminee'"; ?>, '');
         if (answer == null) {
             return false;
         }
 
         answer = answer.trim().toUpperCase();
-        if (answer != 'OUI') {
-            alert('Suppression annulee.');
+        var valid = <?php echo $isEnglish ? "(answer == 'YES')" : "(answer == 'OUI')"; ?>;
+        if (!valid) {
+            alert(<?php echo $isEnglish ? "'Deletion canceled.'" : "'Suppression annulee.'"; ?>);
             return false;
         }
 

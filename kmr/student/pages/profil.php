@@ -97,7 +97,6 @@ $success = get_flash('success');
         <main class="main-content">
             <header class="header">
                 <h1>Mon Profil</h1>
-                <p>Bonjour, <strong><?php echo htmlspecialchars((string)$user['prenom']); ?></strong> !</p>
             </header>
 
             <?php if ($error): ?><div class="profile-alert profile-alert-error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>

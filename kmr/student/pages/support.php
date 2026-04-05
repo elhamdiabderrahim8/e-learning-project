@@ -20,6 +20,7 @@ try {
 
 $error = get_flash('error');
 $success = get_flash('success');
+$isEnglish = current_language() === 'en';
 
 ?><!DOCTYPE html>
 <html lang="fr">
@@ -41,13 +42,13 @@ $success = get_flash('success');
         <main class="main-content">
             <header class="header">
                 <h1>Support</h1>
-                <p>Prototype: envoyez un message, un admin repondra plus tard.</p>
+                <p><?php echo $isEnglish ? 'Prototype: send a message, an admin will reply later.' : 'Prototype: envoyez un message, un admin repondra plus tard.'; ?></p>
             </header>
 
             <?php if (!$supportReady): ?>
                 <div class="task-alert task-alert-error">
-                    Table <code>support_messages</code> manquante. Importez la migration SQL dans
-                    <code>kmr/student/database/migrations/2026-04-04_support_and_remove_users.sql</code>.
+                    <?php echo $isEnglish ? 'Missing table' : 'Table'; ?> <code>support_messages</code> <?php echo $isEnglish ? '. Import the unified SQL file:' : 'manquante. Importez le fichier SQL unifie :'; ?>
+                    <code>kmr/student/database/elearning_unified.sql</code>.
                 </div>
             <?php endif; ?>
 
@@ -61,7 +62,7 @@ $success = get_flash('success');
             <section class="support-shell">
                 <div class="support-thread card">
                     <?php if (!$messages): ?>
-                        <p style="color: var(--muted); margin: 0;">Aucun message pour le moment. Expliquez votre probleme et envoyez votre premier message.</p>
+                        <p style="color: var(--muted); margin: 0;"><?php echo $isEnglish ? 'No messages yet. Explain your issue and send your first message.' : 'Aucun message pour le moment. Expliquez votre probleme et envoyez votre premier message.'; ?></p>
                     <?php endif; ?>
 
                     <div class="support-messages" id="support-messages">
@@ -74,7 +75,7 @@ $success = get_flash('success');
                             ?>
                             <div class="<?php echo $className; ?>">
                                 <div class="support-bubble-meta">
-                                    <strong><?php echo $isAdmin ? 'Admin' : 'Vous'; ?></strong>
+                                    <strong><?php echo $isAdmin ? 'Admin' : ($isEnglish ? 'You' : 'Vous'); ?></strong>
                                     <?php if ($timestamp !== ''): ?>
                                         <span><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($timestamp)), ENT_QUOTES, 'UTF-8'); ?></span>
                                     <?php endif; ?>
@@ -88,13 +89,13 @@ $success = get_flash('success');
                 </div>
 
                 <div class="support-compose card">
-                    <h2 style="margin-top: 0;">Envoyer un message</h2>
+                    <h2 style="margin-top: 0;"><?php echo $isEnglish ? 'Send a message' : 'Envoyer un message'; ?></h2>
                     <form action="../backend/actions/create_support_message.php" method="post" class="support-form">
                         <div class="input-group">
                             <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="5" placeholder="Decrivez votre probleme (prototype)..." required></textarea>
+                            <textarea id="message" name="message" rows="5" placeholder="<?php echo $isEnglish ? 'Describe your issue (prototype)...' : 'Decrivez votre probleme (prototype)...'; ?>" required></textarea>
                         </div>
-                        <input type="submit" class="btn-primary" value="Envoyer">
+                        <input type="submit" class="btn-primary" value="<?php echo $isEnglish ? 'Send' : 'Envoyer'; ?>">
                     </form>
                 </div>
             </section>

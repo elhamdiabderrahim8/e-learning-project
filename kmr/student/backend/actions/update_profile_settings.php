@@ -18,6 +18,10 @@ if ($firstName === '' || $lastName === '') {
     redirect('../../pages/profil.php');
 }
 
+if ($language !== 'fr' && $language !== 'en') {
+    $language = 'fr';
+}
+
 $pdo = db();
 
 try {
@@ -53,6 +57,7 @@ try {
 
     $_SESSION['full_name'] = trim($firstName . ' ' . $lastName);
     $_SESSION['preferred_language'] = $language;
+    $_SESSION['preferred_language_synced'] = true;
 
     set_flash('success', 'Profil mis à jour avec succès.');
 

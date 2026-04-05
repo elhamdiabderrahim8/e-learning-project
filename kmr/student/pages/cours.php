@@ -20,6 +20,8 @@ $sql = "SELECT DISTINCT c.*, p.nom, p.prenom, i.statut_certificat
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['cin' => $cin_etudiant]);
 $mes_cours = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+$isEnglish = current_language() === 'en';
 ?>
 
 <!DOCTYPE html>
@@ -63,8 +65,8 @@ $mes_cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <main class="main-content">
             <header style="padding: 20px; border-bottom: 1px solid #eee;">
-                <h1>Mes Cours Académiques</h1>
-                <p>Bienvenue, vous avez <strong><?php echo count($mes_cours); ?></strong> cours inscrits.</p>
+                <h1><?php echo $isEnglish ? 'My Academic Courses' : 'Mes Cours Académiques'; ?></h1>
+                <p><?php echo $isEnglish ? 'Welcome, you are enrolled in' : 'Bienvenue, vous avez'; ?> <strong><?php echo count($mes_cours); ?></strong> <?php echo $isEnglish ? 'courses.' : 'cours inscrits.'; ?></p>
             </header>
 
             <div class="courses-grid" id="courses-grid">
@@ -103,12 +105,12 @@ $prog = ($total_docs > 0) ? (int)round(($fait_docs / $total_docs) * 100) : 0;
                             
                             <div class="course-body">
                                 <h3><?php echo $titre; ?></h3>
-                                <p>Par <strong><?php echo $prof; ?></strong></p>
+                                <p><?php echo $isEnglish ? 'By' : 'Par'; ?> <strong><?php echo $prof; ?></strong></p>
                                 <div class="price-tag"><?php echo $prix; ?> DT</div>
 
                                 <div class="progression-wrapper">
                                     <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
-                                        <span>Progression</span>
+                                        <span><?php echo $isEnglish ? 'Progress' : 'Progression'; ?></span>
                                         <strong><?php echo $prog; ?>%</strong>
                                     </div>
                                     <div class="progression-bar-bg">
@@ -117,20 +119,20 @@ $prog = ($total_docs > 0) ? (int)round(($fait_docs / $total_docs) * 100) : 0;
 
                                     <?php if($prog >= 100): ?>
                                         <div class="status-badge" style="background: #ecfdf5; color: #059669;">
-                                            <?php echo ($statut === 'valide') ? '✅ Certificat prêt' : '⏳ En attente de validation'; ?>
+                                            <?php echo ($statut === 'valide') ? ($isEnglish ? '✅ Certificate ready' : '✅ Certificat prêt') : ($isEnglish ? '⏳ Pending validation' : '⏳ En attente de validation'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
 
                                 <a href="lesson(a).php?id=<?php echo $id_c; ?>" class="btn-primary" style="display:block; text-align:center; text-decoration:none; margin-top:10px;">
-                                    Consulter leçons
+                                    <?php echo $isEnglish ? 'View lessons' : 'Consulter leçons'; ?>
                                 </a>
                             </div>
                         </div>
                 <?php
                     }
                 } else {
-                    echo "<p style='grid-column: 1/-1; text-align: center;'>Aucun cours disponible.</p>";
+                    echo "<p style='grid-column: 1/-1; text-align: center;'>" . ($isEnglish ? 'No courses available.' : 'Aucun cours disponible.') . "</p>";
                 }
                 ?>
             </div>

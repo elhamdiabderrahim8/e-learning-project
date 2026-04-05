@@ -27,6 +27,8 @@ $sql = "SELECT c.id AS id_cours, c.nom_cours, c.prix, c.categorie,
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['cin' => $cin_etudiant]);
 $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$isEnglish = current_language() === 'en';
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +44,8 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <main class="main-content">
             <header class="header">
-                <h1>Offres Spéciales</h1>
-                <p>Choisissez un cours. Les cours déjà inscrits ne s'affichent plus ici.</p>
+                <h1><?php echo $isEnglish ? 'Special Offers' : 'Offres Spéciales'; ?></h1>
+                <p><?php echo $isEnglish ? 'Choose a course. Courses already enrolled are hidden here.' : 'Choisissez un cours. Les cours déjà inscrits ne s\'affichent plus ici.'; ?></p>
             </header>
 
             <div class="courses-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px;">
@@ -63,10 +65,10 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div style="padding: 15px;">
                                 <h3 style="margin:0;"><?php echo htmlspecialchars($row['nom_cours']); ?></h3>
-                                <p style="color:#666;">Par <?php echo htmlspecialchars($row['nom_prof'] . " " . $row['prenom_prof']); ?></p>
+                                <p style="color:#666;"><?php echo $isEnglish ? 'By' : 'Par'; ?> <?php echo htmlspecialchars($row['nom_prof'] . " " . $row['prenom_prof']); ?></p>
                                 
                                 <div style="font-size: 1.3em; font-weight: bold; color: #20c997; margin: 10px 0;">
-                                    <?php echo $isPremium ? (number_format((float) $row['prix'], 2) . " DT") : "Gratuit"; ?>
+                                    <?php echo $isPremium ? (number_format((float) $row['prix'], 2) . " DT") : ($isEnglish ? 'Free' : 'Gratuit'); ?>
                                 </div>
 
                                 <?php if ($isPremium): ?>
@@ -79,7 +81,7 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <input type="hidden" name="course_id" value="<?php echo (int) $row['id_cours']; ?>">
                                         <button type="button" onclick="ouvrirModalInscriptionFree(<?php echo (int) $row['id_cours']; ?>, '<?php echo htmlspecialchars((string) $row['nom_cours'], ENT_QUOTES, 'UTF-8'); ?>', '<?php echo htmlspecialchars((string) ($row['nom_prof'] . ' ' . $row['prenom_prof']), ENT_QUOTES, 'UTF-8'); ?>')"
                                                 style="width:100%; padding: 12px; background: #16a34a; color: white; border:none; border-radius: 5px; cursor:pointer; font-weight:bold;">
-                                            S'inscrire gratuitement
+                                            <?php echo $isEnglish ? 'Enroll for free' : 'S\'inscrire gratuitement'; ?>
                                         </button>
                                     </form>
                                 <?php endif; ?>
@@ -88,7 +90,7 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php
                     }
                 } else {
-                    echo "<p>Aucun cours disponible pour le moment.</p>";
+                    echo "<p>" . ($isEnglish ? 'No courses available for now.' : 'Aucun cours disponible pour le moment.') . "</p>";
                 }
                 ?>
             </div>
@@ -97,13 +99,13 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div id="modal-paiement-global" class="modal-overlay">
         <div class="modal-content">
-            <h2 style="margin-top:0;">Paiement sécurisé</h2>
+            <h2 style="margin-top:0;"><?php echo $isEnglish ? 'Secure payment' : 'Paiement sécurisé'; ?></h2>
             <form action="../backend/actions/traitter_payement(a).php" method="POST">
                 <input type="hidden" id="input_id_cours_final" name="course_id">
 
-                <label>Nom sur la carte</label>
+                <label><?php echo $isEnglish ? 'Name on card' : 'Nom sur la carte'; ?></label>
                 <input type="text" placeholder="M. JEAN DUPONT">
-                <label>Numéro de carte</label>
+                <label><?php echo $isEnglish ? 'Card number' : 'Numéro de carte'; ?></label>
                 <input type="text" placeholder="4532 •••• •••• ••••">
                 <div class="input-row">
                     <input type="text" placeholder="MM/AA">
@@ -111,18 +113,18 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <button type="submit" style="width:100%; background:#20c997; color:white; border:none; padding:12px; margin-top:20px; cursor:pointer; border-radius:5px; font-weight:bold;">
-                    Confirmer l'achat
+                    <?php echo $isEnglish ? 'Confirm purchase' : 'Confirmer l\'achat'; ?>
                 </button>
-                <button type="button" onclick="fermerModal()" style="width:100%; background:none; border:none; color:#666; margin-top:10px; cursor:pointer;">Annuler</button>
+                <button type="button" onclick="fermerModal()" style="width:100%; background:none; border:none; color:#666; margin-top:10px; cursor:pointer;"><?php echo $isEnglish ? 'Cancel' : 'Annuler'; ?></button>
             </form>
         </div>
     </div>
 
     <div id="modal-free-enroll" class="modal-overlay" style="display:none;">
         <div class="modal-content">
-            <h2 style="margin-top:0;">Inscription au cours gratuit</h2>
+            <h2 style="margin-top:0;"><?php echo $isEnglish ? 'Free course enrollment' : 'Inscription au cours gratuit'; ?></h2>
             <p style="margin-top:6px; color:#64748b; font-weight:700;">
-                Cette demande sera visible par le professeur (nom, prénom, email).
+                <?php echo $isEnglish ? 'This request will be visible to the teacher (name, email).' : 'Cette demande sera visible par le professeur (nom, prénom, email).'; ?>
             </p>
 
             <form action="../backend/actions/enroll_free_course.php" method="post">
@@ -132,11 +134,11 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <div class="input-row">
                     <div class="input-group">
-                        <label>Prénom</label>
+                        <label><?php echo $isEnglish ? 'First name' : 'Prénom'; ?></label>
                         <input type="text" value="<?php echo htmlspecialchars((string) ($student['prenom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" readonly>
                     </div>
                     <div class="input-group">
-                        <label>Nom</label>
+                        <label><?php echo $isEnglish ? 'Last name' : 'Nom'; ?></label>
                         <input type="text" value="<?php echo htmlspecialchars((string) ($student['nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" readonly>
                     </div>
                 </div>
@@ -147,12 +149,12 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="input-group">
-                    <label for="free_message">Message (optionnel)</label>
-                    <textarea id="free_message" name="message" rows="4" placeholder="Pourquoi ce cours vous intéresse ?"></textarea>
+                    <label for="free_message"><?php echo $isEnglish ? 'Message (optional)' : 'Message (optionnel)'; ?></label>
+                    <textarea id="free_message" name="message" rows="4" placeholder="<?php echo $isEnglish ? 'Why are you interested in this course?' : 'Pourquoi ce cours vous intéresse ?'; ?>"></textarea>
                 </div>
 
-                <button type="submit" class="btn-primary" style="width:100%;">Envoyer & s'inscrire</button>
-                <button type="button" onclick="fermerModalFree()" style="width:100%; background:none; border:none; color:#666; margin-top:10px; cursor:pointer;">Annuler</button>
+                <button type="submit" class="btn-primary" style="width:100%;"><?php echo $isEnglish ? 'Send & enroll' : 'Envoyer & s\'inscrire'; ?></button>
+                <button type="button" onclick="fermerModalFree()" style="width:100%; background:none; border:none; color:#666; margin-top:10px; cursor:pointer;"><?php echo $isEnglish ? 'Cancel' : 'Annuler'; ?></button>
             </form>
         </div>
     </div>
@@ -160,10 +162,10 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div id="step-success" class="modal-overlay" style="display: none;">
         <div class="modal-content" style="text-align:center;">
             <div style="font-size: 4rem; color: #20c997;">&#10003;</div>
-            <h2>Paiement validé !</h2>
-            <p style="margin: 15px 0; color: #666;">Votre cours a été ajouté à votre espace personnel.</p>
-            <a href="cours.php" style="display:block; text-decoration:none; background:#007bff; color:white; padding:12px; border-radius:5px; font-weight:bold;">Accéder à mes cours</a>
-            <a href="offres.php" style="display:block; margin-top:10px; color:#666; font-size:0.9em;">Fermer</a>
+            <h2><?php echo $isEnglish ? 'Payment confirmed!' : 'Paiement validé !'; ?></h2>
+            <p style="margin: 15px 0; color: #666;"><?php echo $isEnglish ? 'Your course has been added to your dashboard.' : 'Votre cours a été ajouté à votre espace personnel.'; ?></p>
+            <a href="cours.php" style="display:block; text-decoration:none; background:#007bff; color:white; padding:12px; border-radius:5px; font-weight:bold;"><?php echo $isEnglish ? 'Go to my courses' : 'Accéder à mes cours'; ?></a>
+            <a href="offres.php" style="display:block; margin-top:10px; color:#666; font-size:0.9em;"><?php echo $isEnglish ? 'Close' : 'Fermer'; ?></a>
         </div>
     </div>
 

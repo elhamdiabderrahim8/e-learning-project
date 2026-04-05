@@ -32,9 +32,8 @@ if (is_authenticated()) {
 
 if (
 	!defined('APP_TRANSLATION_BUFFER_ACTIVE')
-	&& current_language() === 'en'
 	&& (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET')
 ) {
 	define('APP_TRANSLATION_BUFFER_ACTIVE', true);
-	ob_start('translate_output_to_english');
+	ob_start('translate_output_by_language');
 }
