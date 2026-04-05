@@ -43,13 +43,13 @@ $pageDescription = $isEnglish
                 <form class="lang-switch" action="index.php" method="get" aria-label="<?php echo $isEnglish ? 'Language setting' : 'Langue'; ?>">
                     <label class="sr-only" for="landing-language"><?php echo $isEnglish ? 'Language' : 'Langue'; ?></label>
                     <select id="landing-language" name="lang" onchange="this.form.submit()">
-                        <option value="fr" <?php echo $pageLang === 'fr' ? 'selected' : ''; ?>>FR</option>
-                        <option value="en" <?php echo $pageLang === 'en' ? 'selected' : ''; ?>>EN</option>
+                        <option value="fr" <?php echo $pageLang === 'fr' ? 'selected' : ''; ?>><?php echo $isEnglish ? 'French' : 'Français'; ?></option>
+                        <option value="en" <?php echo $pageLang === 'en' ? 'selected' : ''; ?>><?php echo $isEnglish ? 'English' : 'Anglais'; ?></option>
                     </select>
                 </form>
                 <a href="pages/login.php" class="btn btn-ghost"><?php echo $isEnglish ? 'Login' : 'Connexion'; ?></a>
                 <a href="pages/registre.php" class="btn btn-primary"><?php echo $isEnglish ? 'Sign up' : 'Inscription'; ?></a>
-                <a href="../../professeur/login.php" class="btn btn-soft"><?php echo $isEnglish ? 'Teacher area' : 'Espace Professeur'; ?></a>
+                <a href="../../professeur/index.php" class="btn btn-soft"><?php echo $isEnglish ? 'Teacher area' : 'Espace Professeur'; ?></a>
             </div>
         </div>
     </header>
