@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Cours - Enjah</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="cours.php"><span class="nav-icon">&#8962;</span><span>Mes Cours</span></a></li>
+                    <li><a href="tache_a_fair.php"><span class="nav-icon">&#128221;</span><span>Mes T&acirc;ches</span></a></li>
+                    <li><a href="offres.php"><span class="nav-icon">&#9671;</span><span>Choisir une offre</span></a></li>
+                    <li><a href="reclamation.php"><span class="nav-icon">&#128172;</span><span>R&eacute;clamation</span></a></li>
+                    <li><a href="profil.php"><span class="nav-icon">&#128100;</span><span>Mon Profil</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header course-header-enhanced">
+                <div class="header-flex course-header-top">
+                    <div class="course-header-copy">
+                        <p class="header-kicker">Mon espace formation</p>
+                        <h1>Catalogue des Cours</h1>
+                        <p>Continuez votre progression l&agrave; o&ugrave; vous vous &ecirc;tes arr&ecirc;t&eacute; et gardez un rythme r&eacute;gulier chaque semaine.</p>
+                        <div class="course-header-stats" aria-label="Statistiques rapides">
+                            <div class="course-stat-item">
+                                <strong>3</strong>
+                                <span>Cours actifs</span>
+                            </div>
+                            <div class="course-stat-item">
+                                <strong>38%</strong>
+                                <span>Progression globale</span>
+                            </div>
+                            <div class="course-stat-item">
+                                <strong>+4</strong>
+                                <span>Chapitres termines</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="search-bar search-bar-enhanced">
+                        <input type="text" id="course-search" placeholder="Rechercher un cours..." autocomplete="off" aria-label="Rechercher un cours">
+                    </div>
+                </div>
+            </header>
+
+            <div class="course-toolbar">
+                <div class="filters" id="course-filters">
+                    <input type="button" class="filter-tag active" value="Tous">
+                    <input type="button" class="filter-tag" value="D&eacute;veloppement">
+                    <input type="button" class="filter-tag" value="Design">
+                    <input type="button" class="filter-tag" value="Business">
+                </div>
+                <div class="course-toolbar-right">
+                    <p class="results-count" id="course-results-count">3 cours trouv&eacute;s</p>
+                    <select id="course-sort" class="course-sort" aria-label="Trier les cours">
+                        <option value="default">Tri: Par d&eacute;faut</option>
+                        <option value="progress_desc">Progression: plus avanc&eacute;</option>
+                        <option value="progress_asc">Progression: moins avanc&eacute;</option>
+                        <option value="title_asc">Titre A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <section class="courses-grid" id="courses-grid">
+                <div class="course-card" data-category="developpement" data-progress="75" data-title="Developpement Java Avance">
+                    <div class="course-image dev-bg">
+                        <span class="badge">Programmation</span>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-card-top">
+                            <h3>D&eacute;veloppement Java Avanc&eacute;</h3>
+                            <span class="progress-pill">75%</span>
+                        </div>
+                        <p>Ma&icirc;trisez les collections, les flux et la POO complexe.</p>
+                        <div class="course-meta">
+                            <span class="meta-chip">Interm&eacute;diaire</span>
+                            <span class="meta-chip">12h</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 75%;"></div>
+                        </div>
+                        <div class="course-footer">
+                            <span>75% Compl&eacute;t&eacute;</span>
+                            <input type="button" class="btn-primary" value="Continuer">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-category="design" data-progress="30" data-title="UI UX Design avec Tailwind">
+                    <div class="course-image design-bg">
+                        <span class="badge">Design</span>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-card-top">
+                            <h3>UI/UX Design avec Tailwind</h3>
+                            <span class="progress-pill">30%</span>
+                        </div>
+                        <p>Apprenez &agrave; cr&eacute;er des interfaces modernes et responsives.</p>
+                        <div class="course-meta">
+                            <span class="meta-chip">D&eacute;butant</span>
+                            <span class="meta-chip">9h</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 30%;"></div>
+                        </div>
+                        <div class="course-footer">
+                            <span>30% Compl&eacute;t&eacute;</span>
+                            <input type="button" class="btn-primary" value="Continuer">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-category="business" data-progress="10" data-title="Methodologies Agile et Scrum">
+                    <div class="course-image agile-bg">
+                        <span class="badge">Gestion</span>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-card-top">
+                            <h3>M&eacute;thodologies Agile &amp; Scrum</h3>
+                            <span class="progress-pill">10%</span>
+                        </div>
+                        <p>Optimisez la gestion de vos projets en &eacute;quipe.</p>
+                        <div class="course-meta">
+                            <span class="meta-chip">D&eacute;butant</span>
+                            <span class="meta-chip">7h</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 10%;"></div>
+                        </div>
+                        <div class="course-footer">
+                            <span>10% Compl&eacute;t&eacute;</span>
+                            <input type="button" class="btn-primary" value="Continuer">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <p class="course-empty-state" id="course-empty-state" hidden>Aucun cours ne correspond &agrave; votre recherche.</p>
+        </main>
+    </div>
+
+</body>
+</html>

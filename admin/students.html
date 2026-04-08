@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Étudiants - Admin</title>
+    <link rel="stylesheet" href="style.css">
+<style>
+    .page-content table { width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; }
+    .page-content th, .page-content td { padding: 10px; border: 1px solid #dee2e6; text-align: left; }
+    .page-content tr:hover { background: #f6f8fa; cursor: pointer; }
+    .page-content tr.selected { background: #d8ebff; }
+</style>
+</head>
+<body>
+    <div class="page-content">
+        <h2>Étudiants</h2>
+        <div id="students-table"></div>
+    </div>
+
+    <script>
+        async function renderStudents() {
+            const target = document.getElementById('students-table');
+            target.innerHTML = '<p>Chargement...</p>';
+            try {
+                const res = await fetch('api/students.php');
+                const data = await res.json();
+                if (!Array.isArray(data)) { throw new Error('Données invalides'); }
+                let html = '<table><thead><tr><th>CIN</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Date</th></tr></thead><tbody>';
+                data.forEach(u => {
+                    html += `<tr><td>${u.CIN}</td><td>${u.nom}</td><td>${u.prenom}</td><td>${u.email||'N/A'}</td><td>${u.date_inscription||'N/A'}</td></tr>`;
+                });
+                html += '</tbody></table>';
+                target.innerHTML = html;
+                document.querySelectorAll('#students-table table tbody tr').forEach(row => {
+                    row.addEventListener('click', () => {
+                        document.querySelectorAll('#students-table table tbody tr').forEach(r => r.classList.remove('selected'));
+                        row.classList.add('selected');
+                    });
+                });
+            } catch (e) {
+                target.innerHTML = '<p>Erreur de chargement des étudiants.</p>';
+            }
+        }
+        renderStudents();
+    </script>
+</body>
+</html>

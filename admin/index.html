@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Enjah</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">ENJAH Admin</div>
+            <nav>
+                <ul>
+                    <li><a id="tab-students" href="#" class="active">Étudiants</a></li>
+                    <li><a id="tab-professors" href="#">Professeurs</a></li>
+                    <li><a id="tab-payments" href="#">Paiements</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Tableau de bord Admin</h1>
+                <p>Liste des utilisateurs et validation des paiements.</p>
+            </header>
+            <section id="panel-iframe" class="iframe-panel">
+                <iframe id="admin-frame" src="students.html" frameborder="0"></iframe>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
