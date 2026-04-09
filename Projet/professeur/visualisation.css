@@ -1,0 +1,244 @@
+/* --- Variables de Thème Enjah --- */
+:root {
+    --primary-blue: #4d68e1;      /* Bleu Royal */
+    --slate-dark: #1e293b;        /* Bleu Ardoise */
+    --slate-light: #64748b;
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --danger: #ef4444;            /* Rouge pour l'aperçu indisponible */
+}
+
+/* --- Structure Globale --- */
+body {
+    background-color: var(--bg-light) !important;
+    font-family: 'Segoe UI', system-ui, sans-serif !important;
+    margin: 0;
+    padding: 20px;
+}
+
+.viewer-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 24px; /* Arrondi signature Enjah */
+    box-shadow: 0 10px 40px rgba(30, 41, 59, 0.1);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* --- Barre de Retour --- */
+.back-nav {
+    padding: 20px 30px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.back-link {
+    text-decoration: none;
+    color: var(--primary-blue);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- 1. MODE VIDÉO (Immersif) --- */
+.media-box.mode-video {
+    background: #000000 !important; /* Fond noir pur pour la vidéo */
+    line-height: 0;
+}
+
+.media-box.mode-video video {
+    width: 100%;
+    max-height: 70vh;
+}
+
+/* --- 2. MODE PDF (Élégant) --- */
+.media-box.mode-pdf {
+    background: #f1f5f9 !important; /* Gris bleuté clair */
+    padding: 30px !important;
+    display: flex;
+    justify-content: center;
+}
+
+.enjah-pdf {
+    width: 95% !important;
+    height: 80vh !important;
+    border-radius: 12px;
+    background: white;
+    /* Bordure blanche épaisse pour l'effet papier */
+    border: 6px solid #ffffff !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
+}
+
+/* --- 3. MODE EMPTY (Alerte) --- */
+.media-box.mode-empty {
+    padding: 60px 20px !important;
+    background: #fff5f5 !important; /* Fond rouge très clair */
+}
+
+.empty-state {
+    text-align: center;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px;
+    border: 2px dashed #feb2b2; /* Bordure pointillée */
+    border-radius: 20px;
+}
+
+.empty-state i {
+    font-size: 50px;
+    color: #f6ad55; /* Orange d'avertissement */
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    color: var(--danger);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* --- Boutons de téléchargement --- */
+.btn-download {
+    display: inline-block;
+    background: var(--primary-blue);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.btn-download:hover {
+    background: #3b52c1;
+    transform: translateY(-2px);
+}
+
+/* --- Zone Infos (Titre et Description) --- */
+.media-info {
+    padding: 30px 40px;
+}
+
+.media-info h2 {
+    color: var(--slate-dark);
+    font-size: 1.6rem;
+    margin: 0 0 10px 0;
+}
+
+.media-info p {
+    color: var(--slate-light);
+    line-height: 1.6;
+}
+/* --- STYLE COMMUN --- */
+.media-box {
+    transition: all 0.4s ease;
+    min-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- 1. BLOC VIDÉO : Mode Cinéma --- */
+.mode-video {
+    background: #0f172a !important; /* Bleu Ardoise foncé */
+    padding: 0 !important; /* La vidéo prend tout le bloc */
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+}
+.mode-video video {
+    width: 100%;
+    max-height: 85vh;
+}
+
+/* --- 2. BLOC PDF : Mode Bureau Élégant --- */
+.mode-pdf {
+    background: #f1f5f9 !important; /* Gris très clair/bleuté */
+    padding: 40px !important;
+}
+.pdf-viewer {
+    width: 90% !important;
+    height: 85vh !important;
+    background: white;
+    /* Bordure élégante spécifique au PDF */
+    border: 8px solid #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important;
+}
+
+/* --- 3. BLOC VIDE : Mode Alerte/Avertissement --- */
+.mode-empty {
+    background: #fff5f5 !important; /* Rouge très pâle */
+    border: 2px dashed #feb2b2;
+    margin: 20px;
+    border-radius: 20px;
+}
+.empty-state {
+    text-align: center;
+    color: #c53030;
+}
+.icon-warning {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+.btn-dl {
+    display: inline-block;
+    background: #4d68e1;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+
+/* --- MODE AUDIO --- */
+.media-box.mode-audio {
+    background: linear-gradient(135deg, #1e293b 0%, #4d68e1 100%) !important;
+    padding: 60px 20px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.audio-player-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    color: white;
+}
+
+.audio-visual {
+    margin-bottom: 30px;
+}
+
+.pulse-icon {
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    animation: pulse 2s infinite; /* Animation de battement pour l'audio */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.audio-player-container h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+/* Style du lecteur audio natif pour qu'il soit propre sur fond sombre */
+.mode-audio audio {
+    width: 100%;
+    height: 45px;
+    filter: invert(100%) hue-rotate(180deg) brightness(1.5); /* Le rend blanc/moderne */
+}

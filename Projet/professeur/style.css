@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+/* ========================
+   PAGE FOND
+======================== */
+body.login-page {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #1a2a47;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========================
+   CONTENEUR
+======================== */
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+    padding-top: 70px; /* Espace pour le logo qui dépasse */
+}
+
+/* ========================
+   BOÎTE PRINCIPALE
+======================== */
+.login-box {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+}
+
+/* ========================
+   EN-TÊTE LOGO
+======================== */
+.head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: -55px; /* Logo qui déborde au-dessus de la boîte */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+    display: block;
+}
+
+/* ========================
+   TEXTE EN-TÊTE
+======================== */
+.login-header {
+    margin-top: 45px; /* Pousse le contenu sous le logo */
+}
+
+.login-header .logo {
+    color: #4d68e1;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.login-header h1 {
+    color: #1e293b;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.login-subtitle-link {
+    margin-bottom: 10px;
+}
+
+.login-subtitle-link a {
+    color: #4d68e1;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.login-subtitle-link a:hover {
+    text-decoration: underline;
+}
+
+.login-header p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+/* ========================
+   MESSAGE D'ERREUR
+======================== */
+.error {
+    display: flex;
+    align-items: center;
+    background-color: #2d3748;
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.4s ease-out;
+}
+
+#error {
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    filter: invert(41%) sepia(85%) saturate(300%) hue-rotate(300deg) brightness(100%) contrast(100%);
+}
+
+.error p {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    text-align: left;
+    line-height: 1.4;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================
+   CHAMPS DE SAISIE
+======================== */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #f1f5f9;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    border-color: #4d68e1;
+    outline: none;
+    background-color: #f8fafc;
+}
+
+/* ========================
+   OPTIONS
+======================== */
+.login-options {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.login-options input {
+    margin-right: 8px;
+}
+
+/* ========================
+   BOUTON
+======================== */
+.btn-login {
+    width: 100%;
+    padding: 16px;
+    background: #4d68e1;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: #3b52c1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(77, 104, 225, 0.4);
+}
+
+/* ========================
+   FOOTER LIENS
+======================== */
+.login-footer {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.login-footer-secondary {
+    margin-top: 10px;
+}
+
+.login-footer a {
+    color: #e280c4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.login-footer a:hover {
+    color: #d16db1;
+    text-decoration: underline;
+}
