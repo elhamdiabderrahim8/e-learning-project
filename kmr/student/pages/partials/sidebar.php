@@ -6,6 +6,10 @@ $active = (string) ($active ?? '');
 $isEnglish = function_exists('current_language') && current_language() === 'en';
 
 $items = [
+    'hub' => [
+        'href' => '../../../index.php',
+        'label' => $isEnglish ? 'Project Hub' : 'Hub projet',
+    ],
     'cours' => [
         'href' => 'cours.php',
         'label' => $isEnglish ? 'My Courses' : 'Mes Cours',
@@ -65,7 +69,7 @@ try {
 ?>
 <header class="topnav" aria-label="<?php echo $isEnglish ? 'Main navigation' : 'Navigation principale'; ?>">
     <div class="topnav-inner">
-        <a class="logo topnav-logo" href="../index.php" aria-label="<?php echo $isEnglish ? 'Go to home page' : 'Aller à l\'accueil'; ?>">
+        <a class="logo topnav-logo" href="../../../index.php" aria-label="<?php echo $isEnglish ? 'Go to project hub' : 'Aller au hub projet'; ?>">
             <img src="../media/logo.jpg" alt="Logo Enjah">
             <span>Enjah</span>
         </a>

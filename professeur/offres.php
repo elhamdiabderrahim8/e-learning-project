@@ -48,6 +48,7 @@ $result_cours = $conn->query($sql_cours);
             
             <nav>
                 <ul>
+                    <li><a href="../index.php">Hub projet</a></li>
                     <li><a href="cours.html">Mes Cours</a></li>
                     <li><a href="tache_a_fair.html">Mes Tâches</a></li>
                     <li class="active"><a href="offres.php">Vos Cours</a></li> <li><a href="calendrier.html">Calendrier</a></li>

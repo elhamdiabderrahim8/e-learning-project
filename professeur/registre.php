@@ -24,6 +24,11 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
                         <span>Enjah</span>
                     </div>
                 </a>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:4px 0 10px; font-size:.92rem;">
+                    <a href="../index.php">Hub projet</a>
+                    <a href="../admin/login.php">Admin</a>
+                    <a href="../kmr/student/home.php">Etudiant</a>
+                </div>
                 <h1>Inscription</h1>
                 <p>Creez votre compte pour acceder a l'espace professeur.</p>
                 <p class="input-help" style="margin-top: 8px;">Espace professeur</p>

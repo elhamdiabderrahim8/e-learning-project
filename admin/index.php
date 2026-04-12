@@ -13,11 +13,14 @@ $nb_messages  = $res ? $res->fetch_assoc()['n'] : 0;
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard - Enjah</title>
-    <link rel="stylesheet" href="../professeur/nouvel.css">
-    <style>
+        <div class="logo">
+            <a href="../index.php" style="display:flex;align-items:center;text-decoration:none;color:inherit;">
+            <img src="../professeur/enjah.png" alt="logo" style="height:28px;">
         .overview { display:flex; gap:16px; margin-bottom:25px; flex-wrap:wrap; }
+            </a>
         .overview-card { flex:1; min-width:180px; background:#fff; border-radius:12px; padding:20px;
             box-shadow:var(--shadow); border:1px solid #e2e8f0; text-align:center; }
+            <li><a href="../index.php">Hub projet</a></li>
         .overview-card .num { font-size:2rem; font-weight:700; color:#4f46e5; }
         .overview-card .label { color:#718096; font-size:.9rem; margin-top:4px; }
         .badge { background:#ef4444; color:#fff; border-radius:999px; padding:2px 8px; font-size:.75rem; margin-left:6px; }
@@ -55,6 +58,7 @@ $nb_messages  = $res ? $res->fetch_assoc()['n'] : 0;
             <div class="overview-card"><div class="num"><?=$nb_messages?></div><div class="label">💬 Non lus</div></div>
         </div>
         <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <a href="../index.php" class="card-link"><strong>🏠 Hub projet</strong><br><small style="color:#718096;">Retourner au point d'entrée principal</small></a>
             <a href="students.php" class="card-link"><strong>👩‍🎓 Gérer les étudiants</strong><br><small style="color:#718096;">Voir, supprimer des étudiants</small></a>
             <a href="professors.php" class="card-link"><strong>👨‍🏫 Gérer les professeurs</strong><br><small style="color:#718096;">Voir, supprimer des professeurs</small></a>
             <a href="chat.php" class="card-link"><strong>💬 Support Chat</strong><br><small style="color:#718096;">Répondre aux messages</small></a>

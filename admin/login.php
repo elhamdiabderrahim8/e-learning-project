@@ -51,6 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <img src="../professeur/enjah.png" alt="Enjah">
             <span>Admin Panel</span>
         </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:-4px 0 18px;">
+            <a href="../index.php" style="color:#4f46e5;text-decoration:none;font-weight:600;">Hub projet</a>
+            <a href="../professeur/index.php" style="color:#4f46e5;text-decoration:none;font-weight:600;">Professeur</a>
+            <a href="../kmr/student/home.php" style="color:#4f46e5;text-decoration:none;font-weight:600;">Etudiant</a>
+        </div>
         <h2>Connexion Administrateur</h2>
         <?php if (!empty($error)): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>

@@ -79,8 +79,9 @@ if ($active_thread) {
 <body>
 <div class="dashboard-container">
     <aside class="sidebar">
-        <div class="logo"><img src="../professeur/enjah.png" alt="logo" style="height:28px;"><span class="brand-name">Admin</span></div>
+        <div class="logo"><a href="../index.php" style="display:flex;align-items:center;text-decoration:none;color:inherit;"><img src="../professeur/enjah.png" alt="logo" style="height:28px;"><span class="brand-name">Admin</span></a></div>
         <nav><ul>
+            <li><a href="../index.php">Hub projet</a></li>
             <li><a href="index.php">Tableau de bord</a></li>
             <li><a href="students.php">Étudiants</a></li>
             <li><a href="professors.php">Professeurs</a></li>

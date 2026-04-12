@@ -40,6 +40,7 @@ $pageDescription = $isEnglish
             </nav>
 
             <div class="top-actions">
+                <a href="../../index.php" class="btn btn-soft"><?php echo $isEnglish ? 'Project hub' : 'Hub projet'; ?></a>
                 <form class="lang-switch" action="index.php" method="get" aria-label="<?php echo $isEnglish ? 'Language setting' : 'Langue'; ?>">
                     <label class="sr-only" for="landing-language"><?php echo $isEnglish ? 'Language' : 'Langue'; ?></label>
                     <select id="landing-language" name="lang" onchange="this.form.submit()">

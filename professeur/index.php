@@ -26,9 +26,11 @@ declare(strict_types=1);
             </nav>
 
             <div class="top-actions">
+                <a href="../index.php" class="btn btn-soft">Hub projet</a>
                 <a href="login.php" class="btn btn-ghost">Connexion</a>
                 <a href="registre.php" class="btn btn-primary">Creer un compte</a>
                 <a href="../kmr/student/index.php" class="btn btn-soft">Espace Etudiant</a>
+                <a href="../admin/login.php" class="btn btn-soft">Espace Admin</a>
             </div>
         </div>
     </header>
