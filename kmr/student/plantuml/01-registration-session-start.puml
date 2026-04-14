@@ -1,0 +1,22 @@
+@startuml
+title Student Registration And Session Start
+actor Student
+participant "Register Page\npages/registre.php" as RegisterPage
+participant "Register Action\nbackend/actions/register.php" as RegisterAction
+participant "Auth Layer\nincludes/auth.php" as Auth
+database "MySQL DB\netudiant" as DB
+participant "Offers Page\npages/offres.php" as OffersPage
+Student -> RegisterPage: Open registration page
+RegisterPage --> Student: Show form
+Student -> RegisterAction: Submit registration form
+RegisterAction -> RegisterAction: Validate input
+RegisterAction -> DB: Check if CIN already exists
+alt Invalid data or CIN already used
+    RegisterAction --> RegisterPage: Redirect with error
+else Valid registration
+    RegisterAction -> DB: Insert new student
+    RegisterAction -> Auth: Create student session
+    RegisterAction --> OffersPage: Redirect to offers page
+    OffersPage --> Student: Enter platform
+end
+@enduml

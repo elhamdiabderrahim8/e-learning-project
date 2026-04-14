@@ -1,0 +1,32 @@
+@startuml
+title Course Enrollment And Lesson Progression
+
+actor Student
+participant "Offers Page\npages/offres.php" as OffersPage
+participant "Enrollment Action" as EnrollAction
+participant "My Courses\npages/cours.php" as CoursesPage
+participant "Lessons Page" as LessonsPage
+participant "Validate Lesson" as ValidateAction
+database "MySQL DB" as DB
+
+Student -> OffersPage: Open available offers
+OffersPage --> Student: Show free and premium offers
+
+alt Free course path
+    Student -> EnrollAction: Send free enrollment request
+    EnrollAction -> DB: Save enrollment
+    EnrollAction --> CoursesPage: Redirect to my courses
+else Premium course path
+    Student -> EnrollAction: Confirm payment
+    EnrollAction -> DB: Save paid enrollment
+    EnrollAction --> CoursesPage: Redirect to my courses
+end
+
+CoursesPage -> DB: Load enrolled courses
+DB --> CoursesPage: Student course dashboard
+Student -> LessonsPage: Open one course
+Student -> ValidateAction: Mark lesson as completed
+ValidateAction -> DB: Save lesson progress
+ValidateAction --> LessonsPage: Return updated lesson list
+
+@enduml

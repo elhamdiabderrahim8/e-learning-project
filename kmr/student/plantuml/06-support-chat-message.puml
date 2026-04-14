@@ -1,0 +1,19 @@
+@startuml
+title Support Chat Message
+
+actor Student
+participant "Support Page" as SupportPage
+participant "create_support_message.php" as SupportAction
+participant "Bootstrap" as Bootstrap
+database "MySQL DB\nsupport_messages" as DB
+
+Student -> SupportPage: Open support thread
+SupportPage -> DB: Load previous messages
+DB --> SupportPage: Ordered discussion history
+Student -> SupportAction: Send new message
+SupportAction -> Bootstrap: Validate session and POST body
+SupportAction -> DB: INSERT message with sender = student
+SupportAction --> SupportPage: Redirect back
+SupportPage --> Student: Updated thread is displayed
+
+@enduml

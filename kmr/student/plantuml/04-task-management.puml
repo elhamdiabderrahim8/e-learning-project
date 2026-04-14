@@ -1,0 +1,20 @@
+@startuml
+title Task Management
+
+actor Student
+participant "Tasks Page" as TasksPage
+participant "Task Actions" as TaskAction
+participant "Bootstrap" as Bootstrap
+database "MySQL DB\ntasks" as DB
+
+Student -> TasksPage: Open task board
+TasksPage -> Bootstrap: Require authenticated session
+TasksPage -> DB: Load tasks by user_id
+DB --> TasksPage: Tasks grouped by status
+Student -> TaskAction: Create task or move task\nto next state
+TaskAction -> Bootstrap: Validate authenticated request
+TaskAction -> DB: INSERT, UPDATE, or DELETE task
+TaskAction --> TasksPage: Redirect back to board
+TasksPage --> Student: Show refreshed columns
+
+@enduml

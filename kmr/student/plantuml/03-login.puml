@@ -1,0 +1,24 @@
+@startuml
+title Student Login
+
+actor Student
+participant "Login Page" as LoginPage
+participant "Action login.php" as LoginAction
+participant "Bootstrap" as Bootstrap
+database "MySQL DB" as DB
+participant "Auth Layer" as Auth
+participant "My Courses" as CoursesPage
+
+Student -> LoginPage: Open login form
+Student -> LoginAction: Submit CIN + password
+LoginAction -> Bootstrap: Load shared environment
+LoginAction -> DB: Find student by CIN
+
+alt Invalid account or bad password
+    LoginAction --> LoginPage: Redirect back to login
+else Valid credentials
+    LoginAction -> Auth: Create authenticated session
+    LoginAction --> CoursesPage: Redirect to cours.php
+end
+
+@enduml

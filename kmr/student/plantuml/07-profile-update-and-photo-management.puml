@@ -1,0 +1,29 @@
+@startuml
+title Profile Update And Photo Management
+
+actor Student
+participant "Profile Page" as ProfilePage
+participant "Profile Update Action" as ProfileAction
+participant "Delete Photo Action" as PhotoDelete
+participant "Bootstrap" as Bootstrap
+database "MySQL DB\netudiant" as DB
+
+Student -> ProfilePage: Open profile page
+ProfilePage -> DB: Load student profile and photo data
+DB --> ProfilePage: Current profile information
+
+alt Update profile
+    Student -> ProfileAction: Submit names, language,\noptional image
+    ProfileAction -> Bootstrap: Validate authenticated request
+    ProfileAction -> DB: UPDATE text fields\nand preferred language
+    opt New image uploaded
+        ProfileAction -> DB: UPDATE binary image data\nand MIME type
+    end
+    ProfileAction --> ProfilePage: Redirect back
+else Delete photo
+    Student -> PhotoDelete: Request photo deletion
+    PhotoDelete -> DB: Set photo columns to NULL
+    PhotoDelete --> ProfilePage: Redirect back
+end
+
+@enduml

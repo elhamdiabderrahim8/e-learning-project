@@ -1,0 +1,25 @@
+@startuml
+title Logout And Profile Deletion
+
+actor Student
+participant "Sidebar / Profile UI" as Sidebar
+participant "logout.php" as LogoutAction
+participant "delete_profile.php" as DeleteProfile
+participant "Auth Layer" as Auth
+database "MySQL DB" as DB
+participant "Student Home / Login" as HomePage
+
+alt Logout
+    Student -> Sidebar: Click logout or leave page
+    Sidebar -> LogoutAction: POST or GET logout request
+    LogoutAction -> Auth: Destroy session and cookie
+    LogoutAction --> HomePage: Redirect to login page\nor finish beacon request
+else Delete profile
+    Student -> DeleteProfile: Confirm account deletion
+    DeleteProfile -> DB: Remove related rows from tasks,\nreclamations, support, etc.
+    DeleteProfile -> DB: DELETE student row from etudiant
+    DeleteProfile -> Auth: Destroy session
+    DeleteProfile --> HomePage: Redirect to student index
+end
+
+@enduml

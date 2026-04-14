@@ -1,0 +1,24 @@
+@startuml
+title Reclamation With Attachments
+
+actor Student
+participant "Reclamation Page" as ReclamationPage
+participant "create_reclamation.php" as ReclamationAction
+participant "Bootstrap" as Bootstrap
+collections "Upload Folder" as Filesystem
+database "MySQL DB\nreclamations" as DB
+
+Student -> ReclamationPage: Open reclamation form
+Student -> ReclamationAction: Submit subject, message,\nattachments
+ReclamationAction -> Bootstrap: Check authenticated POST request
+ReclamationAction -> ReclamationAction: Validate subject/message\nand file size
+
+opt Attachments provided
+    ReclamationAction -> Filesystem: Save uploaded files
+end
+
+ReclamationAction -> DB: INSERT reclamation row\nwith attachment paths
+ReclamationAction --> ReclamationPage: Redirect back
+ReclamationPage --> Student: Request appears as submitted
+
+@enduml
