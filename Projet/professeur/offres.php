@@ -5,6 +5,9 @@ if (!isset($_SESSION['CIN'])) {
     exit();
 }
 
+$flash = $_SESSION['course_flash'] ?? null;
+unset($_SESSION['course_flash']);
+
 $conn = new mysqli('localhost', 'root', '', 'elearning');
 $cin = $_SESSION['CIN'];
 
@@ -76,6 +79,12 @@ $result_cours = $conn->query($sql_cours);
                 <h1>Offres Speciales</h1>
                 <p>Investissez dans votre avenir avec nos cours.</p>
             </div>
+
+            <?php if (is_array($flash) && !empty($flash['message'])): ?>
+                <div style="margin-bottom:16px; padding:14px 18px; border-radius:14px; font-weight:700; background: <?php echo ($flash['type'] ?? '') === 'success' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)'; ?>; color: <?php echo ($flash['type'] ?? '') === 'success' ? '#047857' : '#b91c1c'; ?>; border: 1px solid <?php echo ($flash['type'] ?? '') === 'success' ? 'rgba(16,185,129,0.18)' : 'rgba(239,68,68,0.18)'; ?>;">
+                    <?php echo htmlspecialchars((string) $flash['message'], ENT_QUOTES, 'UTF-8'); ?>
+                </div>
+            <?php endif; ?>
 
             <div class="courses-grid" id="courses-grid">
                 <?php

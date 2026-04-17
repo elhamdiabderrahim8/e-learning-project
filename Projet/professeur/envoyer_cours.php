@@ -1,50 +1,55 @@
 <?php
 session_start();
-$conn = new mysqli('localhost', 'root','', 'elearning');
+require_once __DIR__ . '/course_image_utils.php';
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("La connexion a échoué : " . $conn->connect_error);
+if (!isset($_SESSION['CIN'])) {
+    set_course_flash('error', 'Veuillez vous reconnecter.');
+    redirect_course_offers();
 }
 
-// Vérifier si le formulaire a été soumis
-if(isset($_POST['submit'])) {
-    $id_prof = $_SESSION['CIN'];
-    $nom = $_POST['nom_cours'];
-    $cat = $_POST['categorie'];
-    if($cat=="Free"){
-        $prix=0;
+$conn = new mysqli('localhost', 'root', '', 'elearning');
+if ($conn->connect_error) {
+    set_course_flash('error', 'La connexion a la base a echoue.');
+    redirect_course_offers();
+}
+
+if (!isset($_POST['submit'])) {
+    redirect_course_offers();
+}
+
+$idProf = (int) $_SESSION['CIN'];
+$nom = trim((string) ($_POST['nom_cours'] ?? ''));
+$categorie = (string) ($_POST['categorie'] ?? 'Premium');
+$prix = $categorie === 'Free' ? 0 : (float) ($_POST['prix'] ?? 0);
+
+if ($nom === '') {
+    set_course_flash('error', 'Le nom du cours est obligatoire.');
+    redirect_course_offers();
+}
+
+try {
+    $image = normalize_course_upload($_FILES['file'] ?? []);
+
+    $stmt = $conn->prepare('INSERT INTO cours (nom_cours, prix, categorie, image_data, image_type, image_name, id_professeur) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    if (!$stmt) {
+        throw new RuntimeException('Erreur de preparation SQL.');
     }
-    else{
-       $prix = $_POST['prix'];
-    }
-    
-    // 2. Gestion de l'image
-    // On récupère le contenu binaire du fichier temporaire
-$file = $_FILES["file"];
-$type = $file["type"];
-$name= $file["name"];
-$data = file_get_contents($file["tmp_name"]);
 
-    // 3. Préparation de la requête
-    // Note : On utilise "b" pour le type BLOB (données binaires)
-    $stmt = $conn->prepare("INSERT INTO cours (nom_cours, prix, categorie, image_data, image_type,image_name,id_professeur) VALUES (?, ?, ?, ?, ?,?,?)");
+    $data = $image['data'];
+    $type = $image['type'];
+    $name = $image['name'];
+    $stmt->bind_param('sdssssi', $nom, $prix, $categorie, $data, $type, $name, $idProf);
 
-    /* Explication du "sssbs" :
-       s = string (chaîne)
-       b = blob (données binaires)
-    */
-    $stmt->bind_param("ssssssi", $nom, $prix, $cat, $data, $type,$name,$id_prof);
-
-    // 4. Exécution
-    if ($stmt->execute()) {
-        header('Location: offres.php'); // Redirection en cas de succès
-    } else {
-        echo "Erreur lors de l'insertion : " . $stmt->error;
+    if (!$stmt->execute()) {
+        throw new RuntimeException('Erreur lors de l insertion : ' . $stmt->error);
     }
 
     $stmt->close();
+    set_course_flash('success', 'Cours ajoute avec succes.');
+    redirect_course_offers();
+} catch (Throwable $e) {
+    set_course_flash('error', $e->getMessage());
+    redirect_course_offers();
+} finally {
+    $conn->close();
 }
-
-$conn->close();
-?>

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/course_image_utils.php';
 
 if (!isset($_SESSION['CIN'])) {
     header('Location: login.html');
@@ -8,12 +9,12 @@ if (!isset($_SESSION['CIN'])) {
 
 $conn = new mysqli('localhost', 'root', '', 'elearning');
 if ($conn->connect_error) {
-    die('La connexion a echoue : ' . $conn->connect_error);
+    set_course_flash('error', 'La connexion a la base a echoue.');
+    redirect_course_offers();
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
-    header('Location: offres.php');
-    exit();
+    redirect_course_offers();
 }
 
 $idProf = (int) $_SESSION['CIN'];
@@ -23,7 +24,8 @@ $categorie = trim((string) ($_POST['categorie'] ?? 'Premium'));
 $prix = (float) ($_POST['prix'] ?? 0);
 
 if ($idCours <= 0 || $nomCours === '') {
-    die('Donnees invalides.');
+    set_course_flash('error', 'Donnees invalides.');
+    redirect_course_offers();
 }
 
 if ($categorie !== 'Premium' && $categorie !== 'Free') {
@@ -38,37 +40,38 @@ $hasNewImage = isset($_FILES['file'])
     && is_array($_FILES['file'])
     && (int) ($_FILES['file']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK;
 
-if ($hasNewImage) {
-    $file = $_FILES['file'];
-    $type = (string) ($file['type'] ?? '');
-    $name = (string) ($file['name'] ?? '');
-    $tmpName = (string) ($file['tmp_name'] ?? '');
+try {
+    if ($hasNewImage) {
+        $image = normalize_course_upload($_FILES['file']);
+        $data = $image['data'];
+        $type = $image['type'];
+        $name = $image['name'];
 
-    if ($tmpName === '' || !is_uploaded_file($tmpName)) {
-        die('Image invalide.');
+        $stmt = $conn->prepare('UPDATE cours SET nom_cours = ?, prix = ?, categorie = ?, image_data = ?, image_type = ?, image_name = ? WHERE id = ? AND id_professeur = ?');
+        if (!$stmt) {
+            throw new RuntimeException('Erreur de preparation SQL.');
+        }
+
+        $stmt->bind_param('sdssssii', $nomCours, $prix, $categorie, $data, $type, $name, $idCours, $idProf);
+    } else {
+        $stmt = $conn->prepare('UPDATE cours SET nom_cours = ?, prix = ?, categorie = ? WHERE id = ? AND id_professeur = ?');
+        if (!$stmt) {
+            throw new RuntimeException('Erreur de preparation SQL.');
+        }
+
+        $stmt->bind_param('sdsii', $nomCours, $prix, $categorie, $idCours, $idProf);
     }
 
-    $data = file_get_contents($tmpName);
-    if ($data === false) {
-        die('Impossible de lire l\'image.');
+    if (!$stmt->execute()) {
+        throw new RuntimeException('Erreur lors de la mise a jour : ' . $stmt->error);
     }
 
-    $stmt = $conn->prepare('UPDATE cours SET nom_cours = ?, prix = ?, categorie = ?, image_data = ?, image_type = ?, image_name = ? WHERE id = ? AND id_professeur = ?');
-    if (!$stmt) {
-        die('Erreur de preparation SQL.');
-    }
-    $stmt->bind_param('sdssssii', $nomCours, $prix, $categorie, $data, $type, $name, $idCours, $idProf);
-} else {
-    $stmt = $conn->prepare('UPDATE cours SET nom_cours = ?, prix = ?, categorie = ? WHERE id = ? AND id_professeur = ?');
-    if (!$stmt) {
-        die('Erreur de preparation SQL.');
-    }
-    $stmt->bind_param('sdsii', $nomCours, $prix, $categorie, $idCours, $idProf);
+    $stmt->close();
+    set_course_flash('success', 'Cours mis a jour avec succes.');
+    redirect_course_offers();
+} catch (Throwable $e) {
+    set_course_flash('error', $e->getMessage());
+    redirect_course_offers();
+} finally {
+    $conn->close();
 }
-
-if ($stmt->execute()) {
-    header('Location: offres.php');
-    exit();
-}
-
-die('Erreur lors de la mise a jour : ' . $stmt->error);

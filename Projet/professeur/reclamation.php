@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../kmr/student/backend/config/database.php';
+require_once __DIR__ . '/../kmr/student/backend/includes/migrate_support_tables.php';
 
 if (!isset($_SESSION['CIN'])) {
     header('Location: login.html');
@@ -26,6 +27,61 @@ try {
     }
 } catch (Throwable $e) {
     // Keep fallback profile values if loading the avatar fails.
+}
+
+$flash = $_SESSION['prof_reclamation_flash'] ?? null;
+unset($_SESSION['prof_reclamation_flash']);
+
+$error = null;
+$success = null;
+if (is_array($flash)) {
+    if (($flash['type'] ?? '') === 'error') {
+        $error = (string) ($flash['message'] ?? '');
+    } elseif (($flash['type'] ?? '') === 'success') {
+        $success = (string) ($flash['message'] ?? '');
+    }
+}
+
+$threads = [];
+$loadError = null;
+
+try {
+    migrate_support_tables();
+    $stmt = $pdo->prepare(
+        "SELECT
+            t.id,
+            t.subject,
+            t.created_at,
+            (
+                SELECT sm.message
+                FROM support_messages sm
+                WHERE sm.thread_id = t.id AND sm.sender = 'professeur'
+                ORDER BY sm.created_at ASC, sm.id ASC
+                LIMIT 1
+            ) AS user_message,
+            (
+                SELECT sm.message
+                FROM support_messages sm
+                WHERE sm.thread_id = t.id AND sm.sender = 'admin'
+                ORDER BY sm.created_at DESC, sm.id DESC
+                LIMIT 1
+            ) AS admin_reply,
+            (
+                SELECT sm.created_at
+                FROM support_messages sm
+                WHERE sm.thread_id = t.id AND sm.sender = 'admin'
+                ORDER BY sm.created_at DESC, sm.id DESC
+                LIMIT 1
+            ) AS admin_reply_at
+         FROM support_threads t
+         WHERE t.user_id = :user_id AND t.user_type = 'professeur'
+         ORDER BY t.created_at DESC, t.id DESC
+         LIMIT 20"
+    );
+    $stmt->execute(['user_id' => $cin]);
+    $threads = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+} catch (Throwable $e) {
+    $loadError = 'Impossible de charger vos reclamations pour le moment.';
 }
 ?>
 <!DOCTYPE html>
@@ -77,13 +133,20 @@ try {
                 <div>
                     <span class="eyebrow">Support professeur</span>
                     <h1>Envoyer une reclamation a l'admin</h1>
-                    <p>Expliquez votre probleme, posez votre question ou signalez un blocage. Votre message sera transmis directement a l'administration.</p>
+                    <p>Expliquez votre probleme, posez votre question ou signalez un blocage. Votre message sera enregistre et transmis directement a l'administration.</p>
                 </div>
                 <div class="hero-note">
                     <strong>Canal direct</strong>
-                    <span>Messagerie reliee au support admin</span>
+                    <span>Suivi de vos demandes et reponses admin</span>
                 </div>
             </section>
+
+            <?php if ($error): ?>
+                <div class="reclamation-alert reclamation-alert-error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
+            <?php if ($success): ?>
+                <div class="reclamation-alert reclamation-alert-success"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
 
             <section class="reclamation-layout">
                 <aside class="support-info-card">
@@ -91,7 +154,7 @@ try {
                     <ul>
                         <li>Choisissez un sujet clair pour accelerer le traitement.</li>
                         <li>Decrivez le probleme avec le plus de contexte possible.</li>
-                        <li>Vous pourrez continuer la discussion dans ce meme fil.</li>
+                        <li>Consultez plus bas l'historique de vos reclamations.</li>
                     </ul>
                     <div class="support-meta">
                         <span class="meta-badge">Admin support</span>
@@ -100,179 +163,66 @@ try {
                 </aside>
 
                 <section class="support-panel-page">
-                    <div class="support-start-card" id="page-support-start">
-                        <label for="page-support-subject">Sujet</label>
-                        <input type="text" id="page-support-subject" value="Reclamation professeur" placeholder="Sujet de votre message">
+                    <div class="support-start-card">
+                        <form method="post" action="create_reclamation.php">
+                            <label for="subject">Sujet de la reclamation</label>
+                            <select id="subject" name="subject" required>
+                                <option value="Probleme d acces au cours">Probleme d acces au cours</option>
+                                <option value="Probleme avec un etudiant">Probleme avec un etudiant</option>
+                                <option value="Bug technique sur la plateforme">Bug technique sur la plateforme</option>
+                                <option value="Paiement / Facturation">Paiement / Facturation</option>
+                                <option value="Autre">Autre</option>
+                            </select>
 
-                        <label for="page-support-message">Votre message</label>
-                        <textarea id="page-support-message" rows="7" placeholder="Expliquez votre probleme, la page concernee et ce dont vous avez besoin..."></textarea>
+                            <label for="message">Votre message</label>
+                            <textarea id="message" name="message" rows="7" placeholder="Expliquez votre probleme de maniere claire..." required></textarea>
 
-                        <button type="button" class="btn-primary support-submit" onclick="pageSupportStart()">Envoyer a l'admin</button>
-                        <p class="support-hint" id="page-support-feedback">Le support reviendra dans ce fil des qu'une reponse sera disponible.</p>
+                            <button type="submit" class="btn-primary support-submit">Envoyer la reclamation</button>
+                            <p class="support-hint">Votre demande sera sauvegardee puis visible dans la liste ci-dessous.</p>
+                        </form>
                     </div>
 
-                    <div class="support-thread-card" id="page-support-thread" style="display:none;">
+                    <div class="support-thread-card">
                         <div class="thread-head">
                             <div>
-                                <h2>Conversation avec l'admin</h2>
-                                <p>Vous pouvez poursuivre les echanges ici.</p>
+                                <h2>Mes reclamations</h2>
+                                <p>Retrouvez ici vos messages et les reponses de l'administration.</p>
                             </div>
-                            <button type="button" class="thread-refresh" onclick="pageSupportLoad()">Actualiser</button>
                         </div>
 
-                        <div id="page-support-messages" class="page-support-messages"></div>
+                        <?php if ($loadError): ?>
+                            <div class="reclamation-alert reclamation-alert-error"><?php echo htmlspecialchars($loadError, ENT_QUOTES, 'UTF-8'); ?></div>
+                        <?php elseif (!$threads): ?>
+                            <div class="empty-state">Aucune reclamation pour le moment. Envoyez votre premiere demande.</div>
+                        <?php else: ?>
+                            <div class="reclamation-thread-list">
+                                <?php foreach ($threads as $thread): ?>
+                                    <article class="reclamation-thread-item">
+                                        <div class="reclamation-thread-head">
+                                            <strong><?php echo htmlspecialchars((string) ($thread['subject'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></strong>
+                                            <small><?php echo htmlspecialchars((string) ($thread['created_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></small>
+                                        </div>
 
-                        <div class="thread-compose">
-                            <input type="text" id="page-support-text" placeholder="Votre reponse..." onkeydown="if(event.key==='Enter'){ event.preventDefault(); pageSupportSend(); }">
-                            <button type="button" class="btn-primary" onclick="pageSupportSend()">Envoyer</button>
-                        </div>
+                                        <?php if (!empty($thread['user_message'])): ?>
+                                            <p class="thread-label">Votre message</p>
+                                            <div class="thread-bubble thread-bubble-user"><?php echo nl2br(htmlspecialchars((string) $thread['user_message'], ENT_QUOTES, 'UTF-8')); ?></div>
+                                        <?php endif; ?>
+
+                                        <?php if (!empty($thread['admin_reply'])): ?>
+                                            <p class="thread-label">Reponse admin</p>
+                                            <div class="thread-bubble thread-bubble-admin"><?php echo nl2br(htmlspecialchars((string) $thread['admin_reply'], ENT_QUOTES, 'UTF-8')); ?></div>
+                                            <small class="thread-date"><?php echo htmlspecialchars((string) ($thread['admin_reply_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></small>
+                                        <?php else: ?>
+                                            <p class="thread-waiting">En attente de la reponse admin...</p>
+                                        <?php endif; ?>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </section>
             </section>
         </main>
     </div>
-
-    <script>
-    (function () {
-        const API_SEND = '../admin/api/send_message.php';
-        const API_GET = '../admin/api/get_messages.php';
-        const USER_ID = <?php echo json_encode($cin); ?>;
-        const USER_TYPE = 'professeur';
-        const USER_NAME = <?php echo json_encode($profileName !== '' ? $profileName : 'Professeur'); ?>;
-        const STORE_KEY = 'prof_support_thread_' + USER_ID;
-        let threadId = localStorage.getItem(STORE_KEY) || null;
-        let pollTimer = null;
-
-        const startCard = document.getElementById('page-support-start');
-        const threadCard = document.getElementById('page-support-thread');
-        const feedback = document.getElementById('page-support-feedback');
-        const messagesBox = document.getElementById('page-support-messages');
-
-        function showThread() {
-            startCard.style.display = 'none';
-            threadCard.style.display = 'block';
-        }
-
-        function escapeHtml(value) {
-            return value
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-
-        window.pageSupportStart = async function () {
-            const subject = document.getElementById('page-support-subject').value.trim() || 'Reclamation professeur';
-            const message = document.getElementById('page-support-message').value.trim();
-
-            if (!message) {
-                feedback.textContent = 'Veuillez saisir votre message avant l\'envoi.';
-                return;
-            }
-
-            feedback.textContent = 'Envoi en cours...';
-
-            try {
-                const response = await fetch(API_SEND, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_id: USER_ID,
-                        user_type: USER_TYPE,
-                        user_name: USER_NAME,
-                        subject: subject,
-                        message: message
-                    })
-                });
-
-                const data = await response.json();
-                if (!data.success) {
-                    throw new Error('Erreur lors de l\'envoi');
-                }
-
-                threadId = data.thread_id;
-                localStorage.setItem(STORE_KEY, threadId);
-                document.getElementById('page-support-message').value = '';
-                showThread();
-                await pageSupportLoad();
-                startPolling();
-            } catch (error) {
-                feedback.textContent = 'Impossible d\'envoyer le message pour le moment.';
-            }
-        };
-
-        window.pageSupportLoad = async function () {
-            if (!threadId) {
-                return;
-            }
-
-            try {
-                const response = await fetch(API_GET + '?thread_id=' + encodeURIComponent(threadId));
-                const items = await response.json();
-                messagesBox.innerHTML = '';
-
-                items.forEach(function (item) {
-                    const block = document.createElement('div');
-                    block.className = 'page-msg ' + (item.sender === 'admin' ? 'admin' : 'user');
-                    block.innerHTML = '<div class="page-msg-text">' + escapeHtml(String(item.message || '')).replace(/\n/g, '<br>') + '</div>'
-                        + '<div class="page-msg-time">' + escapeHtml(String(item.created_at || '')) + '</div>';
-                    messagesBox.appendChild(block);
-                });
-
-                messagesBox.scrollTop = messagesBox.scrollHeight;
-            } catch (error) {
-                messagesBox.innerHTML = '<div class="page-msg system">Le chargement des messages a echoue.</div>';
-            }
-        };
-
-        window.pageSupportSend = async function () {
-            const input = document.getElementById('page-support-text');
-            const message = input.value.trim();
-
-            if (!message || !threadId) {
-                return;
-            }
-
-            input.value = '';
-
-            try {
-                await fetch(API_SEND, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_id: USER_ID,
-                        user_type: USER_TYPE,
-                        user_name: USER_NAME,
-                        subject: 'Reclamation professeur',
-                        message: message,
-                        thread_id: threadId
-                    })
-                });
-                await pageSupportLoad();
-            } catch (error) {
-                input.value = message;
-            }
-        };
-
-        function startPolling() {
-            if (pollTimer) {
-                clearInterval(pollTimer);
-            }
-
-            pollTimer = setInterval(function () {
-                if (threadId) {
-                    pageSupportLoad();
-                }
-            }, 5000);
-        }
-
-        if (threadId) {
-            showThread();
-            pageSupportLoad();
-            startPolling();
-        }
-    })();
-    </script>
 </body>
 </html>
