@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Choisir une offre - Enjah</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo"><img src="../media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
+            <nav>
+                <ul>
+                    <li><a href="cours.php"><span class="nav-icon">&#8962;</span><span>Mes Cours</span></a></li>
+                    <li><a href="tache_a_fair.php"><span class="nav-icon">&#128221;</span><span>Mes T&acirc;ches</span></a></li>
+                    <li class="active"><a href="offres.php"><span class="nav-icon">&#9671;</span><span>Choisir une offre</span></a></li>
+                    <li><a href="reclamation.php"><span class="nav-icon">&#128172;</span><span>R&eacute;clamation</span></a></li>
+                    <li><a href="profil.php"><span class="nav-icon">&#128100;</span><span>Mon Profil</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1>Offres Sp&eacute;ciales</h1>
+                <p>Investissez dans votre avenir avec nos cours premium.</p>
+            </header>
+
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-image dev-bg">
+                        <span class="badge">Premium</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>Expert Java &amp; Spring Boot</h3>
+                        <p>Par <strong>Prof. Jean-Marc</strong></p>
+                        <div class="price-tag">49.99 &euro;</div>
+                        <a href="#step-date" class="btn-primary" style="display:block; text-align:center; text-decoration:none; margin-top:10px;">Choisir ce cours</a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-image design-bg">
+                        <span class="badge">Premium</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>UI/UX Masterclass</h3>
+                        <p>Par <strong>Sarah Design</strong></p>
+                        <div class="price-tag">35.00 &euro;</div>
+                        <a href="#step-date" class="btn-primary" style="display:block; text-align:center; text-decoration:none; margin-top:10px;">Choisir ce cours</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="step-date" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>&Eacute;tape 1 : Choisir la date</h2>
+                <a href="#" class="close-modal">&times;</a>
+            </div>
+            <form class="modal-form">
+                <label>Date de d&eacute;but du cours</label>
+                <input type="date" required>
+                <label>Cr&eacute;neau horaire</label>
+                <select>
+                    <option>Matin (09:00 - 12:00)</option>
+                    <option>Apr&egrave;s-midi (14:00 - 17:00)</option>
+                    <option>Soir (19:00 - 22:00)</option>
+                </select>
+                <a href="#step-payment" class="btn-add-modal" style="text-align:center; text-decoration:none;">Continuer vers le paiement</a>
+            </form>
+        </div>
+    </div>
+
+    <div id="step-payment" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>&Eacute;tape 2 : Paiement s&eacute;curis&eacute;</h2>
+                <a href="#step-date" class="close-modal">&larr;</a>
+            </div>
+            <form class="modal-form">
+                <label>Nom sur la carte</label>
+                <input type="text" placeholder="M. JEAN DUPONT">
+                <label>Num&eacute;ro de carte</label>
+                <input type="text" placeholder="4532 &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull;">
+                <div class="input-row">
+                    <input type="text" placeholder="MM/AA">
+                    <input type="text" placeholder="CVC">
+                </div>
+                <a href="#step-success" class="btn-add-modal" style="text-align:center; text-decoration:none; background-color: var(--turquoise);">Valider le paiement</a>
+            </form>
+        </div>
+    </div>
+
+    <div id="step-success" class="modal-overlay">
+        <div class="modal-content" style="text-align:center;">
+            <div style="font-size: 4rem; color: var(--green);">&#10003;</div>
+            <h2>Paiement valid&eacute; !</h2>
+            <p style="margin: 15px 0; color: var(--text-muted);">Votre cours a &eacute;t&eacute; ajout&eacute; &agrave; votre espace personnel.</p>
+            <a href="cours.php" class="btn-primary" style="display:block; text-decoration:none;">Acc&eacute;der &agrave; mes cours</a>
+        </div>
+    </div>
+</body>
+</html>

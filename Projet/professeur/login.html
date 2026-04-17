@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Learning</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="head">
+                    <img src="enjah.png" alt="logo" id="logo">
+                    <div class="logo">Enjah</div>
+                </div>
+                <h1>Bon retour !</h1>
+                <div class="login-subtitle-link">
+                    <a href="index.php">Espace Professeur</a>
+                </div>
+                <p>Veuillez vous connecter pour acceder a vos cours.</p>
+            </div>
+
+            <form class="login-form" action="login.php" method="POST">
+                <div class="input-group">
+                    <label for="CIN">CIN</label>
+                    <input type="text" id="CIN" name="CIN" placeholder="13456789" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="PASSWORD" placeholder="********" required>
+                </div>
+
+                <div class="login-options">
+                    <label><input type="checkbox"> Se souvenir de moi</label>
+                </div>
+
+                <button type="submit" class="btn-login">Se connecter</button>
+
+                <div class="login-footer">
+                    Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a>
+                </div>
+                <div class="login-footer login-footer-secondary">
+                    Vous etes etudiant ? <a href="../kmr/student/pages/login.php">Login etudiant</a>
+                </div>
+                <div class="login-footer login-footer-secondary">
+                    <a href="index.php">Retour vers l'accueil professeur</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

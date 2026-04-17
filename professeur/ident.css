@@ -1,0 +1,53 @@
+/* --- Sidebar Style (La partie Ardoise) --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--slate-blue); /* La couleur sombre #2d3748 */
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    /* Note : Assurez-vous que --slate-blue est défini dans :root */
+}
+
+.sidebar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-pink); /* Le rose Enjah */
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Ligne de séparation discrète */
+    padding-bottom: 10px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    color: #cbd5e0; /* Couleur du texte non-actif (gris clair) */
+    text-decoration: none;
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* Style pour l'élément actif et le survol */
+.sidebar nav ul li.active a, 
+.sidebar nav ul li a:hover {
+    background-color: var(--primary-blue); /* Le bleu royal Enjah */
+    color: white;
+}
+.sidebar {
+    width: 250px;
+    background-color: var(--slate-blue); /* Couleur #2d3748 */
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+}

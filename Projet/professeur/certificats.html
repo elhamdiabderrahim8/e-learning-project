@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Certificats - Learning Online</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="nouvel.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="topbar">
+            <div class="container topbar-inner">
+                <a class="brand" href="index.php" aria-label="Accueil professeur">
+                    <img src="enjah.png" alt="Logo Enjah">
+                    <span>Professeur</span>
+                </a>
+
+                <nav class="nav-links" aria-label="Navigation professeur">
+                    <a href="offres.php">Vos Cours</a>
+                    <a href="valider_certificats.php" class="is-active">Certificats</a>
+                    <a href="reclamation.php">Reclamation</a>
+                    <a href="infos.php">Mes Infos</a>
+                </nav>
+
+                <div class="top-actions">
+                    <a class="profile-trigger" href="infos.php" aria-label="Mon profil" title="Mon profil">
+                        <img src="profil.avif" class="nav-avatar" alt="Profil">
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <header class="header">
+                <h1>Mes Reussites</h1>
+                <p>Retrouvez et telechargez vos diplomes obtenus.</p>
+            </header>
+
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <div class="cert-icon">🎓</div>
+                    <h3>Maitrise de Tailwind CSS</h3>
+                    <p>Obtenu le : 12 Fev 2026</p>
+                    <button class="btn-download">Telecharger PDF</button>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon">📜</div>
+                    <h3>Architecture des SI</h3>
+                    <p>Obtenu le : 05 Jan 2026</p>
+                    <button class="btn-download">Telecharger PDF</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

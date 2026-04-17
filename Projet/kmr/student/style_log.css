@@ -1,0 +1,185 @@
+/* Importation de la police Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+body.login-page {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #1e293b; /* Bleu sombre Ardoise */
+    
+    /* MODIFICATION ICI : On utilise min-height et un padding top 
+       pour laisser de la place au logo flottant */
+    min-height: 100vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 40px 20px; /* 80px en haut pour le logo */
+    box-sizing: border-box;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+.login-box {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    /* AJUSTEMENT : On s'assure que la boîte a assez de marge haute */
+    margin-top: 40px; 
+}
+
+/* Style du Logo Flottant */
+.logo-link {
+    text-decoration: none;
+    display: block;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -90px; /* Légèrement ajusté pour l'équilibre */
+    margin-bottom: 15px;
+}
+
+.logo img {
+    width: 100px; /* Légèrement agrandi pour plus de clarté */
+    height: 100px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Ombre un peu plus profonde */
+    object-fit: contain;
+    padding: 5px;
+    border: 4px solid #ffffff; /* Ajoute une bordure pour bien détacher du fond */
+}
+
+.logo span {
+    color: #4d68e1; /* Bleu Royal Enjah */
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 10px;
+}
+
+/* --- TOUS LES AUTRES STYLES CONSERVÉS À L'IDENTIQUE --- */
+
+.login-header h1 {
+    color: #1e293b;
+    font-size: 26px;
+    margin: 10px 0 5px 0;
+    font-weight: 800;
+}
+
+.login-header p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.input-help {
+    color: #4d68e1;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+.auth-message {
+    border-radius: 12px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.error-text {
+    background-color: #2d3748;
+    color: #ffffff;
+    border-left: 4px solid #e280c4;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.success-text {
+    background-color: #f0fdf4;
+    color: #166534;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #f1f5f9;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    border-color: #4d68e1;
+    outline: none;
+    background-color: #f8fafc;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 16px;
+    background: #4d68e1;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: #3b52c1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(77, 104, 225, 0.4);
+}
+
+.login-footer {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.login-footer a {
+    color: #e280c4;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}

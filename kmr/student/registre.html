@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Enjah</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="logo"><img src="media/logo.jpg" alt="Logo Enjah"><span>Enjah</span></div>
+                <h1>Cr&eacute;er un compte</h1>
+                <p>Rejoignez la communaut&eacute; et commencez &agrave; apprendre.</p>
+            </div>
+
+            <form class="register-form" action="pages/offres.php">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="firstname">Pr&eacute;nom</label>
+                        <input type="text" id="firstname" placeholder="Jean" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="lastname">Nom</label>
+                        <input type="text" id="lastname" placeholder="Dupont" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Adresse Email</label>
+                    <input type="email" id="email" placeholder="jean.dupont@exemple.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" placeholder="Minimum 8 caract&egrave;res" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirm-password">Confirmer le mot de passe</label>
+                    <input type="password" id="confirm-password" placeholder="********" required>
+                </div>
+
+                <div class="terms">
+                    <label>
+                        <input type="checkbox" required> J'accepte les <a href="#">conditions d'utilisation</a>
+                    </label>
+                </div>
+
+                <input type="submit" class="btn-login" value="Cr&eacute;er mon compte">
+
+                <div class="login-footer">
+                    D&eacute;j&agrave; inscrit ? <a href="pages/login.php">Se connecter</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
