@@ -1012,8 +1012,18 @@ input[type="file"] {
     padding: 14px;
     display: flex;
     align-items: flex-start;
+    overflow: hidden;
+    background-color: #e2e8f0;
     background-size: cover;
     background-position: center;
+}
+
+.course-image-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+    display: block;
 }
 
 .dev-bg { background: linear-gradient(135deg, #4d68e1, #2d3748); }

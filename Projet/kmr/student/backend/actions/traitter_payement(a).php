@@ -37,7 +37,7 @@ try {
          * On utilise ob_clean() pour s'assurer qu'aucun espace ne bloque le header.
          */
         ob_clean();
-        header('Location: ../../pages/offres.php?paiement=success');
+        header('Location: ../../pages/offres.php#step-success');
         exit();
     }
 

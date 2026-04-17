@@ -80,9 +80,6 @@ try {
                     <span><?php echo $item['label']; ?></span>
                 </a>
             <?php endforeach; ?>
-            <a href="profil.php" class="<?php echo $active === 'profil' ? 'is-active' : ''; ?>">
-                <span><?php echo $isEnglish ? 'My Profile' : 'Mon Profil'; ?></span>
-            </a>
         </nav>
 
         <div class="top-actions">
