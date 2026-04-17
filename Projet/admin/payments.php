@@ -20,24 +20,21 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <title>Paiements - Admin</title>
     <link rel="stylesheet" href="../professeur/nouvel.css">
+    <link rel="stylesheet" href="admin.css">
     <style>
-        table { width:100%; border-collapse:collapse; font-family:'Montserrat',sans-serif; }
-        th, td { padding:10px 12px; border:1px solid #e2e8f0; text-align:left; font-size:.88rem; }
-        th { background:#f1f5f9; font-weight:600; color:#4a5568; }
-        tr:hover { background:#f8fafc; }
     </style>
 </head>
 <body>
 <div class="dashboard-container">
     <aside class="sidebar">
-        <div class="logo"><img src="../professeur/enjah.png" alt="logo" style="height:28px;"><span class="brand-name">Admin</span></div>
+        <div class="logo"><img src="../professeur/enjah.png" alt="logo"><span class="brand-name">Admin</span></div>
         <nav><ul>
             <li><a href="index.php">Tableau de bord</a></li>
             <li><a href="students.php">Étudiants</a></li>
             <li><a href="professors.php">Professeurs</a></li>
             <li class="active"><a href="payments.php">Paiements</a></li>
             <li><a href="chat.php">Support Chat</a></li>
-            <li><a href="logout.php" style="color:#ef4444;">Déconnexion</a></li>
+            <li><a href="logout.php">Déconnexion</a></li>
         </ul></nav>
     </aside>
     <main class="main-content">

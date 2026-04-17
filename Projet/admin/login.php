@@ -1,22 +1,32 @@
 <?php
 session_start();
 
-// Admin credentials (change these as needed)
-define('ADMIN_EMAIL', 'admin@enjah.com');
-define('ADMIN_PASSWORD', 'admin123');
+$adminUsers = require __DIR__ . '/admin_credentials.php';
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email    = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    if ($email === ADMIN_EMAIL && $password === ADMIN_PASSWORD) {
+    $matchedAdmin = null;
+    foreach ($adminUsers as $adminUser) {
+        $registeredEmail = strtolower(trim((string) ($adminUser['email'] ?? '')));
+        if ($registeredEmail !== '' && $registeredEmail === strtolower($email)) {
+            $matchedAdmin = $adminUser;
+            break;
+        }
+    }
+
+    if ($matchedAdmin === null) {
+        $error = 'Email admin introuvable.';
+    } elseif (!password_verify($password, (string) ($matchedAdmin['password_hash'] ?? ''))) {
+        $error = 'Mot de passe incorrect.';
+    } else {
         session_regenerate_id(true);
         $_SESSION['admin_logged_in'] = true;
-        $_SESSION['admin_email']     = $email;
+        $_SESSION['admin_email']     = $matchedAdmin['email'];
         header('Location: index.php');
         exit();
-    } else {
-        $error = "Email ou mot de passe incorrect.";
     }
 }
 ?>
@@ -27,22 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion Admin - Enjah</title>
     <link rel="stylesheet" href="../professeur/nouvel.css">
+    <link rel="stylesheet" href="admin.css">
     <style>
-        body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f0f4f8; }
-        .login-box { background:#fff; padding:40px; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,.12); width:100%; max-width:400px; }
-        .login-box h2 { margin-bottom:24px; color:#2d3748; text-align:center; font-size:1.5rem; }
-        .login-box label { display:block; font-weight:600; color:#4a5568; margin-bottom:6px; font-size:.9rem; }
-        .login-box input[type=email], .login-box input[type=password] {
-            width:100%; padding:10px 14px; border:1px solid #cbd5e0; border-radius:8px;
-            font-size:1rem; margin-bottom:16px; box-sizing:border-box;
-        }
-        .login-box button { width:100%; padding:12px; background:#4d68e1; color:#fff; border:none;
-            border-radius:8px; font-size:1rem; font-weight:600; cursor:pointer; }
-        .login-box button:hover { background:#3b52c1; }
-        .error { background:#fed7d7; color:#c53030; padding:10px 14px; border-radius:8px; margin-bottom:16px; font-size:.9rem; }
+        body { display:flex; align-items:center; justify-content:center; min-height:100vh; }
+        .login-box { width:100%; max-width:400px; }
+        .login-box h2 { margin-bottom:24px; text-align:center; font-size:1.5rem; }
+        .login-box label { display:block; margin-bottom:6px; font-size:.9rem; }
+        .login-box input[type=email], .login-box input[type=password] { margin-bottom:16px; }
+        .login-box button { width:100%; }
+        .error { margin-bottom:16px; font-size:.9rem; }
         .logo { text-align:center; margin-bottom:20px; }
-        .logo img { height:36px; }
-        .logo span { font-weight:700; font-size:1.2rem; color:#e280c4; margin-left:8px; vertical-align:middle; }
+        .logo span { font-weight:700; font-size:1.2rem; margin-left:8px; vertical-align:middle; }
     </style>
 </head>
 <body>

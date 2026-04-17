@@ -50,43 +50,21 @@ if ($active_thread) {
     <meta charset="UTF-8">
     <title>Support Chat - Admin</title>
     <link rel="stylesheet" href="../professeur/nouvel.css">
+    <link rel="stylesheet" href="admin.css">
     <style>
-        .chat-layout { display:flex; gap:0; height:calc(100vh - 120px); border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; background:#fff; }
-        .thread-list { width:280px; border-right:1px solid #e2e8f0; overflow-y:auto; flex-shrink:0; }
-        .thread-item { padding:14px 16px; cursor:pointer; border-bottom:1px solid #f1f5f9; transition:.15s; }
-        .thread-item:hover { background:#f8fafc; }
-        .thread-item.active { background:rgba(77,104,225,.08); border-left:3px solid #4d68e1; }
-        .thread-item .tname { font-weight:600; color:#2d3748; font-size:.9rem; }
-        .thread-item .tsub { color:#718096; font-size:.8rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .thread-item .tbadge { background:#ef4444; color:#fff; border-radius:999px; padding:1px 7px; font-size:.72rem; float:right; }
-        .chat-body { flex:1; display:flex; flex-direction:column; }
-        .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; }
-        .msg { max-width:65%; padding:10px 14px; border-radius:12px; font-size:.9rem; line-height:1.5; }
-        .msg.user { background:#f1f5f9; align-self:flex-start; border-bottom-left-radius:2px; }
-        .msg.admin { background:#4d68e1; color:#fff; align-self:flex-end; border-bottom-right-radius:2px; }
-        .msg .meta { font-size:.72rem; opacity:.65; margin-top:4px; }
-        .chat-input { border-top:1px solid #e2e8f0; padding:12px 16px; display:flex; gap:8px; }
-        .chat-input textarea { flex:1; padding:10px 12px; border:1px solid #cbd5e0; border-radius:8px; resize:none; font-size:.9rem; height:48px; }
-        .chat-input button { padding:10px 20px; background:#4d68e1; color:#fff; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
-        .no-thread { flex:1; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:1rem; }
-        .thread-header { padding:14px 16px; border-bottom:1px solid #e2e8f0; background:#f8fafc; }
-        .thread-header strong { color:#2d3748; } .thread-header small { color:#718096; }
-        .badge-type { display:inline-block; padding:2px 8px; border-radius:999px; font-size:.72rem; font-weight:600; }
-        .badge-type.etudiant { background:#dbeafe; color:#1d4ed8; }
-        .badge-type.professeur { background:#dcfce7; color:#166534; }
     </style>
 </head>
 <body>
 <div class="dashboard-container">
     <aside class="sidebar">
-        <div class="logo"><img src="../professeur/enjah.png" alt="logo" style="height:28px;"><span class="brand-name">Admin</span></div>
+        <div class="logo"><img src="../professeur/enjah.png" alt="logo"><span class="brand-name">Admin</span></div>
         <nav><ul>
             <li><a href="index.php">Tableau de bord</a></li>
             <li><a href="students.php">Étudiants</a></li>
             <li><a href="professors.php">Professeurs</a></li>
             <li><a href="payments.php">Paiements</a></li>
             <li class="active"><a href="chat.php">Support Chat</a></li>
-            <li><a href="logout.php" style="color:#ef4444;">Déconnexion</a></li>
+            <li><a href="logout.php">Déconnexion</a></li>
         </ul></nav>
     </aside>
     <main class="main-content">
