@@ -8,7 +8,7 @@ function user_id()
         return null;
     }
 
-    return (int) $_SESSION['CIN'];
+    return (string) $_SESSION['CIN'];
 }
 
 function is_authenticated()
@@ -29,7 +29,7 @@ function require_auth()
 function login_user($id, $fullName)
 {
     session_regenerate_id(true);
-    $_SESSION['CIN'] = (int) $id;
+    $_SESSION['CIN'] = (string) $id;
     $_SESSION['nom'] = (string) $fullName;
 }
 

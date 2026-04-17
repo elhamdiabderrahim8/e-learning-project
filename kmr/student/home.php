@@ -380,10 +380,17 @@ $pageDescription = $isEnglish
         })();
     </script>
     <?php
-$chat_user_id   = $_SESSION['CIN'];
-$chat_user_type = 'professeur';
-$chat_user_name = $_SESSION['nom'] . ' ' . $_SESSION['prenom'];
-require_once __DIR__ . '/../admin/chat_widget.php';
-?>
+    $chatUserId = $_SESSION['CIN'] ?? null;
+    $chatNom = $_SESSION['nom'] ?? '';
+    $chatPrenom = $_SESSION['prenom'] ?? '';
+    $chatWidgetPath = __DIR__ . '/../../admin/chat_widget.php';
+
+    if ($chatUserId !== null && file_exists($chatWidgetPath)) {
+        $chat_user_id = $chatUserId;
+        $chat_user_type = 'student';
+        $chat_user_name = trim($chatNom . ' ' . $chatPrenom);
+        require_once $chatWidgetPath;
+    }
+    ?>
 </body>
 </html>

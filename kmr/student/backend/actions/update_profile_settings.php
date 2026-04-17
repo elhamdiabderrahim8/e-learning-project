@@ -11,7 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $firstName = trim((string) ($_POST['first_name'] ?? ''));
 $lastName = trim((string) ($_POST['last_name'] ?? ''));
 $language = (string) ($_POST['preferred_language'] ?? 'en');
-$cin = $_SESSION['CIN']; 
+$cin = (string) ($_SESSION['CIN'] ?? '');
+
+if ($cin === '') {
+    set_flash('error', 'Session invalide. Veuillez vous reconnecter.');
+    redirect('../../pages/login.php');
+}
 
 if ($firstName === '' || $lastName === '') {
     set_flash('error', 'Le prénom et le nom sont obligatoires.');
@@ -40,7 +45,16 @@ try {
 
         if ($fileError !== UPLOAD_ERR_NO_FILE) {
             if ($fileError !== UPLOAD_ERR_OK) {
-                set_flash('error', 'Echec de televersement de l\'image.');
+                $uploadErrors = [
+                    UPLOAD_ERR_INI_SIZE => 'Image trop volumineuse (limite serveur).',
+                    UPLOAD_ERR_FORM_SIZE => 'Image trop volumineuse (limite formulaire).',
+                    UPLOAD_ERR_PARTIAL => 'Televersement incomplet. Reessayez.',
+                    UPLOAD_ERR_NO_TMP_DIR => 'Dossier temporaire manquant sur le serveur.',
+                    UPLOAD_ERR_CANT_WRITE => 'Impossible d\'ecrire le fichier sur le disque.',
+                    UPLOAD_ERR_EXTENSION => 'Televersement bloque par une extension PHP.',
+                ];
+                $message = $uploadErrors[$fileError] ?? 'Echec de televersement de l\'image.';
+                set_flash('error', $message);
                 redirect('../../pages/profil.php');
             }
 
@@ -58,13 +72,22 @@ try {
                 redirect('../../pages/profil.php');
             }
 
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $detectedType = $finfo ? (string) finfo_file($finfo, $tmpName) : '';
-            if ($finfo) {
-                finfo_close($finfo);
+            $detectedType = '';
+            if (function_exists('finfo_open')) {
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                if ($finfo) {
+                    $detectedType = (string) finfo_file($finfo, $tmpName);
+                    finfo_close($finfo);
+                }
             }
 
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!in_array($detectedType, $allowedTypes, true)) {
+                // Fallback for hosts where FILEINFO is unavailable or misconfigured.
+                $imageInfo = @getimagesize($tmpName);
+                $detectedType = is_array($imageInfo) ? (string) ($imageInfo['mime'] ?? '') : '';
+            }
+
             if (!in_array($detectedType, $allowedTypes, true)) {
                 set_flash('error', 'Format d\'image non supporte.');
                 redirect('../../pages/profil.php');
@@ -79,7 +102,7 @@ try {
             $stmtImg = $pdo->prepare('UPDATE etudiant SET data = :binData, type = :mimeType WHERE CIN = :cin');
             $stmtImg->bindValue(':binData', $imageData, PDO::PARAM_LOB);
             $stmtImg->bindValue(':mimeType', $detectedType, PDO::PARAM_STR);
-            $stmtImg->bindValue(':cin', (int) $cin, PDO::PARAM_INT);
+            $stmtImg->bindValue(':cin', $cin, PDO::PARAM_STR);
             $stmtImg->execute();
         }
     }

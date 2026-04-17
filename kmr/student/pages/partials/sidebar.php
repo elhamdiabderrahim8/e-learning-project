@@ -153,18 +153,8 @@ try {
         }
     }, true);
 
-    window.addEventListener('beforeunload', function () {
-        if (internalNavigation) {
-            return;
-        }
-
-        try {
-            var formData = new FormData();
-            formData.append('source', 'beacon');
-            navigator.sendBeacon(logoutUrl, formData);
-        } catch (e) {
-            // Best effort only.
-        }
-    });
+    // Disabled: This beacon would destroy the session on any page unload/navigation.
+    // The app now relies on PHP session timeout instead.
+    // window.addEventListener('beforeunload', function () { ... });
 })();
 </script>

@@ -62,16 +62,56 @@ if (isset($_FILES['attachments']) && is_array($_FILES['attachments']['name'])) {
 $attachmentPath = $uploadedPaths[0] ?? null;
 $attachmentPaths = $uploadedPaths ? json_encode($uploadedPaths, JSON_UNESCAPED_SLASHES) : null;
 
+require_once __DIR__ . '/../includes/migrate_support_tables.php';
+
 $pdo = db();
+$userId = (string) user_id();
+$userName = trim((string) ($_SESSION['prenom'] ?? '') . ' ' . (string) ($_SESSION['nom'] ?? ''));
+if ($userName === '') {
+    $userName = 'Etudiant ' . $userId;
+}
 
-$stmt = $pdo->prepare('INSERT INTO reclamations (user_id, subject, message, attachment_path, attachment_paths) VALUES (:user_id, :subject, :message, :attachment_path, :attachment_paths)');
-$stmt->execute([
-    'user_id' => user_id(),
-    'subject' => $subject,
-    'message' => $message,
-    'attachment_path' => $attachmentPath,
-    'attachment_paths' => $attachmentPaths,
-]);
+try {
+    migrate_support_tables();
+    $pdo->beginTransaction();
 
-set_flash('success', 'Votre reclamation a ete envoyee.');
+    $stmt = $pdo->prepare('INSERT INTO reclamations (user_id, subject, message, attachment_path, attachment_paths) VALUES (:user_id, :subject, :message, :attachment_path, :attachment_paths)');
+    $stmt->execute([
+        'user_id' => $userId,
+        'subject' => $subject,
+        'message' => $message,
+        'attachment_path' => $attachmentPath,
+        'attachment_paths' => $attachmentPaths,
+    ]);
+
+    // Forward the reclamation to the admin support inbox.
+    $threadStmt = $pdo->prepare('INSERT INTO support_threads (user_id, user_type, user_name, subject) VALUES (:user_id, :user_type, :user_name, :subject)');
+    $threadStmt->execute([
+        'user_id' => $userId,
+        'user_type' => 'etudiant',
+        'user_name' => $userName,
+        'subject' => $subject,
+    ]);
+
+    $threadId = (int) $pdo->lastInsertId();
+
+    $msgStmt = $pdo->prepare('INSERT INTO support_messages (thread_id, sender, message, admin_read) VALUES (:thread_id, :sender, :message, :admin_read)');
+    $msgStmt->execute([
+        'thread_id' => $threadId,
+        'sender' => 'etudiant',
+        'message' => $message,
+        'admin_read' => 0,
+    ]);
+
+    $pdo->commit();
+    set_flash('success', 'Votre reclamation a ete envoyee et transmise a l\'admin.');
+} catch (Throwable $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
+    error_log('Reclamation error: ' . $e->getMessage());
+    set_flash('error', 'Impossible d\'envoyer la reclamation: ' . $e->getMessage());
+}
+
 redirect('../../pages/reclamation.php');
