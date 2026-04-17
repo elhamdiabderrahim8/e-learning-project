@@ -104,6 +104,17 @@ $result_cours = $conn->query($sql_cours);
                                 <a href="ouvrir_session_cours.php?id=<?php echo $id_c; ?>" class="btn-primary" style="display:block; text-align:center; text-decoration:none; margin-top:10px;">
                                     Ajouter une lecon
                                 </a>
+                                <button
+                                    type="button"
+                                    class="btn-primary"
+                                    style="display:block; width:100%; text-align:center; text-decoration:none; margin-top:10px; border:none; cursor:pointer;"
+                                    data-id="<?php echo (int) $id_c; ?>"
+                                    data-nom="<?php echo htmlspecialchars((string) $row['nom_cours'], ENT_QUOTES, 'UTF-8'); ?>"
+                                    data-categorie="<?php echo htmlspecialchars((string) $row['categorie'], ENT_QUOTES, 'UTF-8'); ?>"
+                                    data-prix="<?php echo htmlspecialchars((string) $row['prix'], ENT_QUOTES, 'UTF-8'); ?>"
+                                    onclick="openCourseEditor(this, event)">
+                                    Modifier le cours
+                                </button>
                             </div>
                         </div>
                 <?php
@@ -134,6 +145,27 @@ $result_cours = $conn->query($sql_cours);
                     <button type="submit" name="submit">Publier le cours</button>
                 </form>
             </div>
+
+            <div id="form-edit" style="display:none;">
+                <form action="update_cours.php" method="POST" enctype="multipart/form-data">
+                    <button type="button" class="close-btn-edit" onclick="document.getElementById('form-edit').style.display='none'">&times;</button>
+                    <input type="hidden" name="id_cours" id="edit_id_cours" required>
+
+                    <input type="text" name="nom_cours" id="edit_nom_cours" placeholder="Nom du cours" required>
+
+                    <select name="categorie" id="edit_categorie" required>
+                        <option value="Premium">Premium</option>
+                        <option value="Free">Gratuit (Free)</option>
+                    </select>
+
+                    <input type="number" id="edit_prix" step="0.01" min="0" name="prix" placeholder="Prix (ex: 49.99)" required>
+
+                    <label>Nouvelle image (facultatif) :</label>
+                    <input type="file" name="file" accept="image/*">
+
+                    <button type="submit" name="submit">Mettre a jour</button>
+                </form>
+            </div>
         </main>
     </div>
 
@@ -141,6 +173,59 @@ $result_cours = $conn->query($sql_cours);
     <script src="logout.js"></script>
     <script src="form.js"></script>
     <script src="button_ajouter.js"></script>
+    <script>
+    function openCourseEditor(button, event) {
+        if (event) {
+            event.stopPropagation();
+        }
+
+        var formEdit = document.getElementById('form-edit');
+        var editId = document.getElementById('edit_id_cours');
+        var editNom = document.getElementById('edit_nom_cours');
+        var editCategorie = document.getElementById('edit_categorie');
+        var editPrix = document.getElementById('edit_prix');
+
+        editId.value = button.getAttribute('data-id') || '';
+        editNom.value = button.getAttribute('data-nom') || '';
+        editCategorie.value = button.getAttribute('data-categorie') || 'Premium';
+        editPrix.value = button.getAttribute('data-prix') || '';
+
+        toggleEditPrix();
+        formEdit.style.display = 'flex';
+    }
+
+    function toggleEditPrix() {
+        var editCategorie = document.getElementById('edit_categorie');
+        var editPrix = document.getElementById('edit_prix');
+
+        if (!editCategorie || !editPrix) {
+            return;
+        }
+
+        if (editCategorie.value === 'Free') {
+            editPrix.value = '0';
+            editPrix.style.display = 'none';
+            editPrix.required = false;
+        } else {
+            editPrix.style.display = 'block';
+            editPrix.required = true;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var editCategorie = document.getElementById('edit_categorie');
+        if (editCategorie) {
+            editCategorie.addEventListener('change', toggleEditPrix);
+        }
+
+        window.addEventListener('click', function (event) {
+            var formEdit = document.getElementById('form-edit');
+            if (formEdit && event.target === formEdit) {
+                formEdit.style.display = 'none';
+            }
+        });
+    });
+    </script>
     <?php
     $chat_user_id = $_SESSION['CIN'];
     $chat_user_type = 'professeur';

@@ -6,6 +6,53 @@ require_auth();
 $error = get_flash('error');
 $success = get_flash('success');
 $isEnglish = current_language() === 'en';
+
+$replies = [];
+$replyLoadError = null;
+
+try {
+    require_once __DIR__ . '/../backend/includes/migrate_support_tables.php';
+    migrate_support_tables();
+    $pdo = db();
+    $stmt = $pdo->prepare(
+        "SELECT
+            t.id,
+            t.subject,
+            t.created_at,
+            (
+                SELECT sm.message
+                FROM support_messages sm
+                WHERE sm.thread_id = t.id AND sm.sender = 'etudiant'
+                ORDER BY sm.created_at ASC
+                LIMIT 1
+            ) AS user_message,
+            (
+                SELECT sm.message
+                FROM support_messages sm
+                WHERE sm.thread_id = t.id AND sm.sender = 'admin'
+                ORDER BY sm.created_at DESC
+                LIMIT 1
+            ) AS admin_reply,
+            (
+                SELECT sm.created_at
+                FROM support_messages sm
+                WHERE sm.thread_id = t.id AND sm.sender = 'admin'
+                ORDER BY sm.created_at DESC
+                LIMIT 1
+            ) AS admin_reply_at
+         FROM support_threads t
+         WHERE t.user_id = :user_id AND t.user_type = 'etudiant'
+         ORDER BY t.created_at DESC
+         LIMIT 20"
+    );
+    $stmt->execute(['user_id' => (string) user_id()]);
+    $replies = $stmt->fetchAll() ?: [];
+} catch (Throwable $e) {
+    error_log('Reclamation reply error: ' . $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine());
+    $replyLoadError = $isEnglish
+        ? ('Replies unavailable. Error: ' . $e->getMessage())
+        : ('Les reponses indisponibles. Erreur: ' . $e->getMessage());
+}
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -73,10 +120,77 @@ $isEnglish = current_language() === 'en';
 
                         <input type="submit" class="btn-primary reclamation-submit" value="<?php echo $isEnglish ? 'Send request' : 'Envoyer la reclamation'; ?>">
                     </form>
+
+                    <div style="margin-top: 16px;">
+                        <button type="button" id="toggleRepliesBtn" class="btn-primary reclamation-submit" style="background:#0f172a;">
+                            <?php echo $isEnglish ? 'See admin replies' : 'Voir les reponses admin'; ?>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="adminRepliesSection" class="reclamation-shell" style="display:none; margin-top:18px;">
+                <div class="reclamation-form-card card">
+                    <h2 style="margin-top:0;"><?php echo $isEnglish ? 'Admin replies' : 'Reponses de l\'admin'; ?></h2>
+
+                    <?php if ($replyLoadError): ?>
+                        <div class="reclamation-alert reclamation-alert-error"><?php echo htmlspecialchars($replyLoadError, ENT_QUOTES, 'UTF-8'); ?></div>
+                    <?php elseif (!$replies): ?>
+                        <p><?php echo $isEnglish ? 'No requests yet. Submit your first reclamation.' : 'Aucune reclamation pour le moment. Envoyez votre premiere demande.'; ?></p>
+                    <?php else: ?>
+                        <?php foreach ($replies as $row): ?>
+                            <article style="border:1px solid #e2e8f0; border-radius:10px; padding:12px; margin-bottom:12px;">
+                                <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                                    <strong><?php echo htmlspecialchars((string) ($row['subject'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></strong>
+                                    <small><?php echo htmlspecialchars((string) ($row['created_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></small>
+                                </div>
+
+                                <?php if (!empty($row['user_message'])): ?>
+                                    <p style="margin:10px 0 0;"><strong><?php echo $isEnglish ? 'Your message:' : 'Votre message :'; ?></strong></p>
+                                    <p style="margin:4px 0 0; white-space:pre-wrap; background:#f8fafc; padding:8px; border-radius:6px; border-left:3px solid #4f46e5;">
+                                        <?php echo htmlspecialchars((string) $row['user_message'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </p>
+                                <?php endif; ?>
+
+                                <?php if (!empty($row['admin_reply'])): ?>
+                                    <p style="margin:10px 0 0;"><strong><?php echo $isEnglish ? 'Admin reply:' : 'Reponse admin :'; ?></strong></p>
+                                    <p style="margin:4px 0 0; white-space:pre-wrap; background:#eef2ff; padding:8px; border-radius:6px; border-left:3px solid #10b981;">
+                                        <?php echo htmlspecialchars((string) $row['admin_reply'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </p>
+                                    <small style="display:block; margin-top:6px;"><?php echo htmlspecialchars((string) ($row['admin_reply_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></small>
+                                <?php else: ?>
+                                    <p style="margin:10px 0 0; color:#64748b;"><?php echo $isEnglish ? 'Waiting for admin reply...' : 'En attente de la reponse admin...'; ?></p>
+                                <?php endif; ?>
+                            </article>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </section>
         </main>
     </div>
+
+    <script>
+    (function () {
+        var button = document.getElementById('toggleRepliesBtn');
+        var section = document.getElementById('adminRepliesSection');
+
+        if (!button || !section) {
+            return;
+        }
+
+        button.addEventListener('click', function () {
+            var isHidden = section.style.display === 'none';
+            section.style.display = isHidden ? 'block' : 'none';
+            button.textContent = isHidden
+                ? <?php echo json_encode($isEnglish ? 'Hide admin replies' : 'Masquer les reponses admin'); ?>
+                : <?php echo json_encode($isEnglish ? 'See admin replies' : 'Voir les reponses admin'); ?>;
+
+            if (isHidden) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    })();
+    </script>
     </body>
 </html>
 

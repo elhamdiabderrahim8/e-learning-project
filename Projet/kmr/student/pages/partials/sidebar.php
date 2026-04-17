@@ -109,67 +109,6 @@ try {
 </header>
 
 <script>
-(function () {
-    var logoutUrl = '../backend/actions/logout.php';
-    var internalNavigation = false;
-
-    function markInternalNavigation() {
-        internalNavigation = true;
-    }
-
-    document.addEventListener('click', function (event) {
-        var target = event.target;
-        if (!target || typeof target.closest !== 'function') {
-            return;
-        }
-
-        var link = target.closest('a[href]');
-        if (!link) {
-            return;
-        }
-
-        var href = link.getAttribute('href') || '';
-        if (href === '' || href.charAt(0) === '#') {
-            return;
-        }
-
-        if (link.target && link.target !== '_self') {
-            return;
-        }
-
-        try {
-            var url = new URL(link.href, window.location.href);
-            if (url.origin === window.location.origin) {
-                markInternalNavigation();
-            }
-        } catch (e) {
-            // Ignore malformed URLs.
-        }
-    }, true);
-
-    document.addEventListener('submit', function () {
-        markInternalNavigation();
-    }, true);
-
-    document.addEventListener('keydown', function (event) {
-        var key = (event.key || '').toLowerCase();
-        if (key === 'f5' || ((event.ctrlKey || event.metaKey) && key === 'r')) {
-            markInternalNavigation();
-        }
-    }, true);
-
-    window.addEventListener('beforeunload', function () {
-        if (internalNavigation) {
-            return;
-        }
-
-        try {
-            var formData = new FormData();
-            formData.append('source', 'beacon');
-            navigator.sendBeacon(logoutUrl, formData);
-        } catch (e) {
-            // Best effort only.
-        }
-    });
-})();
+// Auto-logout on page unload intentionally disabled.
+// Session now closes only when user explicitly clicks "Se deconnecter".
 </script>

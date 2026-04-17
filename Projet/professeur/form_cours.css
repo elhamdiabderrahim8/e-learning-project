@@ -1,5 +1,6 @@
 /* Conteneur principal du formulaire (la fenêtre modale) */
-#form-ajout {
+#form-ajout,
+#form-edit {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -15,7 +16,8 @@
 }
 
 /* Organisation interne du formulaire */
-#form-ajout form {
+#form-ajout form,
+#form-edit form {
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -40,7 +42,10 @@
 /* Style commun pour les champs de texte, nombre et select */
 #form-ajout input[type="text"],
 #form-ajout input[type="number"],
-#form-ajout select {
+#form-ajout select,
+#form-edit input[type="text"],
+#form-edit input[type="number"],
+#form-edit select {
     width: 100%;
     padding: 14px;
     border: 2px solid #edf2f7;
@@ -53,13 +58,16 @@
 }
 
 #form-ajout input:focus, 
-#form-ajout select:focus {
+#form-ajout select:focus,
+#form-edit input:focus,
+#form-edit select:focus {
     border-color: #4d68e1; /* Bleu Royal du logo */
     box-shadow: 0 0 0 4px rgba(77, 104, 225, 0.1);
 }
 
 /* Label de l'image */
-#form-ajout label {
+#form-ajout label,
+#form-edit label {
     font-size: 14px;
     font-weight: 600;
     color: #718096;
@@ -67,7 +75,8 @@
 }
 
 /* Style de l'input file (pour le rendre plus propre) */
-#form-ajout input[type="file"] {
+#form-ajout input[type="file"],
+#form-edit input[type="file"] {
     background: #f7fafc;
     padding: 10px;
     border-radius: 8px;
@@ -135,4 +144,40 @@ height: 60px;          /* Taille cohérente avec le texte */
 }
 .btn-delete-x.hidden {
     display: none !important;
+}
+
+#form-edit button[name="submit"] {
+    background-color: #4d68e1;
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#form-edit button[name="submit"]:hover {
+    background-color: #3b52c1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(77, 104, 225, 0.3);
+}
+
+.close-btn-edit {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: #cbd5e0;
+    cursor: pointer;
+    margin-bottom: -10px;
+    transition: color 0.3s;
+}
+
+.close-btn-edit:hover {
+    color: #e280c4;
 }

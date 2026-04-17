@@ -4,6 +4,17 @@ require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../../database/database.php';
+require_once __DIR__ . '/migrate_support_tables.php';
+
+// Run migration once per session to ensure chat tables exist
+if (is_authenticated() && !isset($_SESSION['_support_tables_migrated'])) {
+	try {
+		migrate_support_tables();
+		$_SESSION['_support_tables_migrated'] = true;
+	} catch (Throwable $e) {
+		error_log('Support table migration failed: ' . $e->getMessage());
+	}
+}
 
 if (!isset($_SESSION['preferred_language'])) {
 	$_SESSION['preferred_language'] = 'fr';
