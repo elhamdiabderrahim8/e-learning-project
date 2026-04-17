@@ -2,6 +2,24 @@
 require_once __DIR__ . '/auth_guard.php';
 require_once __DIR__ . '/../professeur/config/connexion.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_thread'])) {
+    $thread_id = (int) ($_POST['thread_id'] ?? 0);
+    if ($thread_id > 0) {
+        $stmtDeleteMsgs = $conn->prepare('DELETE FROM support_messages WHERE thread_id = ?');
+        $stmtDeleteMsgs->bind_param('i', $thread_id);
+        $stmtDeleteMsgs->execute();
+        $stmtDeleteMsgs->close();
+
+        $stmtDeleteThread = $conn->prepare('DELETE FROM support_threads WHERE id = ?');
+        $stmtDeleteThread->bind_param('i', $thread_id);
+        $stmtDeleteThread->execute();
+        $stmtDeleteThread->close();
+    }
+
+    header('Location: chat.php');
+    exit();
+}
+
 // Handle admin reply
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply'])) {
     $thread_id  = (int)$_POST['thread_id'];
@@ -73,7 +91,7 @@ if ($active_thread) {
             <div class="thread-list">
                 <?php if ($threads && $threads->num_rows > 0): ?>
                 <?php while ($t = $threads->fetch_assoc()): ?>
-                <div class="thread-item <?=$t['id']==$active_thread?'active':''?>" onclick="location='chat.php?thread=<?=$t['id']?>'">
+                <div class="thread-item <?=$t['id']==$active_thread?'active':''?>" onclick="location='chat.php?thread=<?=$t['id']?>'" role="button" tabindex="0" onkeydown="if(event.key==='Enter'){location='chat.php?thread=<?=$t['id']?>';}">
                     <?php if ($t['unread'] > 0): ?><span class="tbadge"><?=$t['unread']?></span><?php endif; ?>
                     <div class="tname"><?=htmlspecialchars($t['user_name'])?></div>
                     <div class="tsub"><?=htmlspecialchars($t['subject'])?></div>
@@ -81,15 +99,29 @@ if ($active_thread) {
                 </div>
                 <?php endwhile; ?>
                 <?php else: ?>
-                <div style="padding:20px;color:#a0aec0;font-size:.9rem;text-align:center;">Aucune conversation</div>
+                <div class="thread-empty">
+                    <div class="empty-icon" aria-hidden="true"></div>
+                    <h3>Aucune conversation</h3>
+                    <p>Les nouveaux messages de support apparaîtront ici.</p>
+                </div>
                 <?php endif; ?>
             </div>
             <?php if ($active_thread && $thread_info): ?>
             <div class="chat-body">
                 <div class="thread-header">
-                    <strong><?=htmlspecialchars($thread_info['subject'])?></strong>
-                    <small> — <?=htmlspecialchars($thread_info['user_name'])?></small>
-                    <span class="badge-type <?=$thread_info['user_type']?>" style="margin-left:8px;"><?=$thread_info['user_type']?></span>
+                    <div class="thread-header-main">
+                        <strong><?=htmlspecialchars($thread_info['subject'])?></strong>
+                        <small> — <?=htmlspecialchars($thread_info['user_name'])?></small>
+                        <span class="badge-type <?=$thread_info['user_type']?>" style="margin-left:8px;"><?=$thread_info['user_type']?></span>
+                    </div>
+                    <div class="thread-controls">
+                        <a href="chat.php" class="thread-close">Fermer</a>
+                        <form method="POST" onsubmit="return confirm('Supprimer cette conversation ?');" class="thread-delete-form">
+                            <input type="hidden" name="delete_thread" value="1">
+                            <input type="hidden" name="thread_id" value="<?=$active_thread?>">
+                            <button type="submit" class="thread-delete">Supprimer</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="chat-messages" id="chatMessages">
                     <?php foreach ($messages as $m): ?>
@@ -98,17 +130,21 @@ if ($active_thread) {
                         <div class="meta"><?=$m['sender']==='admin'?'Admin':htmlspecialchars($thread_info['user_name'])?> · <?=$m['created_at']?></div>
                     </div>
                     <?php endforeach; ?>
-                    <?php if (empty($messages)): ?><div style="color:#a0aec0;text-align:center;margin-top:40px;">Aucun message</div><?php endif; ?>
+                    <?php if (empty($messages)): ?><div class="message-empty">Aucun message</div><?php endif; ?>
                 </div>
-                <form class="chat-input" method="POST">
+                <form class="chat-input" method="POST" id="chatForm">
                     <input type="hidden" name="reply" value="1">
                     <input type="hidden" name="thread_id" value="<?=$active_thread?>">
-                    <textarea name="message" placeholder="Votre réponse..." required></textarea>
+                    <textarea name="message" id="chatMessageInput" placeholder="Votre réponse..." required></textarea>
                     <button type="submit">Envoyer</button>
                 </form>
             </div>
             <?php else: ?>
-            <div class="no-thread">Sélectionnez une conversation</div>
+            <div class="no-thread">
+                <div class="empty-icon" aria-hidden="true"></div>
+                <h3>Sélectionnez une conversation</h3>
+                <p>Choisissez un expéditeur dans la liste pour afficher les messages.</p>
+            </div>
             <?php endif; ?>
         </div>
     </main>
@@ -116,6 +152,20 @@ if ($active_thread) {
 <script>
 const cm = document.getElementById('chatMessages');
 if (cm) cm.scrollTop = cm.scrollHeight;
+
+const chatInput = document.getElementById('chatMessageInput');
+const chatForm = document.getElementById('chatForm');
+
+if (chatInput && chatForm) {
+    chatInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            if (chatInput.value.trim() !== '') {
+                chatForm.submit();
+            }
+        }
+    });
+}
 </script>
 </body>
 </html>
