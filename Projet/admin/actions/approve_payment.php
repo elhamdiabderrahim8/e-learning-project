@@ -10,8 +10,9 @@ if ($id <= 0) {
 
 // Ensure column exists when approval is attempted
 $conn->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
+$conn->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS payment_status_note VARCHAR(255) NULL");
 
-$stmt = $conn->prepare("UPDATE inscription SET paiement_valide = 1 WHERE id_inscription = ?");
+$stmt = $conn->prepare("UPDATE inscription SET paiement_valide = 1, payment_status_note = NULL WHERE id_inscription = ?");
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->close();

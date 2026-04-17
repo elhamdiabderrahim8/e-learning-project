@@ -14,7 +14,10 @@ $cin_etudiant = (int)$_SESSION['CIN'];
 $sql = "SELECT DISTINCT c.*, p.nom, p.prenom, i.statut_certificat
         FROM cours c
         INNER JOIN professeur p ON c.id_professeur = p.CIN
-        INNER JOIN inscription i ON c.id = i.id_cours AND i.id_etudiant = :cin
+    INNER JOIN inscription i
+        ON c.id = i.id_cours
+       AND i.id_etudiant = :cin
+       AND (i.methode_paiement = 'Gratuit' OR i.paiement_valide = 1)
         ORDER BY c.id DESC";
 
 $stmt = $pdo->prepare($sql);

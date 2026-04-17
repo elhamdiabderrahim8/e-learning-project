@@ -12,45 +12,71 @@ $pdo = db();
 
 $id_cours = isset($_POST['course_id']) ? (int)$_POST['course_id'] : 0;
 $cin_etudiant = isset($_SESSION['CIN']) ? (int)$_SESSION['CIN'] : 0; 
+$cardHolder = trim((string) ($_POST['card_holder'] ?? ''));
+$cardNumber = preg_replace('/\D+/', '', (string) ($_POST['card_number'] ?? ''));
+$cardExpiry = trim((string) ($_POST['card_expiry'] ?? ''));
+$cardCvc = preg_replace('/\D+/', '', (string) ($_POST['card_cvc'] ?? ''));
 
 if ($id_cours === 0 || $cin_etudiant === 0) {
     die("Erreur : Données invalides.");
 }
 
-try {
-    $sql = "INSERT INTO inscription (id_etudiant, id_cours, methode_paiement, date_achat) 
-            VALUES (:cin, :id_c, 'Carte Bancaire', NOW())";
-    
-    $stmt = $pdo->prepare($sql);
-    $success = $stmt->execute([
-        'cin'  => $cin_etudiant,
-        'id_c' => $id_cours
-    ]);
+if ($cardHolder === '' || strlen($cardNumber) < 12 || strlen($cardExpiry) < 4 || strlen($cardCvc) < 3) {
+    header('Location: ../../pages/offres.php?payment=invalid');
+    exit();
+}
 
-    if ($success) {
-        /**
-         * CORRECTION DU CHEMIN : 
-         * Si tu es dans backend/actions/
-         * ../ remonte vers backend/
-         * ../../ remonte à la racine
-         * donc : ../../pages/offres.php est correct SI 'pages' est à la racine.
-         * On utilise ob_clean() pour s'assurer qu'aucun espace ne bloque le header.
-         */
-        ob_clean();
-        header('Location: ../../pages/offres.php#step-success');
-        exit();
+$cardLast4 = substr($cardNumber, -4);
+
+try {
+    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
+    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_holder VARCHAR(150) NULL");
+    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_last4 CHAR(4) NULL");
+    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS payment_status_note VARCHAR(255) NULL");
+
+    $checkStmt = $pdo->prepare("SELECT id_inscription FROM inscription WHERE id_etudiant = :cin AND id_cours = :id_c LIMIT 1");
+    $checkStmt->execute([
+        'cin'  => $cin_etudiant,
+        'id_c' => $id_cours,
+    ]);
+    $existingId = (int) ($checkStmt->fetchColumn() ?: 0);
+
+    if ($existingId > 0) {
+        $updateStmt = $pdo->prepare(
+            "UPDATE inscription
+             SET methode_paiement = 'Carte Bancaire',
+                 date_achat = NOW(),
+                 paiement_valide = 0,
+                 card_holder = :holder,
+                 card_last4 = :last4,
+                 payment_status_note = NULL
+             WHERE id_inscription = :id"
+        );
+        $updateStmt->execute([
+            'holder' => $cardHolder,
+            'last4'  => $cardLast4,
+            'id'     => $existingId,
+        ]);
+    } else {
+        $insertStmt = $pdo->prepare(
+            "INSERT INTO inscription
+                (id_etudiant, id_cours, methode_paiement, date_achat, paiement_valide, card_holder, card_last4, payment_status_note)
+             VALUES
+                (:cin, :id_c, 'Carte Bancaire', NOW(), 0, :holder, :last4, NULL)"
+        );
+        $insertStmt->execute([
+            'cin'    => $cin_etudiant,
+            'id_c'   => $id_cours,
+            'holder' => $cardHolder,
+            'last4'  => $cardLast4,
+        ]);
     }
 
+    ob_clean();
+    header('Location: ../../pages/offres.php?payment=pending');
+    exit();
+
 } catch (PDOException $e) {
-    // Gestion de l'erreur 1452 (contrainte d'intégrité)
-    ?>
-    <div style="font-family:sans-serif; padding:20px; border:2px solid #e74c3c; background:#fdf2f2; border-radius:10px; max-width:600px; margin:50px auto; text-align:center;">
-        <h2 style="color:#c0392b;">Action Interdite</h2>
-        <p>Votre compte (CIN: <strong><?php echo $cin_etudiant; ?></strong>) n'est pas enregistré comme <strong>Étudiant</strong>.</p>
-        <p style="font-size:0.9em; color:#666;">Note : Les professeurs ne peuvent pas acheter de cours.</p>
-        <hr style="border:0; border-top:1px solid #eee; margin:20px 0;">
-        <a href="../../pages/login.php" style="display:inline-block; background:#3498db; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">Changer de compte</a>
-    </div>
-    <?php
-    die();
+    header('Location: ../../pages/offres.php?payment=error');
+    exit();
 }
