@@ -1,20 +1,17 @@
 <?php
-require_once __DIR__ . '/../../../professeur/config/connexion.php';
+require_once __DIR__ . '/../database/database.php';
 
-$sql = "SELECT c.*, p.nom, p.prenom
-        FROM cours c
-        INNER JOIN professeur p ON c.id_professeur = p.CIN
-        WHERE LOWER(c.categorie) = 'free'
-        ORDER BY c.id DESC";
-$result = $conn->query($sql);
-$freeCourses = [];
+$pdo = db();
 
-if ($result instanceof mysqli_result) {
-    while ($row = $result->fetch_assoc()) {
-        $freeCourses[] = $row;
-    }
-}
-
+$stmt = $pdo->prepare("
+    SELECT c.*, p.nom, p.prenom
+    FROM cours c
+    INNER JOIN professeur p ON c.id_professeur = p.CIN
+    WHERE LOWER(c.categorie) = 'free'
+    ORDER BY c.id DESC
+");
+$stmt->execute();
+$freeCourses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $totalCourses = count($freeCourses);
 ?>
 <!DOCTYPE html>
@@ -136,6 +133,3 @@ $totalCourses = count($freeCourses);
     </div>
 </body>
 </html>
-<?php
-$conn->close();
-?>
