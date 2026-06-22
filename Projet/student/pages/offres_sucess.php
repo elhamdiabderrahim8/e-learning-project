@@ -8,8 +8,8 @@ require_auth();
 // 2. SAUVEGARDE de la session élève (très important pour éviter le vol de session par le prof)
 $current_student_cin = $_SESSION['CIN'] ?? null;
 
-// 3. Inclusion de la connexion externe
-require_once __DIR__ .'/../../../professeur/config/connexion.php'; 
+// 3. Connexion DB via PDO
+$pdo = db();
 
 // 4. RESTAURATION : On s'assure que le CIN reste celui de l'élève
 if ($current_student_cin) {
@@ -24,11 +24,8 @@ $sql = "SELECT c.id AS id_cours, c.nom_cours, c.prix, c.categorie,
         INNER JOIN professeur p ON c.id_professeur = p.CIN
         WHERE c.categorie = 'Premium'";
 
-$result = $conn->query($sql);
-
-if (!$result) {
-    die("Erreur SQL : " . $conn->error);
-}
+$stmt = $pdo->query($sql);
+$courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -50,8 +47,8 @@ if (!$result) {
 
             <div class="courses-grid" id="courses-grid">
                 <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
+                if (count($courses) > 0) {
+                    foreach($courses as $row) {
                         $image_src = 'data:' . $row['image_type'] . ';base64,' . base64_encode($row['image_data']);
                 ?>
                         <div class="course-card">
@@ -76,7 +73,6 @@ if (!$result) {
                 } else {
                     echo "<p>Aucun cours premium disponible.</p>";
                 }
-                $conn->close();
                 ?>
             </div>
         </main>
