@@ -1,4 +1,7 @@
-# Enjah - Plateforme E-learning Moderne
+<div align="center">
+  <img src="Projet/student/media/logo.jpg" alt="Logo Enjah" width="150" style="border-radius: 20px;"/>
+  <h1>Enjah - Plateforme E-learning Moderne</h1>
+</div>
 
 Bienvenue sur le dépôt du projet **Enjah**. Ce document est divisé en deux parties : une présentation du produit pour les clients et partenaires, et une documentation technique pour les développeurs.
 
