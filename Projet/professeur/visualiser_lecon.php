@@ -1,14 +1,16 @@
 <?php
 session_start();
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
 if (!isset($_GET['id'])) {
     die("ID de leçon manquant.");
 }
 
 $id_lecon = intval($_GET['id']);
-$res = $conn->query("SELECT * FROM lecon WHERE id_lecon = $id_lecon");
-$lecon = $res->fetch_assoc();
+$stmt = $pdo->prepare("SELECT * FROM lecon WHERE id_lecon = :id");
+$stmt->execute(['id' => $id_lecon]);
+$lecon = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$lecon) {
     die("Leçon introuvable.");

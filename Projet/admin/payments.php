@@ -1,11 +1,12 @@
 <?php
 require_once __DIR__ . '/auth_guard.php';
-require_once __DIR__ . '/../professeur/config/connexion.php';
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
-$conn->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
-$conn->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_holder VARCHAR(150) NULL");
-$conn->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_last4 CHAR(4) NULL");
-$conn->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS payment_status_note VARCHAR(255) NULL");
+$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
+$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_holder VARCHAR(150) NULL");
+$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_last4 CHAR(4) NULL");
+$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS payment_status_note VARCHAR(255) NULL");
 
 $sql = "SELECT i.id_inscription, i.id_etudiant, i.id_cours, i.date_achat, i.methode_paiement, i.paiement_valide,
            i.card_holder, i.card_last4, i.payment_status_note,
@@ -17,7 +18,7 @@ $sql = "SELECT i.id_inscription, i.id_etudiant, i.id_cours, i.date_achat, i.meth
         LEFT JOIN professeur p ON p.CIN=c.id_professeur
     WHERE i.methode_paiement = 'Carte Bancaire'
     ORDER BY i.date_achat DESC";
-$result = $conn->query($sql);
+$result = $pdo->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -50,7 +51,7 @@ $result = $conn->query($sql);
             </thead>
             <tbody>
             <?php if ($result && $result->num_rows > 0): ?>
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                 <?php
                     $status = (int) ($row['paiement_valide'] ?? 0);
                     $statusText = $status === 1 ? 'Validé' : ($status === -1 ? 'Refusé' : 'En attente');

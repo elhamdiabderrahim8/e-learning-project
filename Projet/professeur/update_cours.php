@@ -7,8 +7,11 @@ if (!isset($_SESSION['CIN'])) {
     exit();
 }
 
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
-if ($conn->connect_error) {
+require_once __DIR__ . '/../student/database/database.php';
+
+try {
+    $pdo = db();
+} catch (Exception $e) {
     set_course_flash('error', 'La connexion a la base a echoue.');
     redirect_course_offers();
 }
@@ -47,31 +50,32 @@ try {
         $type = $image['type'];
         $name = $image['name'];
 
-        $stmt = $conn->prepare('UPDATE cours SET nom_cours = ?, prix = ?, categorie = ?, image_data = ?, image_type = ?, image_name = ? WHERE id = ? AND id_professeur = ?');
-        if (!$stmt) {
-            throw new RuntimeException('Erreur de preparation SQL.');
-        }
+        $stmt = $pdo->prepare('UPDATE cours SET nom_cours = :nom, prix = :prix, categorie = :cat, image_data = :data, image_type = :type, image_name = :name WHERE id = :id AND id_professeur = :prof');
 
-        $stmt->bind_param('sdssssii', $nomCours, $prix, $categorie, $data, $type, $name, $idCours, $idProf);
+        $stmt->bindParam(':nom', $nomCours);
+        $stmt->bindParam(':prix', $prix);
+        $stmt->bindParam(':cat', $categorie);
+        $stmt->bindParam(':data', $data, PDO::PARAM_LOB);
+        $stmt->bindParam(':type', $type);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':id', $idCours, PDO::PARAM_INT);
+        $stmt->bindParam(':prof', $idProf, PDO::PARAM_INT);
     } else {
-        $stmt = $conn->prepare('UPDATE cours SET nom_cours = ?, prix = ?, categorie = ? WHERE id = ? AND id_professeur = ?');
-        if (!$stmt) {
-            throw new RuntimeException('Erreur de preparation SQL.');
-        }
-
-        $stmt->bind_param('sdsii', $nomCours, $prix, $categorie, $idCours, $idProf);
+        $stmt = $pdo->prepare('UPDATE cours SET nom_cours = :nom, prix = :prix, categorie = :cat WHERE id = :id AND id_professeur = :prof');
+        $stmt->bindParam(':nom', $nomCours);
+        $stmt->bindParam(':prix', $prix);
+        $stmt->bindParam(':cat', $categorie);
+        $stmt->bindParam(':id', $idCours, PDO::PARAM_INT);
+        $stmt->bindParam(':prof', $idProf, PDO::PARAM_INT);
     }
 
     if (!$stmt->execute()) {
-        throw new RuntimeException('Erreur lors de la mise a jour : ' . $stmt->error);
+        throw new RuntimeException('Erreur lors de la mise a jour.');
     }
 
-    $stmt->close();
     set_course_flash('success', 'Cours mis a jour avec succes.');
     redirect_course_offers();
 } catch (Throwable $e) {
     set_course_flash('error', $e->getMessage());
     redirect_course_offers();
-} finally {
-    $conn->close();
 }

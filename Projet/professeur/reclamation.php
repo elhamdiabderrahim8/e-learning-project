@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . '/../kmr/student/backend/config/database.php';
-require_once __DIR__ . '/../kmr/student/backend/includes/migrate_support_tables.php';
+require_once __DIR__ . '/../student/backend/config/database.php';
+require_once __DIR__ . '/../student/backend/includes/migrate_support_tables.php';
 
 if (!isset($_SESSION['CIN'])) {
     header('Location: login.html');

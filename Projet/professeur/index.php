@@ -55,7 +55,7 @@ $t = static function (string $fr, string $en) use ($isEnglish): string {
                 </form>
                 <a href="login.html" class="btn btn-ghost"><?php echo $t('Connexion', 'Login'); ?></a>
                 <a href="registre.php" class="btn btn-primary"><?php echo $t('Creer un compte', 'Create an account'); ?></a>
-                <a href="../kmr/student/index.php" class="btn btn-soft"><?php echo $t('Espace Etudiant', 'Student Area'); ?></a>
+                <a href="../student/index.php" class="btn btn-soft"><?php echo $t('Espace Etudiant', 'Student Area'); ?></a>
             </div>
         </div>
     </header>
@@ -98,7 +98,7 @@ $t = static function (string $fr, string $en) use ($isEnglish): string {
 
                 <div class="hero-right" aria-label="<?php echo $t('Apercu professeur', 'Teacher preview'); ?>">
                     <figure class="hero-shot">
-                        <img src="../kmr/media/photo.png" alt="<?php echo $t('Apercu de la plateforme Enjah Professeur', 'Enjah Teacher platform preview'); ?>">
+                        <img src="../student/media/photo.png" alt="<?php echo $t('Apercu de la plateforme Enjah Professeur', 'Enjah Teacher platform preview'); ?>">
                     </figure>
                 </div>
             </div>

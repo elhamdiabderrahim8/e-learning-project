@@ -23,8 +23,10 @@ if ($courseId <= 0) {
     exit();
 }
 
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
-if ($conn->connect_error) {
+require_once __DIR__ . '/../student/database/database.php';
+try {
+    $pdo = db();
+} catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
         'success' => false,
@@ -33,18 +35,10 @@ if ($conn->connect_error) {
     exit();
 }
 
-$conn->set_charset('utf8mb4');
-
 try {
-    $check = $conn->prepare('SELECT id FROM cours WHERE id = ? AND id_professeur = ? LIMIT 1');
-    if (!$check) {
-        throw new RuntimeException($conn->error);
-    }
-
-    $check->bind_param('ii', $courseId, $profId);
-    $check->execute();
-    $course = $check->get_result()->fetch_assoc();
-    $check->close();
+    $check = $pdo->prepare('SELECT id FROM cours WHERE id = :courseId AND id_professeur = :profId LIMIT 1');
+    $check->execute(['courseId' => $courseId, 'profId' => $profId]);
+    $course = $check->fetch(PDO::FETCH_ASSOC);
 
     if (!$course) {
         http_response_code(404);
@@ -52,72 +46,39 @@ try {
             'success' => false,
             'message' => 'Cours introuvable ou non autorise.',
         ]);
-        $conn->close();
         exit();
     }
 
-    $conn->begin_transaction();
+    $pdo->beginTransaction();
 
-    $deleteCertificate = $conn->prepare('DELETE FROM certificaton WHERE id_cours = ?');
-    if ($deleteCertificate) {
-        $deleteCertificate->bind_param('i', $courseId);
-        if (!$deleteCertificate->execute()) {
-            throw new RuntimeException($deleteCertificate->error);
-        }
-        $deleteCertificate->close();
-    }
+    $deleteCertificate = $pdo->prepare('DELETE FROM certificaton WHERE id_cours = :courseId');
+    $deleteCertificate->execute(['courseId' => $courseId]);
 
-    $deleteProgress = $conn->prepare('DELETE FROM suivi_lecons WHERE id_cours = ?');
-    if ($deleteProgress) {
-        $deleteProgress->bind_param('i', $courseId);
-        if (!$deleteProgress->execute()) {
-            throw new RuntimeException($deleteProgress->error);
-        }
-        $deleteProgress->close();
-    }
+    $deleteProgress = $pdo->prepare('DELETE FROM suivi_lecons WHERE id_cours = :courseId');
+    $deleteProgress->execute(['courseId' => $courseId]);
 
-    $deleteEnrollments = $conn->prepare('DELETE FROM inscription WHERE id_cours = ?');
-    if ($deleteEnrollments) {
-        $deleteEnrollments->bind_param('i', $courseId);
-        if (!$deleteEnrollments->execute()) {
-            throw new RuntimeException($deleteEnrollments->error);
-        }
-        $deleteEnrollments->close();
-    }
+    $deleteEnrollments = $pdo->prepare('DELETE FROM inscription WHERE id_cours = :courseId');
+    $deleteEnrollments->execute(['courseId' => $courseId]);
 
-    $deleteLessons = $conn->prepare('DELETE FROM lecon WHERE id_cours = ?');
-    if ($deleteLessons) {
-        $deleteLessons->bind_param('i', $courseId);
-        if (!$deleteLessons->execute()) {
-            throw new RuntimeException($deleteLessons->error);
-        }
-        $deleteLessons->close();
-    }
+    $deleteLessons = $pdo->prepare('DELETE FROM lecon WHERE id_cours = :courseId');
+    $deleteLessons->execute(['courseId' => $courseId]);
 
-    $deleteCourse = $conn->prepare('DELETE FROM cours WHERE id = ? AND id_professeur = ?');
-    if (!$deleteCourse) {
-        throw new RuntimeException($conn->error);
-    }
+    $deleteCourse = $pdo->prepare('DELETE FROM cours WHERE id = :courseId AND id_professeur = :profId');
+    $deleteCourse->execute(['courseId' => $courseId, 'profId' => $profId]);
 
-    $deleteCourse->bind_param('ii', $courseId, $profId);
-    if (!$deleteCourse->execute()) {
-        throw new RuntimeException($deleteCourse->error);
-    }
-
-    if ($deleteCourse->affected_rows < 1) {
+    if ($deleteCourse->rowCount() < 1) {
         throw new RuntimeException('Aucun cours supprime.');
     }
 
-    $deleteCourse->close();
-    $conn->commit();
+    $pdo->commit();
 
     echo json_encode([
         'success' => true,
         'message' => 'Cours supprime.',
     ]);
 } catch (Throwable $e) {
-    if ($conn->ping()) {
-        $conn->rollback();
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
     }
 
     http_response_code(500);
@@ -126,5 +87,3 @@ try {
         'message' => 'Suppression impossible: ' . $e->getMessage(),
     ]);
 }
-
-$conn->close();

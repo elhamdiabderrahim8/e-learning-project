@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/../kmr/student/backend/config/database.php';
+require_once __DIR__ . '/../student/backend/config/database.php';
 
 $pdo = db();
 

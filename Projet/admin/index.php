@@ -1,12 +1,13 @@
 <?php
 require_once __DIR__ . '/auth_guard.php';
-require_once __DIR__ . '/../professeur/config/connexion.php';
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
-$nb_etudiants = $conn->query("SELECT COUNT(*) as n FROM etudiant")->fetch_assoc()['n'];
-$nb_profs     = $conn->query("SELECT COUNT(*) as n FROM professeur")->fetch_assoc()['n'];
-$nb_cours     = $conn->query("SELECT COUNT(*) as n FROM cours")->fetch_assoc()['n'];
-$res = $conn->query("SELECT COUNT(*) as n FROM support_messages WHERE admin_read=0");
-$nb_messages  = $res ? $res->fetch_assoc()['n'] : 0;
+$nb_etudiants = $pdo->query("SELECT COUNT(*) as n FROM etudiant")->fetch(PDO::FETCH_ASSOC)['n'];
+$nb_profs     = $pdo->query("SELECT COUNT(*) as n FROM professeur")->fetch(PDO::FETCH_ASSOC)['n'];
+$nb_cours     = $pdo->query("SELECT COUNT(*) as n FROM cours")->fetch(PDO::FETCH_ASSOC)['n'];
+$res = $pdo->query("SELECT COUNT(*) as n FROM support_messages WHERE admin_read=0");
+$nb_messages  = $res ? $res->fetch(PDO::FETCH_ASSOC)['n'] : 0;
 ?>
 <!DOCTYPE html>
 <html lang="fr">

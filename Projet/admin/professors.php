@@ -1,18 +1,18 @@
 <?php
 require_once __DIR__ . '/auth_guard.php';
-require_once __DIR__ . '/../professeur/config/connexion.php';
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_cin'])) {
     $cin = (int)$_POST['delete_cin'];
-    $stmt = $conn->prepare("DELETE FROM professeur WHERE CIN=?");
-    $stmt->bind_param("i", $cin);
-    $stmt->execute();
-    $stmt->close();
+    $stmt = $pdo->prepare("DELETE FROM professeur WHERE CIN=?");
+    $stmt->execute([$cin]);
+    $stmt = null;
     $success = "Professeur supprimé avec succès.";
 }
 
 $sql = "SELECT CIN, nom, prenom, name, type FROM professeur ORDER BY nom, prenom";
-$result = $conn->query($sql);
+$result = $pdo->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -48,7 +48,7 @@ $result = $conn->query($sql);
             </thead>
             <tbody>
             <?php if ($result && $result->num_rows > 0): ?>
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                 <tr>
                     <td><?=htmlspecialchars($row['CIN'])?></td>
                     <td><?=htmlspecialchars($row['nom'])?></td>

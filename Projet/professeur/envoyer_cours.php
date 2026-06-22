@@ -1,14 +1,16 @@
 <?php
 session_start();
 require_once __DIR__ . '/course_image_utils.php';
+require_once __DIR__ . '/../student/database/database.php';
 
 if (!isset($_SESSION['CIN'])) {
     set_course_flash('error', 'Veuillez vous reconnecter.');
     redirect_course_offers();
 }
 
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
-if ($conn->connect_error) {
+try {
+    $pdo = db();
+} catch (Exception $e) {
     set_course_flash('error', 'La connexion a la base a echoue.');
     redirect_course_offers();
 }
@@ -30,26 +32,27 @@ if ($nom === '') {
 try {
     $image = normalize_course_upload($_FILES['file'] ?? []);
 
-    $stmt = $conn->prepare('INSERT INTO cours (nom_cours, prix, categorie, image_data, image_type, image_name, id_professeur) VALUES (?, ?, ?, ?, ?, ?, ?)');
-    if (!$stmt) {
-        throw new RuntimeException('Erreur de preparation SQL.');
-    }
+    $stmt = $pdo->prepare('INSERT INTO cours (nom_cours, prix, categorie, image_data, image_type, image_name, id_professeur) VALUES (:nom, :prix, :categorie, :data, :type, :name, :idProf)');
 
     $data = $image['data'];
     $type = $image['type'];
     $name = $image['name'];
-    $stmt->bind_param('sdssssi', $nom, $prix, $categorie, $data, $type, $name, $idProf);
+    
+    $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':prix', $prix);
+    $stmt->bindParam(':categorie', $categorie);
+    $stmt->bindParam(':data', $data, PDO::PARAM_LOB);
+    $stmt->bindParam(':type', $type);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':idProf', $idProf, PDO::PARAM_INT);
 
     if (!$stmt->execute()) {
-        throw new RuntimeException('Erreur lors de l insertion : ' . $stmt->error);
+        throw new RuntimeException('Erreur lors de l insertion.');
     }
 
-    $stmt->close();
     set_course_flash('success', 'Cours ajoute avec succes.');
     redirect_course_offers();
 } catch (Throwable $e) {
     set_course_flash('error', $e->getMessage());
     redirect_course_offers();
-} finally {
-    $conn->close();
 }

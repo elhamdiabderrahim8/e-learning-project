@@ -47,7 +47,7 @@
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a>
                 </div>
                 <div class="login-footer login-footer-secondary">
-                    Vous etes etudiant ? <a href="../kmr/student/pages/login.php">Login etudiant</a>
+                    Vous etes etudiant ? <a href="../student/pages/login.php">Login etudiant</a>
                 </div>
                 <div class="login-footer login-footer-secondary">
                     <a href="index.php">Retour vers l'accueil professeur</a>

@@ -1,19 +1,22 @@
 <?php
 session_start();
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
 $id_cours = $_SESSION['id_cours_actuel'];
 
-$res = $conn->query("SELECT nom_cours FROM cours WHERE id = $id_cours");
-$cours = $res->fetch_assoc();
+$stmt_cours = $pdo->prepare("SELECT nom_cours FROM cours WHERE id = :id");
+$stmt_cours->execute(['id' => $id_cours]);
+$cours = $stmt_cours->fetch(PDO::FETCH_ASSOC);
 
 $cin = $_SESSION['CIN'] ?? null;
 $user = null;
 $src = 'profil.avif';
 if ($cin !== null) {
-    $resProf = $conn->query("SELECT nom, prenom, data, type FROM professeur WHERE CIN = '$cin'");
-    $user = $resProf ? $resProf->fetch_assoc() : null;
-    if (!empty($user['data']) && !empty($user['type'])) {
+    $stmt_prof = $pdo->prepare("SELECT nom, prenom, data, type FROM professeur WHERE CIN = :cin");
+    $stmt_prof->execute(['cin' => $cin]);
+    $user = $stmt_prof->fetch(PDO::FETCH_ASSOC);
+    if ($user && !empty($user['data']) && !empty($user['type'])) {
         $base64 = base64_encode($user['data']);
         $src = 'data:' . $user['type'] . ';base64,' . $base64;
     }
@@ -73,11 +76,13 @@ if ($cin !== null) {
             <div class="lecons-container">
                 <h3>Contenu du cours : <?php echo htmlspecialchars($cours['nom_cours'] ?? 'Cours inconnu'); ?></h3>
                 <?php
-                $sql_lecons = "SELECT * FROM lecon WHERE id_cours = $id_cours ORDER BY id_lecon ASC";
-                $res_lecons = $conn->query($sql_lecons);
+                $sql_lecons = "SELECT * FROM lecon WHERE id_cours = :id_cours ORDER BY id_lecon ASC";
+                $stmt_lecons = $pdo->prepare($sql_lecons);
+                $stmt_lecons->execute(['id_cours' => $id_cours]);
+                $lecons = $stmt_lecons->fetchAll(PDO::FETCH_ASSOC);
 
-                if ($res_lecons && $res_lecons->num_rows > 0) {
-                    while ($row = $res_lecons->fetch_assoc()) {
+                if (count($lecons) > 0) {
+                    foreach ($lecons as $row) {
                         $type = $row['type_fichier'];
                         $icon = 'fas fa-file';
                         $btnText = 'Telecharger';

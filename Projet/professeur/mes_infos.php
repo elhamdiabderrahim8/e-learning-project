@@ -5,24 +5,14 @@ if (empty($_SESSION["CIN"])) {
     exit();
 }
 
-// 1. Connexion à la base de données avec mysqli
-require_once __DIR__ . '/config/db_prof.php'; $mysqli = db_prof();
-
-// Vérifier la connexion
-if ($mysqli->connect_error) {
-    die("Erreur de connexion : " . $mysqli->connect_error);
-}
+// 1. Connexion à la base de données
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
 // 2. Récupérer les infos de l'utilisateur
-$stmt = $mysqli->prepare("SELECT *FROM etudiant WHERE CIN = ?");
-// "s" indique que le CIN est traité comme une chaîne de caractères (string)
-$stmt->bind_param("s", $_SESSION["CIN"]); 
-$stmt->execute();
-$result = $stmt->get_result();
-$etudiant = $result->fetch_assoc();
-
-// Fermer le statement
-$stmt->close();
+$stmt = $pdo->prepare("SELECT * FROM etudiant WHERE CIN = :cin");
+$stmt->execute(['cin' => $_SESSION["CIN"]]);
+$etudiant = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Si l'étudiant n'a pas de photo, on lui donne l'image par défaut
 ?>

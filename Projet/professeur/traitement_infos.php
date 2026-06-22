@@ -8,11 +8,8 @@ if (empty($_SESSION["CIN"]) || !isset($_POST['modifier_infos'])) {
 }
 
 // 2. Connexion à la base de données
-require_once __DIR__ . '/config/db_prof.php'; $mysqli = db_prof();
-
-if ($mysqli->connect_error) {
-    die("Erreur de connexion : " . $mysqli->connect_error);
-}
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
 // 3. Récupération des données du formulaire
 $cin_actuel = (int)$_SESSION["CIN"]; 
@@ -23,11 +20,9 @@ $nouveau_mdp = $_POST['PASSWORDN']; // Nouveau mot de passe
 $mdp_confirmation = $_POST['PASSWORD']; // Mot de passe actuel tapé
 
 // 4. Récupérer le hash actuel pour vérification
-$stmt = $mysqli->prepare("SELECT password FROM etudiant WHERE CIN = ?");
-$stmt->bind_param("i", $cin_actuel);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$stmt = $pdo->prepare("SELECT password FROM etudiant WHERE CIN = :cin");
+$stmt->execute(['cin' => $cin_actuel]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($user) {
     // 5. Vérification du mot de passe actuel
@@ -42,24 +37,26 @@ if ($user) {
         }
 
         // 7. Mise à jour (nom:s, prenom:s, CIN:i, password:s, WHERE CIN:i)
-        $update = $mysqli->prepare("UPDATE etudiant SET nom = ?, prenom = ?, CIN = ?, password = ? WHERE CIN = ?");
-        $update->bind_param("ssisi", $nom, $prenom, $nouveau_cin, $mdp_final_hache, $cin_actuel);
+        $update = $pdo->prepare("UPDATE etudiant SET nom = :nom, prenom = :prenom, CIN = :new_cin, password = :pass WHERE CIN = :cin_actuel");
+        $success = $update->execute([
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'new_cin' => $nouveau_cin,
+            'pass' => $mdp_final_hache,
+            'cin_actuel' => $cin_actuel
+        ]);
         
-        if ($update->execute()) {
+        if ($success) {
             // Mettre à jour la session avec le nouveau CIN et prénom
             $_SESSION["CIN"] = $nouveau_cin;
             $_SESSION["prenom"] = $prenom;
             header("Location: infos_reussit.php");
         } else {
-            echo "Erreur lors de la mise à jour : " . $mysqli->error;
+            echo "Erreur lors de la mise à jour.";
         }
-        $update->close();
         
     } else {
         echo "<script>alert('Mot de passe actuel incorrect !'); window.history.back();</script>";
     }
 }
-
-$stmt->close();
-$mysqli->close();
 ?>

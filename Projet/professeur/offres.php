@@ -8,13 +8,14 @@ if (!isset($_SESSION['CIN'])) {
 $flash = $_SESSION['course_flash'] ?? null;
 unset($_SESSION['course_flash']);
 
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 $cin = $_SESSION['CIN'];
 
 // --- RECUPERATION PROFIL ---
-$sql_prof = "SELECT * FROM professeur WHERE CIN = '$cin'";
-$res_prof = $conn->query($sql_prof);
-$user = $res_prof->fetch_assoc();
+$stmt_prof = $pdo->prepare("SELECT * FROM professeur WHERE CIN = :cin");
+$stmt_prof->execute(['cin' => $cin]);
+$user = $stmt_prof->fetch(PDO::FETCH_ASSOC);
 
 if (!empty($user['data'])) {
     $base64 = base64_encode($user['data']);
@@ -24,11 +25,12 @@ if (!empty($user['data'])) {
 }
 
 // --- RECUPERATION COURS ---
-$sql_cours = "SELECT c.*, p.nom, p.prenom
+$stmt_cours = $pdo->prepare("SELECT c.*, p.nom, p.prenom
               FROM cours c
               JOIN professeur p ON c.id_professeur = p.CIN
-              WHERE c.id_professeur = '$cin'";
-$result_cours = $conn->query($sql_cours);
+              WHERE c.id_professeur = :cin");
+$stmt_cours->execute(['cin' => $cin]);
+$result_cours = $stmt_cours->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -88,8 +90,8 @@ $result_cours = $conn->query($sql_cours);
 
             <div class="courses-grid" id="courses-grid">
                 <?php
-                if ($result_cours && $result_cours->num_rows > 0) {
-                    while ($row = $result_cours->fetch_assoc()) {
+                if (!empty($result_cours)) {
+                    foreach ($result_cours as $row) {
                         $id_c = $row['id'];
                         $titre = $row['nom_cours'];
                         $prix = number_format($row['prix'], 2);
@@ -131,7 +133,6 @@ $result_cours = $conn->query($sql_cours);
                 } else {
                     echo "<p style='grid-column: 1/-1; text-align: center;'>Aucun cours disponible.</p>";
                 }
-                $conn->close();
                 ?>
             </div>
 

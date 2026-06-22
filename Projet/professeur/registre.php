@@ -8,11 +8,11 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Enjah</title>
     <link rel="stylesheet" href="style_in.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="../kmr/student/media/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../kmr/student/media/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../kmr/student/media/favicon_io/favicon-16x16.png">
-    <link rel="shortcut icon" href="../kmr/student/media/favicon_io/favicon.ico">
-    <link rel="manifest" href="../kmr/student/media/favicon_io/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="../student/media/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../student/media/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../student/media/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon" href="../student/media/favicon_io/favicon.ico">
+    <link rel="manifest" href="../student/media/favicon_io/site.webmanifest">
 </head>
 <body class="login-page">
     <div class="login-container">
@@ -74,7 +74,7 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
                 <div class="login-footer">
                     Vous avez deja un compte ? <a href="login.php">Se connecter</a>
                     <div style="margin-top: 10px;">
-                        Vous etes etudiant ? <a href="../kmr/student/pages/registre.php">Inscription etudiant</a>
+                        Vous etes etudiant ? <a href="../student/pages/registre.php">Inscription etudiant</a>
                     </div>
                     <div style="margin-top: 10px;">
                         <a href="index.php">Retour vers l'accueil professeur</a>

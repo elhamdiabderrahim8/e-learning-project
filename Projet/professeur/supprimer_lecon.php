@@ -1,13 +1,17 @@
 <?php
 session_start();
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
     // 1. Récupérer le nom du fichier pour le supprimer du dossier
-    $res = $conn->query("SELECT nom_fichier FROM lecon WHERE id_lecon = $id");
-    if ($row = $res->fetch_assoc()) {
+    $stmt = $pdo->prepare("SELECT nom_fichier FROM lecon WHERE id_lecon = :id");
+    $stmt->execute(['id' => $id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
         $nom_fichier = $row['nom_fichier'];
         $chemin = "uploads/" . $nom_fichier;
 
@@ -17,7 +21,8 @@ if (isset($_GET['id'])) {
         }
 
         // 3. Supprimer la ligne dans la base de données
-        $conn->query("DELETE FROM lecon WHERE id_lecon = $id");
+        $deleteStmt = $pdo->prepare("DELETE FROM lecon WHERE id_lecon = :id");
+        $deleteStmt->execute(['id' => $id]);
     }
 }
 

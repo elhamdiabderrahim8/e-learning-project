@@ -1,11 +1,14 @@
 <?php
 session_start();
-require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 $cin = $_SESSION['CIN'];
-$sql = "SELECT * FROM professeur WHERE CIN = '$cin'";
-$result = $conn->query($sql);
-$user = $result->fetch_assoc();
-if (!empty($user['data'])) {
+$sql = "SELECT * FROM professeur WHERE CIN = :cin";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['cin' => $cin]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($user && !empty($user['data'])) {
     $base64 = base64_encode($user['data']);
     $src = "data:" . $user['type'] . ";base64," . $base64;
 } else {

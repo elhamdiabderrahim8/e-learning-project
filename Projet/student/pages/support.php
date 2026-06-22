@@ -48,7 +48,7 @@ $isEnglish = current_language() === 'en';
             <?php if (!$supportReady): ?>
                 <div class="task-alert task-alert-error">
                     <?php echo $isEnglish ? 'Missing table' : 'Table'; ?> <code>support_messages</code> <?php echo $isEnglish ? '. Import the unified SQL file:' : 'manquante. Importez le fichier SQL unifie :'; ?>
-                    <code>kmr/student/database/elearning_unified.sql</code>.
+                    <code>student/database/elearning_unified.sql</code>.
                 </div>
             <?php endif; ?>
 

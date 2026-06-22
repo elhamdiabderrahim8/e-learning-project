@@ -1,19 +1,18 @@
 <?php
 require_once __DIR__ . '/auth_guard.php';
-require_once __DIR__ . '/../professeur/config/connexion.php';
+require_once __DIR__ . '/../student/database/database.php';
+$pdo = db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_thread'])) {
     $thread_id = (int) ($_POST['thread_id'] ?? 0);
     if ($thread_id > 0) {
-        $stmtDeleteMsgs = $conn->prepare('DELETE FROM support_messages WHERE thread_id = ?');
-        $stmtDeleteMsgs->bind_param('i', $thread_id);
-        $stmtDeleteMsgs->execute();
-        $stmtDeleteMsgs->close();
+        $stmtDeleteMsgs = $pdo->prepare('DELETE FROM support_messages WHERE thread_id = ?');
+        $stmtDeleteMsgs->execute([$thread_id]);
+        $stmtDeleteMsgs = null;
 
-        $stmtDeleteThread = $conn->prepare('DELETE FROM support_threads WHERE id = ?');
-        $stmtDeleteThread->bind_param('i', $thread_id);
-        $stmtDeleteThread->execute();
-        $stmtDeleteThread->close();
+        $stmtDeleteThread = $pdo->prepare('DELETE FROM support_threads WHERE id = ?');
+        $stmtDeleteThread->execute([$thread_id]);
+        $stmtDeleteThread = null;
     }
 
     header('Location: chat.php');
@@ -25,14 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply'])) {
     $thread_id  = (int)$_POST['thread_id'];
     $message    = trim($_POST['message']);
     if ($message !== '') {
-        $stmt = $conn->prepare("INSERT INTO support_messages (thread_id, sender, message) VALUES (?,?,?)");
+        $stmt = $pdo->prepare("INSERT INTO support_messages (thread_id, sender, message) VALUES (?,?,?)");
         $sender = 'admin';
-        $stmt->bind_param("iss", $thread_id, $sender, $message);
-        $stmt->execute();
-        $stmt->close();
+        $stmt->execute([$thread_id, $sender, $message]);
+        $stmt = null;
     }
     // Mark all user messages in this thread as read
-    $conn->query("UPDATE support_messages SET admin_read=1 WHERE thread_id=$thread_id AND sender!='admin'");
+    $pdo->query("UPDATE support_messages SET admin_read=1 WHERE thread_id=$thread_id AND sender!='admin'");
     header("Location: chat.php?thread=$thread_id");
     exit();
 }
@@ -40,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply'])) {
 // Mark thread as read when opened
 $active_thread = isset($_GET['thread']) ? (int)$_GET['thread'] : 0;
 if ($active_thread) {
-    $conn->query("UPDATE support_messages SET admin_read=1 WHERE thread_id=$active_thread AND sender!='admin'");
+    $pdo->query("UPDATE support_messages SET admin_read=1 WHERE thread_id=$active_thread AND sender!='admin'");
 }
 
 // Get all threads
-$threads = $conn->query("
+$threads = $pdo->query("
     SELECT t.id, t.subject, t.user_type, t.user_name, t.created_at,
            COUNT(m.id) as msg_count,
            SUM(CASE WHEN m.sender!='admin' AND m.admin_read=0 THEN 1 ELSE 0 END) as unread
@@ -57,9 +55,9 @@ $threads = $conn->query("
 $messages = [];
 $thread_info = null;
 if ($active_thread) {
-    $thread_info = $conn->query("SELECT * FROM support_threads WHERE id=$active_thread")->fetch_assoc();
-    $msgs = $conn->query("SELECT * FROM support_messages WHERE thread_id=$active_thread ORDER BY created_at ASC");
-    while ($m = $msgs->fetch_assoc()) $messages[] = $m;
+    $thread_info = $pdo->query("SELECT * FROM support_threads WHERE id=$active_thread")->fetch(PDO::FETCH_ASSOC);
+    $msgs = $pdo->query("SELECT * FROM support_messages WHERE thread_id=$active_thread ORDER BY created_at ASC");
+    while ($m = $msgs->fetch(PDO::FETCH_ASSOC)) $messages[] = $m;
 }
 ?>
 <!DOCTYPE html>
@@ -90,7 +88,7 @@ if ($active_thread) {
         <div class="chat-layout">
             <div class="thread-list">
                 <?php if ($threads && $threads->num_rows > 0): ?>
-                <?php while ($t = $threads->fetch_assoc()): ?>
+                <?php while ($t = $threads->fetch(PDO::FETCH_ASSOC)): ?>
                 <div class="thread-item <?=$t['id']==$active_thread?'active':''?>" onclick="location='chat.php?thread=<?=$t['id']?>'" role="button" tabindex="0" onkeydown="if(event.key==='Enter'){location='chat.php?thread=<?=$t['id']?>';}">
                     <?php if ($t['unread'] > 0): ?><span class="tbadge"><?=$t['unread']?></span><?php endif; ?>
                     <div class="tname"><?=htmlspecialchars($t['user_name'])?></div>
