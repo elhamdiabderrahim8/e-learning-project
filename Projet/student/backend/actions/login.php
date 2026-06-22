@@ -7,13 +7,8 @@ require_once __DIR__ . '/../includes/bootstrap.php';
  */
 function redirect_error(string $message): void
 {
-    $query = http_build_query([
-        'msg' => $message,
-        'success' => '0',
-    ]);
-    // Adaptez le chemin vers votre page d'affichage d'erreur spécifique
-    header('Location: ../../pages/erreur_login.php?' . $query);
-    exit();
+    set_flash('error', $message);
+    redirect('../../pages/login.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

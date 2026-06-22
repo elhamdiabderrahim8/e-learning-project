@@ -36,11 +36,11 @@ $success = get_flash('success');
             </div>
 
             <?php if ($error): ?>
-                <div class="auth-message auth-error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="error-text">⚠️ <?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
             
             <?php if ($success): ?>
-                <div class="auth-message auth-success"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="success-text">✅ <?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
             <?php endif; ?>
 
             <form class="login-form" action="../backend/actions/login.php" method="post">
