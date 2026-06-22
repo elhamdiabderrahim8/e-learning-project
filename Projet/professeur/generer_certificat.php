@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../student/backend/config/database.php');
+require_once __DIR__ . '/../student/database/database.php';
 $pdo = db();
 
 $code = $_GET['code'] ?? '';
