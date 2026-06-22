@@ -47,6 +47,7 @@ $pageDescription = $isEnglish
                         <option value="en" <?php echo $pageLang === 'en' ? 'selected' : ''; ?>><?php echo $isEnglish ? 'English' : 'Anglais'; ?></option>
                     </select>
                 </form>
+                <a href="pages/invite.php" class="btn btn-ghost"><?php echo $isEnglish ? 'Guest' : 'Invité'; ?></a>
                 <a href="pages/login.php" class="btn btn-ghost"><?php echo $isEnglish ? 'Login' : 'Connexion'; ?></a>
                 <a href="pages/registre.php" class="btn btn-primary"><?php echo $isEnglish ? 'Sign up' : 'Inscription'; ?></a>
                 <a href="../professeur/index.php" class="btn btn-soft"><?php echo $isEnglish ? 'Teacher area' : 'Espace Professeur'; ?></a>
@@ -74,6 +75,7 @@ $pageDescription = $isEnglish
                     <div class="hero-actions">
                         <a href="pages/registre.php" class="btn btn-primary"><?php echo $isEnglish ? 'Create my account' : 'Créer mon compte'; ?></a>
                         <a href="#produit" class="btn btn-ghost"><?php echo $isEnglish ? 'Discover the platform' : 'Découvrir la plateforme'; ?></a>
+                        <a href="pages/invite.php" class="btn btn-soft"><?php echo $isEnglish ? 'Guest Mode' : 'Mode Invité'; ?></a>
                     </div>
 
                     <div class="trustbar" aria-label="<?php echo $isEnglish ? 'What you get' : 'Ce que vous obtenez'; ?>">
@@ -93,8 +95,8 @@ $pageDescription = $isEnglish
                 </div>
 
                 <div class="hero-right" aria-label="<?php echo $isEnglish ? 'Platform preview' : 'Aperçu de la plateforme'; ?>">
-                    <figure class="hero-shot">
-                        <img src="../media/photo.png" alt="<?php echo $isEnglish ? 'Enjah platform preview' : 'Aperçu de la plateforme Enjah'; ?>">
+                    <figure class="hero-shot" style="display: flex; align-items: center; justify-content: center; overflow: hidden; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); border-radius: 24px; padding: 30px;">
+                        <img src="media/logo.jpg" alt="<?php echo $isEnglish ? 'Enjah platform preview' : 'Aperçu de la plateforme Enjah'; ?>" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
                     </figure>
                 </div>
             </div>
