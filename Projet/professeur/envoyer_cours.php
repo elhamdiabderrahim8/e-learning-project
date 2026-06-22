@@ -8,6 +8,12 @@ if (!isset($_SESSION['CIN'])) {
     redirect_course_offers();
 }
 
+// Détection d'un POST vide causé par une image trop lourde (dépassement upload_max_filesize)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST) && empty($_FILES)) {
+    set_course_flash('error', 'Image trop lourde. Choisissez une image de moins de 10 Mo.');
+    redirect_course_offers();
+}
+
 try {
     $pdo = db();
 } catch (Exception $e) {
