@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="Projet/student/media/logo.jpg" alt="Logo Enjah" width="150" style="border-radius: 20px;"/>
+  <img src="Projet/student/media/logo.jpg" alt="Logo Enjah" width="350" style="border-radius: 20px;"/>
   <h1>Enjah - Plateforme E-learning Moderne</h1>
 </div>
 
