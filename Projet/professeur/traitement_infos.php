@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/session_prof.php';
 
 // 1. Vérification de sécurité
 if (empty($_SESSION["CIN"]) || !isset($_POST['modifier_infos'])) {

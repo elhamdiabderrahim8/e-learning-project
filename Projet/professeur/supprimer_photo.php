@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/session_prof.php';
 
 // 1. Connexion à la base de données avec PDO
 require_once __DIR__ . '/../student/database/database.php';

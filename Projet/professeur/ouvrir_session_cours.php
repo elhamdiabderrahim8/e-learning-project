@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/session_prof.php';
 
 if (isset($_GET['id'])) {
     // On stocke l'ID du cours dans la session

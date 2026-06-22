@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/session_prof.php';
 require_once __DIR__ . '/course_image_utils.php';
 require_once __DIR__ . '/../student/database/database.php';
 

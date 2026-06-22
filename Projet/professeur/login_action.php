@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/session_prof.php';
 
 $cin = trim((string) ($_POST['CIN'] ?? ''));
 $password = (string) ($_POST['password'] ?? ($_POST['PASSWORD'] ?? ''));

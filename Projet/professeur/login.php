@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-session_start();
+require_once __DIR__ . '/session_prof.php';
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $CIN      = trim((string) ($_POST['CIN'] ?? ''));

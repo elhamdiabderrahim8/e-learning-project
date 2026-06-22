@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/session_prof.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: registre.php');
