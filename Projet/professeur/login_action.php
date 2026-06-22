@@ -25,7 +25,7 @@ if ($cin === '' || $password === '') {
 }
 
 try {
-    $conn = new mysqli('localhost', 'root', '', 'elearning');
+    require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
     if ($conn->connect_error) {
         throw new Exception('Impossible de se connecter au serveur.');
     }

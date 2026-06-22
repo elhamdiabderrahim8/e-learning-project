@@ -8,7 +8,7 @@ if (empty($_SESSION["CIN"]) || !isset($_POST['modifier_infos'])) {
 }
 
 // 2. Connexion à la base de données
-$mysqli = new mysqli("localhost", "root", "", "elearning");
+require_once __DIR__ . '/config/db_prof.php'; $mysqli = db_prof();
 
 if ($mysqli->connect_error) {
     die("Erreur de connexion : " . $mysqli->connect_error);

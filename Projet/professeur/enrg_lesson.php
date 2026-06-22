@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli('localhost', 'root', '', 'elearning');
+require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
 
 // Vérifier si le professeur est bien sur une session de cours
 if (!isset($_SESSION['id_cours_actuel'])) {

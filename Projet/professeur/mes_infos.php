@@ -6,7 +6,7 @@ if (empty($_SESSION["CIN"])) {
 }
 
 // 1. Connexion à la base de données avec mysqli
-$mysqli = new mysqli("localhost", "root", "", "elearning");
+require_once __DIR__ . '/config/db_prof.php'; $mysqli = db_prof();
 
 // Vérifier la connexion
 if ($mysqli->connect_error) {

@@ -7,7 +7,7 @@ if (!isset($_SESSION['CIN'])) {
     exit();
 }
 
-$conn = new mysqli('localhost', 'root', '', 'elearning');
+require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
 if ($conn->connect_error) {
     set_course_flash('error', 'La connexion a la base a echoue.');
     redirect_course_offers();

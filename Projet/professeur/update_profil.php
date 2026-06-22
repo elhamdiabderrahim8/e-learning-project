@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli('localhost', 'root', '', 'elearning');
+require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
 $cin_session = $_SESSION['CIN']; // On garde le CIN de la session pour la clause WHERE
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

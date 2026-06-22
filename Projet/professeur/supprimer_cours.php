@@ -23,7 +23,7 @@ if ($courseId <= 0) {
     exit();
 }
 
-$conn = new mysqli('localhost', 'root', '', 'elearning');
+require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
 if ($conn->connect_error) {
     http_response_code(500);
     echo json_encode([

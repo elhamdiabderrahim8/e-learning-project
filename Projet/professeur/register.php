@@ -6,19 +6,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-$cin = trim((string) ($_POST['CIN'] ?? ''));
-$prenom = trim((string) ($_POST['prenom'] ?? ''));
-$nom = trim((string) ($_POST['nom'] ?? ''));
-$password = (string) ($_POST['password'] ?? '');
+$cin             = trim((string) ($_POST['CIN'] ?? ''));
+$prenom          = trim((string) ($_POST['prenom'] ?? ''));
+$nom             = trim((string) ($_POST['nom'] ?? ''));
+$password        = (string) ($_POST['password'] ?? '');
 $confirmPassword = (string) ($_POST['confirm_password'] ?? '');
 
 function redirect_with_message(string $message, bool $success = false): void
 {
     $query = http_build_query([
-        'msg' => $message,
+        'msg'     => $message,
         'success' => $success ? '1' : '0',
     ]);
-
     header('Location: registre.php?' . $query);
     exit();
 }
@@ -40,43 +39,42 @@ if ($password !== $confirmPassword) {
 }
 
 try {
-    $conn = new mysqli('localhost', 'root', '', 'elearning');
-    if ($conn->connect_error) {
-        throw new Exception('Impossible de se connecter au serveur.');
-    }
+    $host   = getenv('DB_HOST') ?: 'localhost';
+    $port   = getenv('DB_PORT') ?: '3306';
+    $dbname = getenv('DB_NAME') ?: 'elearning';
+    $user   = getenv('DB_USER') ?: 'root';
+    $pass   = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
 
-    $check = $conn->prepare('SELECT CIN FROM professeur WHERE CIN = ?');
-    $check->bind_param('i', $cin);
-    $check->execute();
-    $exists = $check->get_result();
+    $pdo = new PDO(
+        "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
+        $user,
+        $pass,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
+    );
 
-    if ($exists->num_rows > 0) {
-        $check->close();
-        $conn->close();
+    $check = $pdo->prepare('SELECT CIN FROM professeur WHERE CIN = :cin LIMIT 1');
+    $check->execute(['cin' => $cin]);
+    if ($check->fetch()) {
         redirect_with_message('Ce CIN est deja utilise.');
     }
 
-    $check->close();
-
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    $insert = $conn->prepare('INSERT INTO professeur (CIN, nom, prenom, password) VALUES (?, ?, ?, ?)');
-    $insert->bind_param('isss', $cin, $nom, $prenom, $passwordHash);
-    $insert->execute();
-
-    if ($insert->affected_rows <= 0) {
-        throw new Exception("La creation du compte a echoue.");
-    }
+    $insert = $pdo->prepare('INSERT INTO professeur (CIN, nom, prenom, password) VALUES (:cin, :nom, :prenom, :password)');
+    $insert->execute([
+        'cin'      => (int) $cin,
+        'nom'      => $nom,
+        'prenom'   => $prenom,
+        'password' => $passwordHash,
+    ]);
 
     session_regenerate_id(true);
-    $_SESSION['CIN'] = (int) $cin;
+    $_SESSION['CIN']    = (int) $cin;
     $_SESSION['prenom'] = $prenom;
-    $_SESSION['nom'] = $nom;
-
-    $insert->close();
-    $conn->close();
+    $_SESSION['nom']    = $nom;
 
     header('Location: offres.php');
     exit();
+
 } catch (Exception $e) {
     redirect_with_message($e->getMessage());
 }

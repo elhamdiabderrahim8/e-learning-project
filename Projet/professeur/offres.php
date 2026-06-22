@@ -8,7 +8,7 @@ if (!isset($_SESSION['CIN'])) {
 $flash = $_SESSION['course_flash'] ?? null;
 unset($_SESSION['course_flash']);
 
-$conn = new mysqli('localhost', 'root', '', 'elearning');
+require_once __DIR__ . '/config/db_prof.php'; $conn = db_prof();
 $cin = $_SESSION['CIN'];
 
 // --- RECUPERATION PROFIL ---

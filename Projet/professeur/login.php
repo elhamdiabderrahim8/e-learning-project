@@ -4,43 +4,42 @@ declare(strict_types=1);
 session_start();
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    $CIN = trim((string) ($_POST['CIN'] ?? ''));
+    $CIN      = trim((string) ($_POST['CIN'] ?? ''));
     $PASSWORD = (string) ($_POST['PASSWORD'] ?? '');
 
+    $message = '';
+
     try {
-        $conn = new mysqli('localhost', 'root', '', 'elearning');
-        if ($conn->connect_error) {
-            throw new Exception('Impossible de se connecter au serveur.');
-        }
+        $host   = getenv('DB_HOST') ?: 'localhost';
+        $port   = getenv('DB_PORT') ?: '3306';
+        $dbname = getenv('DB_NAME') ?: 'elearning';
+        $user   = getenv('DB_USER') ?: 'root';
+        $pass   = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
 
-        $stmt = $conn->prepare('SELECT * FROM professeur WHERE CIN = ?');
-        $stmt->bind_param('i', $CIN);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $pdo = new PDO(
+            "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
+            $user,
+            $pass,
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
+        );
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if (password_verify($PASSWORD, $row['password'])) {
-                session_regenerate_id(true);
-                $_SESSION['CIN'] = $row['CIN'];
-                $_SESSION['prenom'] = $row['prenom'];
-                $_SESSION['nom'] = $row['nom'];
-                header('Location: offres.php');
-                exit();
-            }
+        $stmt = $pdo->prepare('SELECT CIN, nom, prenom, password FROM professeur WHERE CIN = :cin LIMIT 1');
+        $stmt->execute(['cin' => $CIN]);
+        $row = $stmt->fetch();
 
-            $message = urlencode('Mot de passe incorrect. Veuillez reessayer.');
-            header('Location: erreur_login.php?msg=' . $message);
+        if ($row && password_verify($PASSWORD, $row['password'])) {
+            session_regenerate_id(true);
+            $_SESSION['CIN']    = $row['CIN'];
+            $_SESSION['prenom'] = $row['prenom'];
+            $_SESSION['nom']    = $row['nom'];
+            header('Location: offres.php');
             exit();
         }
 
-        $message = urlencode('Aucun compte trouve avec ce CIN.');
-        header('Location: erreur_login.php?msg=' . $message);
-        exit();
+        $message = ($row) ? 'Mot de passe incorrect. Veuillez reessayer.' : 'Aucun compte trouve avec ce CIN.';
+
     } catch (Exception $e) {
-        $message = urlencode($e->getMessage());
-        header('Location: erreur_login.php?msg=' . $message);
-        exit();
+        $message = 'Erreur de connexion : ' . $e->getMessage();
     }
 }
 ?>
@@ -49,7 +48,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Smart Learning</title>
+    <title>Connexion Professeur - Enjah</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-page">
@@ -66,6 +65,13 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 </div>
                 <p>Veuillez vous connecter pour acceder a vos cours.</p>
             </div>
+
+            <?php if (!empty($message)): ?>
+            <div class="error">
+                <img id="error" src="icons8-erreur-48.png" alt="Erreur">
+                <p><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p>
+            </div>
+            <?php endif; ?>
 
             <form class="login-form" action="login.php" method="POST">
                 <div class="input-group">
@@ -88,7 +94,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     Pas encore de compte ? <a href="registre.php">S'inscrire gratuitement</a>
                 </div>
                 <div class="login-footer login-footer-secondary">
-                    Vous etes etudiant ? <a href="../kmr/student/pages/login.php">Login etudiant</a>
+                    Vous etes etudiant ? <a href="../student/pages/login.php">Login etudiant</a>
                 </div>
                 <div class="login-footer login-footer-secondary">
                     <a href="index.php">Retour vers l'accueil professeur</a>
