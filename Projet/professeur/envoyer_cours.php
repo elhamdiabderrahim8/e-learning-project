@@ -4,6 +4,16 @@ require_once __DIR__ . '/course_image_utils.php';
 require_once __DIR__ . '/../student/database/database.php';
 
 if (!isset($_SESSION['CIN'])) {
+    $debug = [
+        'time' => date('Y-m-d H:i:s'),
+        'method' => $_SERVER['REQUEST_METHOD'] ?? 'UNKNOWN',
+        'cookies' => $_COOKIE,
+        'session_id' => session_id(),
+        'session_data' => $_SESSION,
+        'headers' => getallheaders()
+    ];
+    file_put_contents(__DIR__ . '/session_debug.txt', print_r($debug, true) . "\n---\n", FILE_APPEND);
+
     set_course_flash('error', 'Veuillez vous reconnecter.');
     redirect_course_offers();
 }
