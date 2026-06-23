@@ -1,5 +1,11 @@
 <?php
 require_once __DIR__ . '/session_prof.php';
+
+if (!isset($_SESSION['CIN'])) {
+    header("Location: login.html");
+    exit();
+}
+
 require_once __DIR__ . '/../student/database/database.php';
 $pdo = db();
 $cin = $_SESSION['CIN'];
