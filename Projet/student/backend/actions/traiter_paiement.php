@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Correction du chemin vers bootstrap
 require_once __DIR__ . '/../includes/bootstrap.php';
+require_once __DIR__ . '/../../database/migrate_inscription.php';
 require_auth(); 
 
 $pdo = db();
@@ -29,10 +30,7 @@ if ($cardHolder === '' || strlen($cardNumber) < 12 || strlen($cardExpiry) < 4 ||
 $cardLast4 = substr($cardNumber, -4);
 
 try {
-    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
-    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_holder VARCHAR(150) NULL");
-    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_last4 CHAR(4) NULL");
-    $pdo->exec("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS payment_status_note VARCHAR(255) NULL");
+    ensure_inscription_columns($pdo);
 
     $checkStmt = $pdo->prepare("SELECT id_inscription FROM inscription WHERE id_etudiant = :cin AND id_cours = :id_c LIMIT 1");
     $checkStmt->execute([

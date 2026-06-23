@@ -1,12 +1,10 @@
 <?php
 require_once __DIR__ . '/auth_guard.php';
 require_once __DIR__ . '/../student/database/database.php';
+require_once __DIR__ . '/../student/database/migrate_inscription.php';
 $pdo = db();
 
-$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
-$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_holder VARCHAR(150) NULL");
-$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS card_last4 CHAR(4) NULL");
-$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS payment_status_note VARCHAR(255) NULL");
+ensure_inscription_columns($pdo);
 
 $sql = "SELECT i.id_inscription, i.id_etudiant, i.id_cours, i.date_achat, i.methode_paiement, i.paiement_valide,
            i.card_holder, i.card_last4, i.payment_status_note,

@@ -2,13 +2,13 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../backend/includes/bootstrap.php';
+require_once __DIR__ . '/../database/migrate_inscription.php';
 require_auth();
 
 $pdo = db();
 $cin_etudiant = (int)$_SESSION['CIN'];
 
-// Ensure column exists (idempotent - safe to run every time)
-$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
+ensure_inscription_columns($pdo);
 
 /**
  * REQUÊTE SQL SÉCURISÉE (PDO)
