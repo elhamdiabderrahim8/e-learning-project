@@ -7,6 +7,9 @@ require_auth();
 $pdo = db();
 $cin_etudiant = (int)$_SESSION['CIN'];
 
+// Ensure column exists (idempotent - safe to run every time)
+$pdo->query("ALTER TABLE inscription ADD COLUMN IF NOT EXISTS paiement_valide TINYINT(1) NOT NULL DEFAULT 0");
+
 /**
  * REQUÊTE SQL SÉCURISÉE (PDO)
  * On récupère la progression et le statut du certificat depuis la table inscription
