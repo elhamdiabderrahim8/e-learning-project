@@ -48,7 +48,7 @@ try {
         redirect_login('Identifiants invalides.');
     }
 
-    session_regenerate_id(true);
+    session_regenerate_id(false);
     $_SESSION['CIN'] = (int) $user['CIN'];
     $_SESSION['prenom'] = (string) $user['prenom'];
     $_SESSION['nom'] = (string) $user['nom'];
