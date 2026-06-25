@@ -63,7 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (PDOException $e) {
         $pdo->rollBack();
-        die("<b style='color:red;'>ERREUR SQL :</b> " . $e->getMessage());
+        error_log('traitter_validation error: ' . $e->getMessage());
+        die("Une erreur est survenue lors de la validation. Veuillez réessayer.");
     }
 } else {
     header("Location: valider_certificats.php");

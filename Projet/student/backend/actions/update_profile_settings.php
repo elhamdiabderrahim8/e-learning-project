@@ -91,7 +91,8 @@ try {
     set_flash('success', 'Profil mis à jour avec succès.');
 
 } catch (PDOException $e) {
-    set_flash('error', 'Erreur SQL : ' . $e->getMessage());
+    error_log('update_profile_settings error: ' . $e->getMessage());
+    set_flash('error', 'Erreur lors de la mise à jour du profil.');
 }
 
 redirect('../../pages/profil.php');

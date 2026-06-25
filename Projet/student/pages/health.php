@@ -23,11 +23,9 @@ try {
         'db_version' => substr($data['db_version'], 0, 50),
     ];
 } catch (Exception $e) {
-    $result['message'] = $e->getMessage();
-    $result['details'] = [
-        'file' => $e->getFile(),
-        'line' => $e->getLine(),
-    ];
+    $result['message'] = 'Database connection failed.';
+    // Do not expose internal file paths or error details in production.
+    error_log('Health check DB error: ' . $e->getMessage());
 }
 
 header('Content-Type: application/json');

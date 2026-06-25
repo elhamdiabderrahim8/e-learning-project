@@ -76,6 +76,7 @@ try {
     set_course_flash('success', 'Cours mis a jour avec succes.');
     redirect_course_offers();
 } catch (Throwable $e) {
-    set_course_flash('error', $e->getMessage());
+    error_log('update_cours error: ' . $e->getMessage());
+    set_course_flash('error', 'Erreur lors de la mise à jour du cours.');
     redirect_course_offers();
 }

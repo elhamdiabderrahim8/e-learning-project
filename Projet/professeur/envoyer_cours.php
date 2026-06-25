@@ -69,6 +69,7 @@ try {
     set_course_flash('success', 'Cours ajoute avec succes.');
     redirect_course_offers();
 } catch (Throwable $e) {
-    set_course_flash('error', $e->getMessage());
+    error_log('envoyer_cours error: ' . $e->getMessage());
+    set_course_flash('error', 'Erreur lors de l\'ajout du cours.');
     redirect_course_offers();
 }

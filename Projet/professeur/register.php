@@ -76,6 +76,7 @@ try {
     exit();
 
 } catch (Exception $e) {
-    redirect_with_message($e->getMessage());
+    error_log('Prof register error: ' . $e->getMessage());
+    redirect_with_message("Erreur lors de l'inscription. Veuillez réessayer.");
 }
 ?>

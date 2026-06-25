@@ -111,7 +111,7 @@ try {
     }
 
     error_log('Reclamation error: ' . $e->getMessage());
-    set_flash('error', 'Impossible d\'envoyer la reclamation: ' . $e->getMessage());
+    set_flash('error', 'Impossible d\'envoyer la reclamation. Veuillez reessayer.');
 }
 
 redirect('../../pages/reclamation.php');

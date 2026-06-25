@@ -49,7 +49,8 @@ try {
     $query->execute(['id_prof' => $id_prof_connecte]);
     $alertes = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    die('Erreur SQL : ' . $e->getMessage());
+    error_log('valider_certificats error: ' . $e->getMessage());
+    die('Une erreur est survenue. Veuillez réessayer.');
 }
 
 $totalAlertes = count($alertes);

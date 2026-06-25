@@ -10,14 +10,43 @@ if (!isset($_SESSION['id_cours_actuel'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['fichier_lecon'])) {
     $id_cours = $_SESSION['id_cours_actuel'];
-    $titre = $_POST['titre'];
-    $description = $_POST['description'];
+    $titre = trim((string) ($_POST['titre'] ?? ''));
+    $description = trim((string) ($_POST['description'] ?? ''));
     
     // Informations sur le fichier
     $fileName = basename($_FILES['fichier_lecon']['name']);
     $fileType = $_FILES['fichier_lecon']['type'];
     $tmpName  = $_FILES['fichier_lecon']['tmp_name'];
-    $destination = "uploads/" . $fileName;
+
+    // Validate file type - allow only safe document/media types
+    $allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-powerpoint',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+        'video/mp4', 'video/webm',
+        'text/plain',
+    ];
+    $allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'txt'];
+    $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+    if (!in_array($fileType, $allowedTypes, true) || !in_array($ext, $allowedExtensions, true)) {
+        die("Erreur : Type de fichier non autorisé.");
+    }
+
+    // Enforce max file size (50 MB)
+    if ($_FILES['fichier_lecon']['size'] > 50 * 1024 * 1024) {
+        die("Erreur : Le fichier dépasse la taille maximale autorisée (50 Mo).");
+    }
+
+    // Use a unique name to prevent overwrites and path traversal
+    $safeName = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $fileName);
+    $destination = "uploads/" . $safeName;
+    if (!is_dir("uploads")) {
+        mkdir("uploads", 0755, true);
+    }
     move_uploaded_file($tmpName, $destination);
 
     if (!empty($tmpName)) {

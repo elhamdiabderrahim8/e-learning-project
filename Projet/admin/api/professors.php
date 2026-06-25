@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../auth_guard.php';
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../student/database/database.php';
 $pdo = db();
