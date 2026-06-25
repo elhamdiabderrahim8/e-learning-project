@@ -21,3 +21,4 @@ error_log
 # Uploads et médias locaux (selon le besoin, à décommenter si on veut ignorer les uploads de test)
 # Projet/kmr/student/uploads/
 # Projet/professeur/uploads/
+.phpunit.cache/
