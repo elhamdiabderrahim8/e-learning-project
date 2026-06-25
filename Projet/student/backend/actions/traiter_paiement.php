@@ -19,7 +19,8 @@ $cardExpiry = trim((string) ($_POST['card_expiry'] ?? ''));
 $cardCvc = preg_replace('/\D+/', '', (string) ($_POST['card_cvc'] ?? ''));
 
 if ($id_cours === 0 || $cin_etudiant === 0) {
-    die("Erreur : Données invalides.");
+    header('Location: ../../pages/offres.php?payment=invalid');
+    exit();
 }
 
 if ($cardHolder === '' || strlen($cardNumber) < 12 || strlen($cardExpiry) < 4 || strlen($cardCvc) < 3) {
@@ -75,6 +76,7 @@ try {
     exit();
 
 } catch (PDOException $e) {
+    error_log('Payment processing error: ' . $e->getMessage());
     header('Location: ../../pages/offres.php?payment=error');
     exit();
 }

@@ -37,7 +37,7 @@ if (is_authenticated()) {
 			$_SESSION['preferred_language_synced'] = true;
 		}
 	} catch (Throwable $e) {
-		// Keep current session language if DB sync fails.
+		error_log('Language sync error: ' . $e->getMessage());
 	}
 }
 

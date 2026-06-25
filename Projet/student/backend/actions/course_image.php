@@ -34,5 +34,7 @@ try {
 
     echo $course['image_data'];
 } catch (Throwable $e) {
+    error_log('Course image error: ' . $e->getMessage());
     http_response_code(500);
+    echo 'Internal Server Error';
 }

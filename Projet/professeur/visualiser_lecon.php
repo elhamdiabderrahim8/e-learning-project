@@ -4,7 +4,9 @@ require_once __DIR__ . '/../student/database/database.php';
 $pdo = db();
 
 if (!isset($_GET['id'])) {
-    die("ID de leçon manquant.");
+    http_response_code(400);
+    echo 'ID de lecon manquant.';
+    exit();
 }
 
 $id_lecon = intval($_GET['id']);
@@ -13,7 +15,9 @@ $stmt->execute(['id' => $id_lecon]);
 $lecon = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$lecon) {
-    die("Leçon introuvable.");
+    http_response_code(404);
+    echo 'Lecon introuvable.';
+    exit();
 }
 
 $chemin = "uploads/" . $lecon['nom_fichier'];

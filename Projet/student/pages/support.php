@@ -15,6 +15,7 @@ try {
     $stmt->execute(['cin' => $cinEtudiant]);
     $messages = $stmt->fetchAll();
 } catch (Throwable $e) {
+    error_log('Support page load error: ' . $e->getMessage());
     $supportReady = false;
 }
 

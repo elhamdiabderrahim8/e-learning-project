@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/session_prof.php';
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
 require_once __DIR__ . '/../student/database/database.php';
 $pdo = db();
@@ -12,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cin_p = $_SESSION['CIN'] ?? 'SESSION_VIDE';
 
     if ($cin_e === 'VIDE' || $id_c === 'VIDE' || $cin_p === 'SESSION_VIDE') {
-        die("<b style='color:red;'>Erreur : Données manquantes.</b>");
+        error_log('Certificate validation: missing data (cin_e=' . $cin_e . ', id_c=' . $id_c . ')');
+        header('Location: valider_certificats.php?error=missing_data');
+        exit();
     }
 
     // 1. Génération du code unique
@@ -63,7 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (PDOException $e) {
         $pdo->rollBack();
-        die("<b style='color:red;'>ERREUR SQL :</b> " . $e->getMessage());
+        error_log('Certificate validation SQL error: ' . $e->getMessage());
+        header('Location: valider_certificats.php?error=db');
+        exit();
     }
 } else {
     header("Location: valider_certificats.php");

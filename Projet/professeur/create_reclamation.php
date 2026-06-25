@@ -36,6 +36,7 @@ if ($userName === '') {
         $prof = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
         $userName = trim((string) (($prof['nom'] ?? '') . ' ' . ($prof['prenom'] ?? '')));
     } catch (Throwable $e) {
+        error_log('Professor name lookup error: ' . $e->getMessage());
         $userName = '';
     }
 }

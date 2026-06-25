@@ -1,13 +1,19 @@
 <?php
-// Poll for new messages (for students/professors)
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../student/database/database.php';
-$pdo = db();
 
-$thread_id = (int)($_GET['thread_id'] ?? 0);
-if (!$thread_id) { echo json_encode([]); exit(); }
+try {
+    $pdo = db();
 
-$msgs = $pdo->query("SELECT sender, message, created_at FROM support_messages WHERE thread_id=$thread_id ORDER BY created_at ASC");
-$out = [];
-while ($m = $msgs->fetch(PDO::FETCH_ASSOC)) $out[] = $m;
-echo json_encode($out);
+    $thread_id = (int)($_GET['thread_id'] ?? 0);
+    if (!$thread_id) { echo json_encode([]); exit(); }
+
+    $stmt = $pdo->prepare('SELECT sender, message, created_at FROM support_messages WHERE thread_id = :thread_id ORDER BY created_at ASC');
+    $stmt->execute(['thread_id' => $thread_id]);
+    $out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($out);
+} catch (Throwable $e) {
+    error_log('Get messages API error: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'Erreur lors du chargement des messages.']);
+}

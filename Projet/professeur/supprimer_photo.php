@@ -15,15 +15,13 @@ $cin = $_SESSION['CIN'];
 
 // 3. Préparation de la requête pour vider les colonnes data, name et type
 // On utilise une requête préparée pour la sécurité (contre les injections SQL)
-$sql = "UPDATE professeur SET data = NULL, name = NULL, type = NULL WHERE CIN = :cin";
-$stmt = $pdo->prepare($sql);
-
-if ($stmt) {
-    if ($stmt->execute(['cin' => $cin])) {
-        // Redirection vers le profil avec un message de succès
-        header('Location: infos.php?status=success');
-    } else {
-        header('Location: infos.php?status=error');
-    }
+try {
+    $sql = "UPDATE professeur SET data = NULL, name = NULL, type = NULL WHERE CIN = :cin";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['cin' => $cin]);
+    header('Location: infos.php?status=success');
+} catch (Throwable $e) {
+    error_log('Delete professor photo error: ' . $e->getMessage());
+    header('Location: infos.php?status=error');
 }
 exit();

@@ -6,7 +6,9 @@ $pdo = db();
 $code = $_GET['code'] ?? '';
 
 if (empty($code)) {
-    die("Code de certificat manquant.");
+    http_response_code(400);
+    echo 'Code de certificat manquant.';
+    exit();
 }
 
 $sql = "SELECT 
@@ -27,10 +29,15 @@ try {
     $data = $stmt->fetch();
 
     if (!$data) {
-        die("Certificat introuvable.");
+        http_response_code(404);
+        echo 'Certificat introuvable.';
+        exit();
     }
 } catch (PDOException $e) {
-    die("Erreur : " . $e->getMessage());
+    error_log('Certificate generation error: ' . $e->getMessage());
+    http_response_code(500);
+    echo 'Erreur lors de la generation du certificat.';
+    exit();
 }
 
 $date_fr = date('d/m/Y', strtotime($data['date_obtention']));
