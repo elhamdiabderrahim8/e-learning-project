@@ -56,5 +56,6 @@ try {
     header('Location: offres.php');
     exit();
 } catch (Exception $e) {
-    redirect_login($e->getMessage());
+    error_log('Prof login_action error: ' . $e->getMessage());
+    redirect_login("Erreur système. Veuillez réessayer.");
 }

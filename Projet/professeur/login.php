@@ -39,7 +39,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $message = ($row) ? 'Mot de passe incorrect. Veuillez reessayer.' : 'Aucun compte trouve avec ce CIN.';
 
     } catch (Exception $e) {
-        $message = 'Erreur de connexion : ' . $e->getMessage();
+        error_log('Prof login error: ' . $e->getMessage());
+        $message = 'Erreur de connexion. Veuillez réessayer.';
     }
 }
 ?>

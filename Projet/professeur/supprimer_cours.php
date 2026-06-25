@@ -81,9 +81,10 @@ try {
         $pdo->rollBack();
     }
 
+    error_log('supprimer_cours error: ' . $e->getMessage());
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => 'Suppression impossible: ' . $e->getMessage(),
+        'message' => 'Suppression impossible. Veuillez réessayer.',
     ]);
 }

@@ -30,7 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply'])) {
         $stmt = null;
     }
     // Mark all user messages in this thread as read
-    $pdo->query("UPDATE support_messages SET admin_read=1 WHERE thread_id=$thread_id AND sender!='admin'");
+    $markRead = $pdo->prepare("UPDATE support_messages SET admin_read=1 WHERE thread_id = ? AND sender != 'admin'");
+    $markRead->execute([$thread_id]);
+    $markRead = null;
     header("Location: chat.php?thread=$thread_id");
     exit();
 }
@@ -38,7 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply'])) {
 // Mark thread as read when opened
 $active_thread = isset($_GET['thread']) ? (int)$_GET['thread'] : 0;
 if ($active_thread) {
-    $pdo->query("UPDATE support_messages SET admin_read=1 WHERE thread_id=$active_thread AND sender!='admin'");
+    $markReadStmt = $pdo->prepare("UPDATE support_messages SET admin_read=1 WHERE thread_id = ? AND sender != 'admin'");
+    $markReadStmt->execute([$active_thread]);
+    $markReadStmt = null;
 }
 
 // Get all threads
@@ -55,8 +59,13 @@ $threads = $pdo->query("
 $messages = [];
 $thread_info = null;
 if ($active_thread) {
-    $thread_info = $pdo->query("SELECT * FROM support_threads WHERE id=$active_thread")->fetch(PDO::FETCH_ASSOC);
-    $msgs = $pdo->query("SELECT * FROM support_messages WHERE thread_id=$active_thread ORDER BY created_at ASC");
+    $threadStmt = $pdo->prepare("SELECT * FROM support_threads WHERE id = ?");
+    $threadStmt->execute([$active_thread]);
+    $thread_info = $threadStmt->fetch(PDO::FETCH_ASSOC);
+    $threadStmt = null;
+    $msgsStmt = $pdo->prepare("SELECT * FROM support_messages WHERE thread_id = ? ORDER BY created_at ASC");
+    $msgsStmt->execute([$active_thread]);
+    $msgs = $msgsStmt;
     while ($m = $msgs->fetch(PDO::FETCH_ASSOC)) $messages[] = $m;
 }
 ?>

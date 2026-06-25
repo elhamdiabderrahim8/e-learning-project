@@ -12,7 +12,8 @@ try {
 
     set_flash('success', 'Votre photo de profil a été supprimée.');
 } catch (PDOException $e) {
-    set_flash('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+    error_log('delete_photo error: ' . $e->getMessage());
+    set_flash('error', 'Erreur lors de la suppression de la photo.');
 }
 
 redirect('../../pages/profil.php');

@@ -30,7 +30,8 @@ try {
         die("Certificat introuvable.");
     }
 } catch (PDOException $e) {
-    die("Erreur : " . $e->getMessage());
+    error_log('generer_certificat error: ' . $e->getMessage());
+    die("Une erreur est survenue lors de la génération du certificat.");
 }
 
 $date_fr = date('d/m/Y', strtotime($data['date_obtention']));

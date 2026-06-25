@@ -2,6 +2,17 @@
 // Used by students and professors to send support messages
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../student/database/database.php';
+
+// Require an active user session (student or professor)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (empty($_SESSION['CIN']) && empty($_SESSION['id_professeur'])) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+    exit();
+}
+
 $pdo = db();
 
 $data = json_decode(file_get_contents('php://input'), true) ?? $_POST;

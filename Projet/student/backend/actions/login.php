@@ -61,5 +61,6 @@ try {
     redirect('../../pages/cours.php');
 
 } catch (Exception $e) {
-    redirect_error("Erreur système : " . $e->getMessage());
+    error_log('Login error: ' . $e->getMessage());
+    redirect_error("Erreur système. Veuillez réessayer.");
 }
