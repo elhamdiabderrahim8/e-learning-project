@@ -63,6 +63,7 @@ $attachmentPath = $uploadedPaths[0] ?? null;
 $attachmentPaths = $uploadedPaths ? json_encode($uploadedPaths, JSON_UNESCAPED_SLASHES) : null;
 
 require_once __DIR__ . '/../includes/migrate_support_tables.php';
+require_once __DIR__ . '/../../../shared/support.php';
 
 $pdo = db();
 $userId = (string) user_id();
@@ -84,26 +85,10 @@ try {
         'attachment_paths' => $attachmentPaths,
     ]);
 
-    // Forward the reclamation to the admin support inbox.
-    $threadStmt = $pdo->prepare('INSERT INTO support_threads (user_id, user_type, user_name, subject) VALUES (:user_id, :user_type, :user_name, :subject)');
-    $threadStmt->execute([
-        'user_id' => $userId,
-        'user_type' => 'etudiant',
-        'user_name' => $userName,
-        'subject' => $subject,
-    ]);
-
-    $threadId = (int) $pdo->lastInsertId();
-
-    $msgStmt = $pdo->prepare('INSERT INTO support_messages (thread_id, sender, message, admin_read) VALUES (:thread_id, :sender, :message, :admin_read)');
-    $msgStmt->execute([
-        'thread_id' => $threadId,
-        'sender' => 'etudiant',
-        'message' => $message,
-        'admin_read' => 0,
-    ]);
-
     $pdo->commit();
+
+    create_support_thread($userId, 'etudiant', $userName, $subject, $message);
+
     set_flash('success', 'Votre reclamation a ete envoyee et transmise a l\'admin.');
 } catch (Throwable $e) {
     if ($pdo->inTransaction()) {

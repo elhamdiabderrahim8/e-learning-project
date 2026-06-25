@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/session_prof.php';
-require_once __DIR__ . '/../student/database/database.php';
+require_once __DIR__ . '/../shared/database.php';
+require_once __DIR__ . '/../shared/support.php';
 require_once __DIR__ . '/../student/backend/includes/migrate_support_tables.php';
 
 if (!isset($_SESSION['CIN'])) {
@@ -46,37 +47,13 @@ if ($userName === '') {
 
 try {
     migrate_support_tables();
-    $pdo->beginTransaction();
-
-    $threadStmt = $pdo->prepare('INSERT INTO support_threads (user_id, user_type, user_name, subject) VALUES (:user_id, :user_type, :user_name, :subject)');
-    $threadStmt->execute([
-        'user_id' => $userId,
-        'user_type' => 'professeur',
-        'user_name' => $userName,
-        'subject' => $subject,
-    ]);
-
-    $threadId = (int) $pdo->lastInsertId();
-
-    $msgStmt = $pdo->prepare('INSERT INTO support_messages (thread_id, sender, message, admin_read) VALUES (:thread_id, :sender, :message, :admin_read)');
-    $msgStmt->execute([
-        'thread_id' => $threadId,
-        'sender' => 'professeur',
-        'message' => $message,
-        'admin_read' => 0,
-    ]);
-
-    $pdo->commit();
+    create_support_thread($userId, 'professeur', $userName, $subject, $message);
 
     $_SESSION['prof_reclamation_flash'] = [
         'type' => 'success',
         'message' => 'Votre reclamation a ete envoyee et transmise a l admin.',
     ];
 } catch (Throwable $e) {
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
-
     $_SESSION['prof_reclamation_flash'] = [
         'type' => 'error',
         'message' => 'Impossible d envoyer la reclamation. Veuillez reessayer.',

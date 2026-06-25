@@ -28,21 +28,11 @@ $result = $pdo->query($sql);
 </head>
 <body>
 <div class="dashboard-container">
-    <aside class="sidebar">
-        <div class="logo"><img src="../professeur/enjah.png" alt="logo"><span class="brand-name">Admin</span></div>
-        <nav><ul>
-            <li><a href="index.php">Tableau de bord</a></li>
-            <li class="active"><a href="students.php">Étudiants</a></li>
-            <li><a href="professors.php">Professeurs</a></li>
-            <li><a href="payments.php">Paiements</a></li>
-            <li><a href="chat.php">Support Chat</a></li>
-            <li><a href="logout.php">Déconnexion</a></li>
-        </ul></nav>
-    </aside>
+    <?php $currentPage = 'students'; require __DIR__ . '/partials/sidebar.php'; ?>
     <main class="main-content">
         <header class="header"><h1>Liste des étudiants</h1></header>
         <?php if (!empty($success)): ?><div class="success"><?=htmlspecialchars($success)?></div><?php endif; ?>
-        <div class="search-bar"><input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Rechercher..."></div>
+        <div class="search-bar"><input type="text" id="searchInput" onkeyup="filterTable('searchInput','studentsTable')" placeholder="Rechercher..."></div>
         <table id="studentsTable">
             <thead>
                 <tr><th>CIN</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Inscription</th><th>Action</th></tr>
@@ -71,13 +61,6 @@ $result = $pdo->query($sql);
         </table>
     </main>
 </div>
-<script>
-function filterTable() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    document.querySelectorAll('#studentsTable tbody tr').forEach(row => {
-        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
-    });
-}
-</script>
+<script src="partials/filter_table.js"></script>
 </body>
 </html>

@@ -72,17 +72,7 @@ if ($active_thread) {
 </head>
 <body>
 <div class="dashboard-container">
-    <aside class="sidebar">
-        <div class="logo"><img src="../professeur/enjah.png" alt="logo"><span class="brand-name">Admin</span></div>
-        <nav><ul>
-            <li><a href="index.php">Tableau de bord</a></li>
-            <li><a href="students.php">Étudiants</a></li>
-            <li><a href="professors.php">Professeurs</a></li>
-            <li><a href="payments.php">Paiements</a></li>
-            <li class="active"><a href="chat.php">Support Chat</a></li>
-            <li><a href="logout.php">Déconnexion</a></li>
-        </ul></nav>
-    </aside>
+    <?php $currentPage = 'chat'; require __DIR__ . '/partials/sidebar.php'; ?>
     <main class="main-content">
         <header class="header"><h1>Support Chat</h1></header>
         <div class="chat-layout">
