@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/session_prof.php';
+require_once __DIR__ . '/../shared/database.php';
+require_once __DIR__ . '/../shared/validation.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: registre.php');
@@ -22,35 +24,22 @@ function redirect_with_message(string $message, bool $success = false): void
     exit();
 }
 
-if ($cin === '' || $prenom === '' || $nom === '' || $password === '' || $confirmPassword === '') {
-    redirect_with_message('Tous les champs sont obligatoires.');
+$requiredError = validate_required_fields([$cin, $prenom, $nom, $password, $confirmPassword]);
+if ($requiredError !== null) {
+    redirect_with_message($requiredError);
 }
 
 if (!ctype_digit($cin)) {
     redirect_with_message('Le CIN doit contenir uniquement des chiffres.');
 }
 
-if (strlen($password) < 8) {
-    redirect_with_message('Le mot de passe doit contenir au moins 8 caracteres.');
-}
-
-if ($password !== $confirmPassword) {
-    redirect_with_message('Les mots de passe ne correspondent pas.');
+$passwordError = validate_password($password, $confirmPassword);
+if ($passwordError !== null) {
+    redirect_with_message($passwordError);
 }
 
 try {
-    $host   = getenv('DB_HOST') ?: 'localhost';
-    $port   = getenv('DB_PORT') ?: '3306';
-    $dbname = getenv('DB_NAME') ?: 'elearning';
-    $user   = getenv('DB_USER') ?: 'root';
-    $pass   = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
-
-    $pdo = new PDO(
-        "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
-        $user,
-        $pass,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
-    );
+    $pdo = db();
 
     $check = $pdo->prepare('SELECT CIN FROM professeur WHERE CIN = :cin LIMIT 1');
     $check->execute(['cin' => $cin]);

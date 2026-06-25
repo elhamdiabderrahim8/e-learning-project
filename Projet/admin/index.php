@@ -19,21 +19,7 @@ $nb_messages  = $res ? $res->fetch(PDO::FETCH_ASSOC)['n'] : 0;
 </head>
 <body>
 <div class="dashboard-container">
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="../professeur/enjah.png" alt="logo">
-            <span class="brand-name">Admin</span>
-        </div>
-        <nav><ul>
-            <li class="active"><a href="index.php">Tableau de bord</a></li>
-            <li><a href="students.php">Étudiants</a></li>
-            <li><a href="professors.php">Professeurs</a></li>
-            <li><a href="payments.php">Paiements</a></li>
-            <li><a href="chat.php">Support Chat <?php if($nb_messages>0): ?><span class="badge"><?=$nb_messages?></span><?php endif; ?></a></li>
-            <li><a href="admins.php">Admins</a></li>
-            <li><a href="logout.php">Déconnexion</a></li>
-        </ul></nav>
-    </aside>
+    <?php $currentPage = 'dashboard'; $unreadMessages = $nb_messages; require __DIR__ . '/partials/sidebar.php'; ?>
     <main class="main-content">
         <header class="header">
             <h1>Tableau de bord</h1>
