@@ -18,12 +18,17 @@ function is_authenticated()
 
 function require_auth()
 {
+    if (isset($_SESSION['last_activity']) && time() - (int) $_SESSION['last_activity'] > 7200) {
+        logout_user();
+        set_flash('error', 'Votre session a expiré. Veuillez vous reconnecter.');
+    }
     if (!is_authenticated()) {
         set_flash('error', 'Veuillez vous connecter pour continuer.');
         $script = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
         $path = str_contains($script, '/backend/') ? '../../pages/login.php' : 'login.php';
         redirect($path);
     }
+    $_SESSION['last_activity'] = time();
 }
 
 function login_user($id, $fullName)
@@ -31,6 +36,7 @@ function login_user($id, $fullName)
     session_regenerate_id(true);
     $_SESSION['CIN'] = (int) $id;
     $_SESSION['nom'] = (string) $fullName;
+    $_SESSION['last_activity'] = time();
 }
 
 function logout_user()

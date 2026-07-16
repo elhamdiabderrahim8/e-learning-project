@@ -48,13 +48,15 @@ try {
         redirect_login('Identifiants invalides.');
     }
 
-    session_regenerate_id(false);
+    session_regenerate_id(true);
     $_SESSION['CIN'] = (int) $user['CIN'];
     $_SESSION['prenom'] = (string) $user['prenom'];
     $_SESSION['nom'] = (string) $user['nom'];
+    $_SESSION['last_activity'] = time();
 
     header('Location: offres.php');
     exit();
 } catch (Exception $e) {
-    redirect_login($e->getMessage());
+    error_log($e->getMessage());
+    redirect_login('Une erreur technique est survenue.');
 }

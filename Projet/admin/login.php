@@ -1,5 +1,14 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+    session_set_cookie_params([
+        'lifetime' => 0, 'path' => '/', 'secure' => $isSecure,
+        'httponly' => true, 'samesite' => 'Strict',
+    ]);
+    ini_set('session.use_strict_mode', '1');
+    session_start();
+}
 
 $adminUsers = require __DIR__ . '/admin_credentials.php';
 $error = '';
@@ -25,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_regenerate_id(true);
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_email']     = $matchedAdmin['email'];
+        $_SESSION['last_activity']   = time();
         header('Location: index.php');
         exit();
     }
