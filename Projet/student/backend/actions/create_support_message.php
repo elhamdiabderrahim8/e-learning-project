@@ -23,13 +23,18 @@ if (mb_strlen($message) > 4000) {
 
 $pdo = db();
 
-$stmt = $pdo->prepare('INSERT INTO support_messages (student_cin, sender, message) VALUES (:cin, :sender, :message)');
-$stmt->execute([
-    'cin' => (int) user_id(),
-    'sender' => 'student',
-    'message' => $message,
-]);
+try {
+    $stmt = $pdo->prepare('INSERT INTO support_messages (student_cin, sender, message) VALUES (:cin, :sender, :message)');
+    $stmt->execute([
+        'cin' => (int) user_id(),
+        'sender' => 'student',
+        'message' => $message,
+    ]);
 
-set_flash('success', 'Message envoye.');
+    set_flash('success', 'Message envoye.');
+} catch (Throwable $e) {
+    error_log('Support message error: ' . $e->getMessage());
+    set_flash('error', 'Impossible d\'envoyer le message.');
+}
 redirect('../../pages/support.php');
 

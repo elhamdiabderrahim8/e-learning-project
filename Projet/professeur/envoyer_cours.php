@@ -12,7 +12,7 @@ if (!isset($_SESSION['CIN'])) {
         'session_data' => $_SESSION,
         'headers' => getallheaders()
     ];
-    @file_put_contents('/tmp/session_debug.txt', print_r($debug, true) . "\n---\n", FILE_APPEND);
+    error_log('envoyer_cours session issue: ' . print_r($debug, true));
 
     set_course_flash('error', 'Veuillez vous reconnecter.');
     redirect_course_offers();

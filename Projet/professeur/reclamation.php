@@ -26,7 +26,7 @@ try {
         $profileSrc = 'data:' . $prof['type'] . ';base64,' . base64_encode($prof['data']);
     }
 } catch (Throwable $e) {
-    // Keep fallback profile values if loading the avatar fails.
+    error_log('Professor reclamation profile load error: ' . $e->getMessage());
 }
 
 $flash = $_SESSION['prof_reclamation_flash'] ?? null;
@@ -81,6 +81,7 @@ try {
     $stmt->execute(['user_id' => $cin]);
     $threads = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 } catch (Throwable $e) {
+    error_log('Professor reclamation load error: ' . $e->getMessage());
     $loadError = 'Impossible de charger vos reclamations pour le moment.';
 }
 ?>

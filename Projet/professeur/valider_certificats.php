@@ -26,7 +26,7 @@ try {
         $profileSrc = 'data:' . $prof['type'] . ';base64,' . base64_encode($prof['data']);
     }
 } catch (Throwable $e) {
-    // Keep fallback profile values.
+    error_log('Professor profile load error: ' . $e->getMessage());
 }
 
 $sql = "SELECT
@@ -49,7 +49,8 @@ try {
     $query->execute(['id_prof' => $id_prof_connecte]);
     $alertes = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    die('Erreur SQL : ' . $e->getMessage());
+    error_log('Certificate listing SQL error: ' . $e->getMessage());
+    $alertes = [];
 }
 
 $totalAlertes = count($alertes);

@@ -42,43 +42,40 @@ if (strlen($CIN) < 8) {
 
 $pdo = db();
 
-// Vérifier si le CIN existe déjà
-$existing = $pdo->prepare('SELECT CIN FROM etudiant WHERE CIN = :CIN LIMIT 1');
-$existing->execute(['CIN' => $CIN]);
-if ($existing->fetch()) {
-    set_flash('error', 'Ce CIN est déjà utilisé.');
-    redirect('../../pages/registre.php');
-}
+try {
+    // Vérifier si le CIN existe déjà
+    $existing = $pdo->prepare('SELECT CIN FROM etudiant WHERE CIN = :CIN LIMIT 1');
+    $existing->execute(['CIN' => $CIN]);
+    if ($existing->fetch()) {
+        set_flash('error', 'Ce CIN est déjà utilisé.');
+        redirect('../../pages/registre.php');
+    }
 
-// Hachage du mot de passe
-$hash = password_hash($password, PASSWORD_DEFAULT);
+    // Hachage du mot de passe
+    $hash = password_hash($password, PASSWORD_DEFAULT);
 
-// --- CORRECTION DE LA REQUÊTE ---
-// Ajout de la virgule manquante et mise en correspondance exacte des colonnes
-$insert = $pdo->prepare('INSERT INTO etudiant (CIN, nom, prenom, email, password, preferred_language) 
-                         VALUES (:CIN, :nom, :prenom, :email, :password_hash, :lang)');
+    $insert = $pdo->prepare('INSERT INTO etudiant (CIN, nom, prenom, email, password, preferred_language) 
+                             VALUES (:CIN, :nom, :prenom, :email, :password_hash, :lang)');
 
-$success = $insert->execute([
-    'CIN'           => $CIN,
-    'nom'           => $lastName,
-    'prenom'        => $firstName,
-    'email'         => $email,
-    'password_hash' => $hash,
-    'lang'          => 'fr', // Tu peux mettre 'fr' par défaut pour Enjah
-]);
+    $insert->execute([
+        'CIN'           => $CIN,
+        'nom'           => $lastName,
+        'prenom'        => $firstName,
+        'email'         => $email,
+        'password_hash' => $hash,
+        'lang'          => 'fr',
+    ]);
 
-if ($success) {
     $fullName = $firstName . ' ' . $lastName;
-    
-    // On utilise le CIN comme identifiant unique pour la session
-    login_user($CIN, $fullName); 
-    
-    $_SESSION['CIN'] = $CIN; // Très important pour tes futures requêtes de cours
+    login_user($CIN, $fullName);
+
+    $_SESSION['CIN'] = $CIN;
     $_SESSION['preferred_language'] = 'fr';
-    
+
     set_flash('success', 'Compte créé avec succès.');
     redirect('../../pages/offres.php');
-} else {
+} catch (Throwable $e) {
+    error_log('Student registration error: ' . $e->getMessage());
     set_flash('error', 'Une erreur est survenue lors de l\'inscription.');
     redirect('../../pages/registre.php');
 }

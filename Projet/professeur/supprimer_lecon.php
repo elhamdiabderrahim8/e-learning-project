@@ -6,23 +6,26 @@ $pdo = db();
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
-    // 1. Récupérer le nom du fichier pour le supprimer du dossier
-    $stmt = $pdo->prepare("SELECT nom_fichier FROM lecon WHERE id_lecon = :id");
-    $stmt->execute(['id' => $id]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
+        $stmt = $pdo->prepare("SELECT nom_fichier FROM lecon WHERE id_lecon = :id");
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($row) {
-        $nom_fichier = $row['nom_fichier'];
-        $chemin = "uploads/" . $nom_fichier;
+        if ($row) {
+            $nom_fichier = $row['nom_fichier'];
+            $chemin = "uploads/" . $nom_fichier;
 
-        // 2. Supprimer le fichier physique s'il existe
-        if (file_exists($chemin)) {
-            unlink($chemin); // Cette fonction détruit le fichier
+            if (file_exists($chemin)) {
+                if (!unlink($chemin)) {
+                    error_log('Failed to delete lesson file: ' . $chemin);
+                }
+            }
+
+            $deleteStmt = $pdo->prepare("DELETE FROM lecon WHERE id_lecon = :id");
+            $deleteStmt->execute(['id' => $id]);
         }
-
-        // 3. Supprimer la ligne dans la base de données
-        $deleteStmt = $pdo->prepare("DELETE FROM lecon WHERE id_lecon = :id");
-        $deleteStmt->execute(['id' => $id]);
+    } catch (Throwable $e) {
+        error_log('Delete lesson error: ' . $e->getMessage());
     }
 }
 

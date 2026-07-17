@@ -63,7 +63,7 @@ try {
         }
     }
 } catch (\Throwable $e) {
-    // Ignore: navbar should still render without profile info.
+    error_log('Sidebar profile load error: ' . $e->getMessage());
 }
 
 ?>

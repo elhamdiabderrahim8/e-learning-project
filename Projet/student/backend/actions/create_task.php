@@ -43,14 +43,19 @@ if ($dueDateInput !== '') {
 
 $pdo = db();
 
-$stmt = $pdo->prepare('INSERT INTO tasks (user_id, title, due_date, priority, status, is_completed) VALUES (:user_id, :title, :due_date, :priority, :status, :is_completed)');
-$stmt->bindValue(':user_id', user_id(), PDO::PARAM_INT);
-$stmt->bindValue(':title', $title, PDO::PARAM_STR);
-$stmt->bindValue(':due_date', $dueDate, $dueDate === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
-$stmt->bindValue(':priority', $priority, PDO::PARAM_STR);
-$stmt->bindValue(':status', $status, PDO::PARAM_STR);
-$stmt->bindValue(':is_completed', $isCompletedFlag, PDO::PARAM_INT);
-$stmt->execute();
+try {
+    $stmt = $pdo->prepare('INSERT INTO tasks (user_id, title, due_date, priority, status, is_completed) VALUES (:user_id, :title, :due_date, :priority, :status, :is_completed)');
+    $stmt->bindValue(':user_id', user_id(), PDO::PARAM_INT);
+    $stmt->bindValue(':title', $title, PDO::PARAM_STR);
+    $stmt->bindValue(':due_date', $dueDate, $dueDate === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $stmt->bindValue(':priority', $priority, PDO::PARAM_STR);
+    $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+    $stmt->bindValue(':is_completed', $isCompletedFlag, PDO::PARAM_INT);
+    $stmt->execute();
 
-set_flash('success', 'Nouvelle tache ajoutee.');
+    set_flash('success', 'Nouvelle tache ajoutee.');
+} catch (Throwable $e) {
+    error_log('Create task error: ' . $e->getMessage());
+    set_flash('error', 'Impossible de creer la tache.');
+}
 redirect('../../pages/tache_a_fair.php');

@@ -22,7 +22,7 @@ try {
     $pdo->prepare('DELETE FROM certificates WHERE user_id = :id')->execute(['id' => $userId]);
     $pdo->prepare('DELETE FROM support_messages WHERE student_cin = :id')->execute(['id' => $userId]);
 } catch (Throwable $e) {
-    // Ignore cleanup errors for optional tables during prototype stage.
+    error_log('Profile cleanup error for user ' . $userId . ': ' . $e->getMessage());
 }
 
 $delete = $pdo->prepare('DELETE FROM etudiant WHERE CIN = :id');

@@ -76,7 +76,8 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$cin_etudiant, $id_cours, $cin_etudiant, $id_cours]);
 } catch (Throwable $e) {
-    // If anything fails, return to offers.
+    error_log('Free course enrollment error: ' . $e->getMessage());
+    set_flash('error', 'Impossible de s\'inscrire au cours. Veuillez reessayer.');
     redirect('../../pages/offres.php');
 }
 
